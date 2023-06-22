@@ -31,4 +31,9 @@ userShema.pre("save", async function(next) {
     next()
 })
 
+userShema.methods.comparePassword = async function(password) {
+	const result = await bcrypt.compare(password, this.password)
+	return result
+}
+
 export default mongoose.model("User", userShema)

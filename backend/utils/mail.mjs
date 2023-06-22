@@ -1,4 +1,11 @@
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const host = process.env.EMAIL_HOST;
+const email_service = process.env.EMAIL;
+const pass = process.env.EMAIL_PASS;
 
 const generateOTP = (otp_length = 6) => {
 	// generate 6 digit otp
@@ -11,15 +18,15 @@ const generateOTP = (otp_length = 6) => {
 	return OTP;
 };
 
-const generateMailTransporter = () => {
-	nodemailer.createTransport({
-		host: 'sandbox.smtp.mailtrap.io',
-		port: 2525,
-		auth: {
-			user: '42a0dc509c2bde',
-			pass: '21f921996c6388',
-		},
-	});
-};
+const transport = nodemailer.createTransport({
+	service: host,
+	auth: {
+		user: email_service,
+		pass: pass,
+	},
+	tls: {
+		rejectUnauthorized: false,
+	},
+});
 
-export { generateOTP, generateMailTransporter };
+export { generateOTP, transport };

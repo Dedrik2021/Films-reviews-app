@@ -5,7 +5,7 @@ import './db/index.mjs';
 import userRouter from './routes/user.mjs';
 
 const app = express();
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use('/api/user', userRouter);
@@ -24,5 +24,5 @@ app.post(
 );
 
 app.listen(PORT, () => {
-	console.log(`Server is listen port ${PORT}`);
+	console.log(`Server is listen port http://localhost:${PORT}`);
 });
