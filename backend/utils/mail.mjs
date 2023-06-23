@@ -3,10 +3,6 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const host = process.env.EMAIL_HOST;
-const email_service = process.env.EMAIL;
-const pass = process.env.EMAIL_PASS;
-
 const generateOTP = (otp_length = 6) => {
 	// generate 6 digit otp
 	let OTP = '';
@@ -19,10 +15,10 @@ const generateOTP = (otp_length = 6) => {
 };
 
 const transport = nodemailer.createTransport({
-	service: host,
+	service: process.env.EMAIL_HOST,
 	auth: {
-		user: email_service,
-		pass: pass,
+		user: process.env.EMAIL,
+		pass: process.env.EMAIL_PASS,
 	},
 	tls: {
 		rejectUnauthorized: false,

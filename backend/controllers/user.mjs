@@ -1,5 +1,6 @@
 import { isValidObjectId } from 'mongoose';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 import User from '../models/user.mjs';
 import EmailVerificationToken from '../models/emailVerificationToken.mjs';
@@ -10,6 +11,7 @@ import { sendError, generateRandomByte } from '../utils/helper.mjs';
 dotenv.config();
 
 const email_service = process.env.EMAIL;
+const JWT_TOKEN = process.env.JWT_TOKEN;
 
 const create = async (req, res) => {
 	const { name, email, password } = req.body;
@@ -140,16 +142,16 @@ const sendResetPassordTokenStatus = (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-	const {newPassword, userId} = req.body
+	const { newPassword, userId } = req.body;
 
-	const user = await User.findById(userId)
-	const matched = await user.comparePassword(newPassword)
-	if (matched) return sendError(res, "The new password must be different from the old one!")
+	const user = await User.findById(userId);
+	const matched = await user.comparePassword(newPassword);
+	if (matched) return sendError(res, 'The new password must be different from the old one!');
 
-	user.password = newPassword
-	await user.save()
+	user.password = newPassword;
+	await user.save();
 
-	await PasswordResetToken.findByIdAndDelete(req.resetToken._id)
+	await PasswordResetToken.findByIdAndDelete(req.resetToken._id);
 
 	transport.sendMail({
 		from: email_service,
@@ -162,7 +164,22 @@ const resetPassword = async (req, res) => {
 	});
 
 	res.status(201).json({ message: 'Password Reset Successfully! Now You Can Use New Password!' });
-}
+};
+
+const signIn = async (req, res, next) => {
+	const { email, password } = req.body;
+
+	const user = await User.findOne({ email });
+	if (!user) return sendError(res, 'Email/Password mismatch!');
+
+	const matched = await user.comparePassword(password);
+	if (!matched) return sendError(res, 'Email/Password mismatch!');
+
+	const { _id, name } = user;
+
+	const jwtToken = jwt.sign({ userId: user._id }, JWT_TOKEN);
+	res.status(201).json({ id: _id, name, email, token: jwtToken });
+};
 
 export {
 	create,
@@ -170,5 +187,6 @@ export {
 	resendEmailVerifivationToken,
 	forgetPassword,
 	sendResetPassordTokenStatus,
-	resetPassword
+	resetPassword,
+	signIn,
 };

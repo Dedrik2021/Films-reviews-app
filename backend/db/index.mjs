@@ -1,7 +1,10 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 mongoose
-	.connect('mongodb://localhost:27017/review-app-new-project')
+	.connect(process.env.DB_URL)
 	.then(() => {
 		console.log('Db is connected!');
 	})
