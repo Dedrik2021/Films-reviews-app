@@ -2,6 +2,7 @@ import { BsFillSunFill } from 'react-icons/bs';
 import {Link} from 'react-router-dom';
 
 import Container from '../Container';
+// import logoImg from '../../../public/logo.png'
 
 const Navbar = () => {
 	return (
@@ -9,7 +10,7 @@ const Navbar = () => {
 			<Container className="p-2">
 				<div className="flex justify-between items-center">
 					<Link to='/'>
-						<img className="h-10" src="./logo.png" alt="logo" />
+						<img className="h-10 object-cover" src="./logo.png" alt="logo" />
 					</Link>
 					<div className="flex items-center space-x-4">
 						<button className="bg-dark-subtle p-1 rounded">
