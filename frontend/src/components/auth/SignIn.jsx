@@ -3,8 +3,12 @@ import Title from '../form/Title';
 import FormInput from '../form/FormInput';
 import SubmitBtn from '../form/SubmitBtn';
 import CustomLink from '../CustomLink';
+import useTheme from '../../hooks';
 
 const SignIn = () => {
+    const theme = useTheme()
+    theme.method()
+
 	return (
 		<div className="fixed inset-0 bg-primary -z-10 flex fjustify-center items-center">
 			<Container>
