@@ -1,0 +1,1 @@
+export const commonModelClasses = "dark:bg-secondary bg-white drop-shadow-lg rounded p-4 w-96 space-y-4"

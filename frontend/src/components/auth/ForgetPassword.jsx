@@ -3,12 +3,14 @@ import Title from '../form/Title';
 import FormInput from '../form/FormInput';
 import SubmitBtn from '../form/SubmitBtn';
 import CustomLink from '../CustomLink';
+import FormContainer from '../form/FormContainer';
+import { commonModelClasses } from '../../utils/theme';
 
 const ForgetPassword = () => {
 	return (
-		<div className="fixed inset-0 bg-primary -z-10 flex fjustify-center items-center">
+		<FormContainer>
 			<Container>
-				<form className="bg-secondary rounded p-4 w-96 space-y-4">
+				<form className={commonModelClasses}>
 					<Title>Please Enter Your Email</Title>
 					<FormInput 
                         placeholder="Jhon@gmail.com"
@@ -22,7 +24,7 @@ const ForgetPassword = () => {
                     </div>
 				</form>
 			</Container>
-		</div>
+		</FormContainer>
 	);
 };
 

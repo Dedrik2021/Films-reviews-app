@@ -3,12 +3,14 @@ import Title from '../form/Title';
 import FormInput from '../form/FormInput';
 import SubmitBtn from '../form/SubmitBtn';
 import CustomLink from '../CustomLink';
+import { commonModelClasses } from '../../utils/theme';
+import FormContainer from '../form/FormContainer';
 
 const Signup = () => {
 	return (
-		<div className="fixed inset-0 bg-primary -z-10 flex fjustify-center items-center">
+		<FormContainer>
 			<Container>
-				<form className="bg-secondary rounded p-4 w-96 space-y-4">
+				<form className={commonModelClasses}>
 					<Title>Sign Up</Title>
 					<FormInput 
                         placeholder="Jhon Doe"
@@ -32,7 +34,7 @@ const Signup = () => {
                     </div>
 				</form>
 			</Container>
-		</div>
+		</FormContainer>
 	);
 };
 
