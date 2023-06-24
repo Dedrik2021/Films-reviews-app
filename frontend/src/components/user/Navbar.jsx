@@ -2,7 +2,6 @@ import { BsFillSunFill } from 'react-icons/bs';
 import {Link} from 'react-router-dom';
 
 import Container from '../Container';
-// import logoImg from '../../../public/logo.png'
 
 const Navbar = () => {
 	return (
