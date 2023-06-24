@@ -1,14 +1,31 @@
+import { BsFillSunFill } from 'react-icons/bs';
+import {Link} from 'react-router-dom';
+
+import Container from '../Container';
+
 const Navbar = () => {
 	return (
-		<div className="bg-secondary">
-			<div className="  max-w-screen-xl mx-auto p-2">
+		<div className="bg-secondary shadow-sm shadow-gray-500">
+			<Container className="p-2">
 				<div className="flex justify-between items-center">
-					<img className="h-10" src="./logo.png" alt="" />
-					<ul>
-						<li className="text-white">Login</li>
-					</ul>
+					<Link to='/'>
+						<img className="h-10" src="./logo.png" alt="logo" />
+					</Link>
+					<div className="flex items-center space-x-4">
+						<button className="bg-dark-subtle p-1 rounded">
+							<BsFillSunFill className="text-secondary" size={24} />
+						</button>
+						<label htmlFor="search"></label>
+						<input
+							type="text"
+							className="border-2 border-dark-subtle pt-1 pr-2 pl-2 pb-1 rounded bg-transparent text-xl focus:border-white outline-none text-white"
+							placeholder="Search..."
+							id="search"
+						/>
+						<Link to="/auth/signin" className="text-white text-lg font-semibold">Login</Link>
+					</div>
 				</div>
-			</div>
+			</Container>
 		</div>
 	);
 };
