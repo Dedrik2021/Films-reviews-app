@@ -2,7 +2,7 @@ import client from "./client";
 
 const createUser = async (userInfo) => {
     try {
-        const {data} = await client.post('/user/create', userInfo)
+        const {data} = await client.post('/user/signup', userInfo)
         return data
     } catch(error) {
         const {response} = error

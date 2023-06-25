@@ -46,9 +46,9 @@ const Signup = () => {
 
         if (!ok) return console.log(error);
 
-        const {err, user} = await createUser(userInfo)
-        if (err) return console.log(err);
-        console.log(user);
+        const response = await createUser(userInfo)
+        if (response.error) return console.log(response.error);
+        console.log(response.user);
     }
 
 	return (
