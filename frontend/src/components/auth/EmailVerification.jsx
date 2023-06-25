@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import {useLocation, useNavigate} from 'react-router-dom'
 
 import Container from '../Container';
 import Title from '../form/Title';
@@ -7,7 +8,22 @@ import FormContainer from '../form/FormContainer';
 
 const OTP_LENGTH = 6;
 
+const isValidOTP = (otp) => {
+    let valid = false
+
+    for (const val of otp) {
+        valid = !isNaN(parseInt(val))
+        if (!valid) break
+    }
+
+    return valid
+}
+
 const EmailVerification = () => {
+    const navigate = useNavigate()
+    const {state} = useLocation()
+    const user = state?.user
+
 	const inputRef = useRef();
 	const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
 	const [activeOtpIndex, setActiveOtpIndex] = useState(0);
@@ -44,10 +60,20 @@ const EmailVerification = () => {
 		}
 	};
 
+    useEffect(() => {
+        if (!user) navigate('/not-found')
+    }, [user])
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+
+        if (!isValidOTP(otp)) return console.log("Invalid OTP");
+    }
+
 	return (
 		<FormContainer>
 			<Container>
-				<form className="dark:bg-secondary bg-white drop-shadow-lg rounded p-4 space-y-4">
+				<form onSubmit={handleSubmit} className="dark:bg-secondary bg-white drop-shadow-lg rounded p-4 space-y-4">
 					<div>
 						<Title>Please Enter Your OTP To Verify Your Account</Title>
 						<p className="text-center dark:text-dark-subtle text-light-subtle">
@@ -69,7 +95,7 @@ const EmailVerification = () => {
 							);
 						})}
 					</div>
-					<SubmitBtn>Send Link</SubmitBtn>
+					<SubmitBtn>Verify Account</SubmitBtn>
 				</form>
 			</Container>
 		</FormContainer>
