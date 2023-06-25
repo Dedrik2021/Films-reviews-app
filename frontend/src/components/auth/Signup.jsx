@@ -8,6 +8,8 @@ import CustomLink from '../CustomLink';
 import { commonModelClasses } from '../../utils/theme';
 import FormContainer from '../form/FormContainer';
 
+import { createUser } from '../../api/auth';
+
 const validateUserInfo = ({name, email, password}) => {
     const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?w+)*(\.\w{2,3})+$/
     const isValidName = /^[a-z A-Z]+$/
@@ -38,12 +40,15 @@ const Signup = () => {
         setUserInfo({...userInfo, [name]: value})
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const {ok, error} = validateUserInfo(userInfo);
 
         if (!ok) return console.log(error);
-        console.log(userInfo);
+
+        const {err, user} = await createUser(userInfo)
+        if (err) return console.log(err);
+        console.log(user);
     }
 
 	return (
