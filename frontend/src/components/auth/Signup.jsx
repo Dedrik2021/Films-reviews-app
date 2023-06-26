@@ -52,7 +52,7 @@ const Signup = () => {
         const response = await createUser(userInfo)
         if (response.error) return console.log(response.error);
 
-        navigate('/auth/verification', {state: {user: response.user}, replace: true})
+        navigate('/auth/verification', {state: {user: response}, replace: true})
     }
 
 	return (

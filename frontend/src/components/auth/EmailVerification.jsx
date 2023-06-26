@@ -1,28 +1,29 @@
 import { useState, useRef, useEffect } from 'react';
-import {useLocation, useNavigate} from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Container from '../Container';
 import Title from '../form/Title';
 import SubmitBtn from '../form/SubmitBtn';
 import FormContainer from '../form/FormContainer';
+import { verifyUserEmail } from '../../api/auth';
 
 const OTP_LENGTH = 6;
 
 const isValidOTP = (otp) => {
-    let valid = false
+	let valid = false;
 
-    for (const val of otp) {
-        valid = !isNaN(parseInt(val))
-        if (!valid) break
-    }
+	for (const val of otp) {
+		valid = !isNaN(parseInt(val));
+		if (!valid) break;
+	}
 
-    return valid
-}
+	return valid;
+};
 
 const EmailVerification = () => {
-    const navigate = useNavigate()
-    const {state} = useLocation()
-    const user = state?.user
+	const navigate = useNavigate();
+	const { state } = useLocation();
+	const user = state?.user;
 
 	const inputRef = useRef();
 	const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
@@ -60,20 +61,28 @@ const EmailVerification = () => {
 		}
 	};
 
-    useEffect(() => {
-        if (!user) navigate('/not-found')
-    }, [user])
+	useEffect(() => {
+		if (!user) navigate('/not-found');
+	}, [user]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 
-        if (!isValidOTP(otp)) return console.log("Invalid OTP");
-    }
+		if (!isValidOTP(otp)) return console.log('Invalid OTP');
+
+		const { error, message } = await verifyUserEmail({ OTP: otp.join(''), userId: user.id });
+
+		if (error) return console.log(error);
+		console.log(message);
+	};
 
 	return (
 		<FormContainer>
 			<Container>
-				<form onSubmit={handleSubmit} className="dark:bg-secondary bg-white drop-shadow-lg rounded p-4 space-y-4">
+				<form
+					onSubmit={handleSubmit}
+					className="dark:bg-secondary bg-white drop-shadow-lg rounded p-4 space-y-4"
+				>
 					<div>
 						<Title>Please Enter Your OTP To Verify Your Account</Title>
 						<p className="text-center dark:text-dark-subtle text-light-subtle">
