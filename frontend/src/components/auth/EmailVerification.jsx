@@ -6,6 +6,7 @@ import Title from '../form/Title';
 import SubmitBtn from '../form/SubmitBtn';
 import FormContainer from '../form/FormContainer';
 import { verifyUserEmail } from '../../api/auth';
+import { useNotification } from '../../hooks';
 
 const OTP_LENGTH = 6;
 
@@ -21,6 +22,8 @@ const isValidOTP = (otp) => {
 };
 
 const EmailVerification = () => {
+    const {updateNotification} = useNotification()
+
 	const navigate = useNavigate();
 	const { state } = useLocation();
 	const user = state?.user;
@@ -72,8 +75,8 @@ const EmailVerification = () => {
 
 		const { error, message } = await verifyUserEmail({ OTP: otp.join(''), userId: user.id });
 
-		if (error) return console.log(error);
-		console.log(message);
+		if (error) return updateNotification('error', error);
+		updateNotification('success', message);
 	};
 
 	return (

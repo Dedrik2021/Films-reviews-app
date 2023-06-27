@@ -1,7 +1,7 @@
 import { BsFillSunFill } from 'react-icons/bs';
 import {Link} from 'react-router-dom';
 
-import useTheme from '../../hooks';
+import {useTheme} from '../../hooks';
 import Container from '../Container';
 
 const Navbar = () => {
