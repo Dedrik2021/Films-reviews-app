@@ -24,4 +24,16 @@ const verifyUserEmail = async (userInfo) => {
     }
 }
 
-export {createUser, verifyUserEmail}
+const signinUser = async (userInfo) => {
+    try {
+        const {data} = await client.post('/user/sign-in', userInfo)
+        return data
+    } catch(error) {
+        const {response} = error
+
+        if (response?.data) return response.data
+        return {error: error.message || error}
+    }
+}
+
+export {createUser, verifyUserEmail, signinUser}
