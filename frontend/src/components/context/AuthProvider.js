@@ -1,6 +1,6 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 
-import { signinUser } from '../../api/auth';
+import { signinUser, getIsAuth } from '../../api/auth';
 
 export const AuthContext = createContext();
 
@@ -25,11 +25,28 @@ const AuthProvider = ({ children }) => {
 
 		setAuthInfo({ profile: { ...user }, isLoggedIn: true, isPending: false, error: '' });
 
-        localStorage.setItem('auth-token', user.token);
+		localStorage.setItem('auth-token', user.token);
 	};
 
+	const isAuth = async () => {
+		const token = localStorage.getItem('auth-token');
+		if (!token) return;
+		setAuthInfo({ ...authInfo, isPending: true });
+		const { error, user } = await getIsAuth(token);
+
+		if (error) {
+			return setAuthInfo({ ...authInfo, isPending: false, error });
+		}
+
+		setAuthInfo({ profile: { ...user }, isLoggedIn: true, isPending: false, error: '' });
+	};
+
+    useEffect(() => {
+        isAuth()
+    }, [])
+
 	return (
-		<AuthContext.Provider value={{ authInfo, handleLogin }}>{children}</AuthContext.Provider>
+		<AuthContext.Provider value={{ authInfo, handleLogin, isAuth }}>{children}</AuthContext.Provider>
 	);
 };
 

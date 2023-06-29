@@ -36,4 +36,21 @@ const signinUser = async (userInfo) => {
     }
 }
 
-export {createUser, verifyUserEmail, signinUser}
+const getIsAuth = async (token) => {
+    try {
+        const {data} = await client.get('/user/is-auth', {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json"
+            }
+        })
+        return data
+    } catch(error) {
+        const {response} = error
+
+        if (response?.data) return response.data
+        return {error: error.message || error}
+    }
+}
+
+export {createUser, verifyUserEmail, signinUser, getIsAuth}
