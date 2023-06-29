@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 
 import Container from '../Container';
@@ -28,7 +28,7 @@ const SignIn = () => {
     const {updateNotification} = useNotification()
     const navigate = useNavigate()
     const {handleLogin, authInfo} = useAuth()
-    const {isPending} = authInfo
+    const {isPending, isLoggedIn} = authInfo
 
     const [userInfo, setUserInfo] = useState({
 		email: '',
@@ -48,6 +48,9 @@ const SignIn = () => {
         await handleLogin(userInfo.email, userInfo.password)
 	};
     
+    useEffect(() => {
+        if (isLoggedIn) navigate('/')
+    }, [isLoggedIn, navigate])
     
 	return (
 		<FormContainer>

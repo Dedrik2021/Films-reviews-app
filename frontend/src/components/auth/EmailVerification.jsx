@@ -6,7 +6,7 @@ import Title from '../form/Title';
 import SubmitBtn from '../form/SubmitBtn';
 import FormContainer from '../form/FormContainer';
 import { verifyUserEmail } from '../../api/auth';
-import { useNotification } from '../../hooks';
+import { useNotification, useAuth } from '../../hooks';
 
 const OTP_LENGTH = 6;
 
@@ -23,6 +23,8 @@ const isValidOTP = (otp) => {
 
 const EmailVerification = () => {
     const {updateNotification} = useNotification()
+    const {isAuth, authInfo} = useAuth()
+    const {isLoggedIn} = authInfo
 
 	const navigate = useNavigate();
 	const { state } = useLocation();
@@ -65,18 +67,21 @@ const EmailVerification = () => {
 	};
 
 	useEffect(() => {
+		if (isLoggedIn) navigate('/');
 		if (!user) navigate('/not-found');
-	}, [user]);
+	}, [user, isLoggedIn]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		if (!isValidOTP(otp)) return updateNotification('error', 'Invalid OTP');
 
-		const { error, message } = await verifyUserEmail({ OTP: otp.join(''), userId: user.id });
+		const { error, message, user: userResponse } = await verifyUserEmail({ OTP: otp.join(''), userId: user.id });
 
 		if (error) return updateNotification('error', error);
 		updateNotification('success', message);
+        localStorage.setItem('auth-token', userResponse.token)
+        isAuth()
 	};
 
 	return (

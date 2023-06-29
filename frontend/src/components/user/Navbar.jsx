@@ -3,9 +3,12 @@ import {Link} from 'react-router-dom';
 
 import {useTheme} from '../../hooks';
 import Container from '../Container';
+import { useAuth } from '../../hooks';
 
 const Navbar = () => {
     const {toggleTheme} = useTheme()
+    const {authInfo, handleLogout} = useAuth()
+    const {isLoggedIn} = authInfo
 
 	return (
 		<div className="bg-secondary shadow-sm shadow-gray-500 ">
@@ -25,7 +28,12 @@ const Navbar = () => {
 							placeholder="Search..."
 							id="search"
 						/>
+                        {isLoggedIn ? (
+                            <button className="text-white text-lg font-semibold" onClick={handleLogout}>Log out</button>
+                        ) : (
+
 						<Link to="/auth/signin" className="text-white text-lg font-semibold">Login</Link>
+                        )}
 					</div>
 				</div>
 			</Container>
