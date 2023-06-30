@@ -9,14 +9,13 @@ import CustomLink from '../CustomLink';
 import { commonModelClasses } from '../../utils/theme';
 import FormContainer from '../form/FormContainer';
 import { useNotification } from '../../hooks';
-import { signinUser } from '../../api/auth';
 import { useAuth } from '../../hooks';
+import { isValidEmail } from '../../utils/helper';
 
-const validateUserInfo = ({ name, email, password }) => {
-	const isValidEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?w+)*(\.\w{2,3})+$/;
+const validateUserInfo = ({ email, password }) => {
 
 	if (!email.trim()) return { ok: false, error: 'Email is missing!' };
-	if (!isValidEmail.test(email)) return { ok: false, error: 'Invalid email!' };
+	if (!isValidEmail(email)) return { ok: false, error: 'Invalid email!' };
 
 	if (!password.trim()) return { ok: false, error: 'Password is missing!' };
 	if (password.length < 8) return { ok: false, error: 'Password mus be 8 characters long!' };
