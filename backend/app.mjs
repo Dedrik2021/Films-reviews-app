@@ -1,18 +1,22 @@
 import express from 'express';
-import cros from 'cors';
+import cors from 'cors';
 import morgan from "morgan"
 import 'express-async-errors'
 import './db/index.mjs';
 
 import userRouter from './routes/user.mjs';
 import { errorHandler } from './middlewares/error.mjs';
+import { handleNotFound } from './utils/helper.mjs';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(morgan('dev'))
+app.use(cors())
 app.use(express.json());
 app.use('/api/user', userRouter);
+
+app.use('/*', handleNotFound)
 
 app.use(errorHandler)
 

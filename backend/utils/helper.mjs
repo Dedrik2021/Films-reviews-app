@@ -14,4 +14,8 @@ const generateRandomByte = () => {
     })
 }
 
-export {sendError, generateRandomByte}
+const handleNotFound = (req, res) => {
+    sendError(res, "Not Found", 404)
+}
+
+export {sendError, generateRandomByte, handleNotFound}
