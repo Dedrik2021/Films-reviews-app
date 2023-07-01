@@ -5,7 +5,7 @@ import Container from '../Container';
 import Title from '../form/Title';
 import SubmitBtn from '../form/SubmitBtn';
 import FormContainer from '../form/FormContainer';
-import { verifyUserEmail } from '../../api/auth';
+import { verifyUserEmail, resendEmailVerificationToken } from '../../api/auth';
 import { useNotification, useAuth } from '../../hooks';
 
 const OTP_LENGTH = 6;
@@ -22,9 +22,10 @@ const isValidOTP = (otp) => {
 };
 
 const EmailVerification = () => {
-    const {updateNotification} = useNotification()
-    const {isAuth, authInfo} = useAuth()
-    const {isLoggedIn} = authInfo
+	const { updateNotification } = useNotification();
+	const { isAuth, authInfo } = useAuth();
+	const { isLoggedIn, profile } = authInfo;
+	const isVerified = profile?.isVerified;
 
 	const navigate = useNavigate();
 	const { state } = useLocation();
@@ -67,22 +68,33 @@ const EmailVerification = () => {
 	};
 
 	useEffect(() => {
-		if (isLoggedIn) navigate('/');
+		if (isLoggedIn && isVerified) navigate('/');
 		if (!user) navigate('/not-found');
-	}, [user, isLoggedIn]);
+	}, [user, isLoggedIn, isVerified]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		if (!isValidOTP(otp)) return updateNotification('error', 'Invalid OTP');
 
-		const { error, message, user: userResponse } = await verifyUserEmail({ OTP: otp.join(''), userId: user.id });
+		const {
+			error,
+			message,
+			user: userResponse,
+		} = await verifyUserEmail({ OTP: otp.join(''), userId: user.id });
 
 		if (error) return updateNotification('error', error);
 		updateNotification('success', message);
-        localStorage.setItem('auth-token', userResponse.token)
-        isAuth()
+		localStorage.setItem('auth-token', userResponse.token);
+		isAuth();
 	};
+
+    const handleOTPResend = async () => {
+        const {error, message} = await resendEmailVerificationToken(user.id)
+
+        if (error) return updateNotification('error', error)
+        updateNotification('success', message)
+    }
 
 	return (
 		<FormContainer>
@@ -112,7 +124,10 @@ const EmailVerification = () => {
 							);
 						})}
 					</div>
-					<SubmitBtn>Verify Account</SubmitBtn>
+					<div>
+						<SubmitBtn>Verify Account</SubmitBtn>
+						<button onClick={handleOTPResend} className='dark:text-white text-blue-500 font-semibold hover:underline mt-2' type="button">I don't have OTP?</button>
+					</div>
 				</form>
 			</Container>
 		</FormContainer>
