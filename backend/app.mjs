@@ -5,6 +5,7 @@ import 'express-async-errors'
 import './db/index.mjs';
 
 import userRouter from './routes/user.mjs';
+import actorRoter from './routes/actor.mjs'
 import { errorHandler } from './middlewares/error.mjs';
 import { handleNotFound } from './utils/helper.mjs';
 
@@ -15,23 +16,12 @@ app.use(morgan('dev'))
 app.use(cors())
 app.use(express.json());
 app.use('/api/user', userRouter);
+app.use('/api/actor', actorRoter)
 
 app.use('/*', handleNotFound)
 
 app.use(errorHandler)
 
-// app.post(
-// 	'/sign-in',
-// 	(req, res, next) => {
-//         const {email, password} = req.body
-//         if (!email || !password) return res.status(401).json({error: 'email/password is missing!'})
-
-// 		next();
-// 	},
-// 	(req, res) => {
-// 		res.send('<h1>All values is ok</h1>');
-// 	},
-// );
 
 app.listen(PORT, () => {
 	console.log(`Server is listen port http://localhost:${PORT}`);
