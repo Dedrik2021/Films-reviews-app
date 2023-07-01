@@ -27,6 +27,12 @@ const signInValidator = [
 	check('password').trim().not().isEmpty().withMessage('Password is missing!'),
 ];
 
+const validatorActorInfo = [
+	check('name').trim().not().isEmpty().withMessage('Actor name is missing!'),
+	check('about').trim().not().isEmpty().withMessage('About is a required field!'),
+	check('gender').trim().not().isEmpty().withMessage('Gender is a required field!')
+]
+
 const validate = (req, res, next) => {
 	const error = validationResult(req).array();
 
@@ -37,4 +43,4 @@ const validate = (req, res, next) => {
 	next();
 };
 
-export { userValidator, validate, validatePassword, signInValidator };
+export { userValidator, validate, validatePassword, signInValidator, validatorActorInfo };
