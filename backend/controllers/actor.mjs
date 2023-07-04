@@ -106,5 +106,15 @@ const getLatestActors = async (req, res) => {
     res.status(201).json(result)
 };
 
+const getSingleActor = async (req, res) => {
+    const {id} = req.params
 
-export { createActor, updateActor, removeActor, searchActor, getLatestActors };
+    if (!isValidObjectId(id)) return sendError(res, 'Invalid request!');
+
+    const actor = await Actor.findById(id)
+    if (!actor) return sendError(res, "Actor not found!", 404)
+
+    res.status(201).json(actor)
+}
+
+export { createActor, updateActor, removeActor, searchActor, getLatestActors, getSingleActor };

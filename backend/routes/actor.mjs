@@ -5,7 +5,8 @@ import {
 	updateActor,
 	removeActor,
 	searchActor,
-	getLatestActors
+	getLatestActors,
+    getSingleActor
 } from '../controllers/actor.mjs';
 import { uploadImage } from '../middlewares/multer.mjs';
 import { validatorActorInfo, validate } from '../middlewares/validator.mjs';
@@ -24,6 +25,6 @@ router.post(
 router.delete('/:actorId', removeActor);
 router.get('/search', searchActor);
 router.get('/latest-uploads', getLatestActors);
-
+router.get('/single/:id', getSingleActor)
 
 export default router;
