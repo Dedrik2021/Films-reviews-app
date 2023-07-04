@@ -26,4 +26,6 @@ const actorShema = mongoose.Schema(
 	{ timestamps: true },
 );
 
+actorShema.index({name: "text"})
+
 export default mongoose.model('Actor', actorShema);
