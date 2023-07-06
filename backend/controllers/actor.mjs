@@ -15,8 +15,8 @@ const createActor = async (req, res) => {
 	const newActor = new Actor({ name, about, gender });
 
 	if (file) {
-		// const {url, public_id} = await uploadImageToCloud(file.path)
-		newActor.avatar = await uploadImageToCloud(file.path);
+		const {url, public_id} = await uploadImageToCloud(file.path)
+		newActor.avatar = {url, public_id}
 	}
 	await newActor.save();
 
