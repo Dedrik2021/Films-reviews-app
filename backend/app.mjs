@@ -6,6 +6,7 @@ import './db/index.mjs';
 
 import userRouter from './routes/user.mjs';
 import actorRoter from './routes/actor.mjs'
+import movieRoter from './routes/movie.mjs'
 import { errorHandler } from './middlewares/error.mjs';
 import { handleNotFound } from './utils/helper.mjs';
 
@@ -17,6 +18,7 @@ app.use(cors())
 app.use(express.json());
 app.use('/api/user', userRouter);
 app.use('/api/actor', actorRoter)
+app.use('/api/movie', movieRoter)
 
 app.use('/*', handleNotFound)
 
