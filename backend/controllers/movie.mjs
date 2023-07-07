@@ -36,11 +36,6 @@ const createMovie = async (req, res) => {
 		language,
 	} = body;
 
-	console.log(typeof req.body.trailerInfo);
-	console.log(typeof req.body.cast);
-	console.log(typeof req.body.tags);
-	console.log(typeof req.body.writers);
-	console.log(typeof req.body.genres);
     res.send('ok')
 };
 
