@@ -36,7 +36,30 @@ const createMovie = async (req, res) => {
 		language,
 	} = body;
 
-    res.send('ok')
+    const newMovie = new Movie({
+        title,
+		storyLine,
+		releaseDate,
+		status,
+		type,
+		genres,
+		tags,
+		cast,
+		trailer,
+		language,
+    })
+
+    if (director) {
+        if (!isValidObjectId(director)) return sendError(res, "Invalid director id!")
+        newMovie.director = director
+    }
+
+    if (writers) {
+        for (const writerId of writers) {
+            if (!isValidObjectId(writerId)) return sendError(res, "Invalid writer id!")
+        }
+        newMovie.writers = writers
+    }
 };
 
 export { uploadTrailer, createMovie };
