@@ -36,4 +36,16 @@ const handleNotFound = (req, res) => {
 	sendError(res, 'Not Found', 404);
 };
 
-export { sendError, generateRandomByte, handleNotFound, uploadImageToCloud, formatActor };
+const parseData = (req, res, next) => {
+    const {trailerInfo, cast, genres, tags, writers} = req.body
+
+    if (trailerInfo) req.body.trailerInfo = JSON.parse(trailerInfo)
+    if (cast) req.body.cast = JSON.parse(cast)
+    if (genres) req.body.genres = JSON.parse(genres)
+    if (tags) req.body.tags = JSON.parse(tags)
+    if (writers) req.body.writers = JSON.parse(writers)
+
+    next()
+}
+
+export { sendError, generateRandomByte, handleNotFound, uploadImageToCloud, formatActor, parseData };
