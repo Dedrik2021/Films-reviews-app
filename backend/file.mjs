@@ -7,7 +7,7 @@ const movieInfo = {
   type: "Movie",
   genres: ["Sci-fi", "Action"],
   tags: ["action", "movie", "hollywood"],
-  cast: [{ id: "kfd2354po", roleAs: "John Doe", leadActor: true }],
+  cast: [{ actor: "kfd2354po", roleAs: "John Doe", leadActor: true }],
   writers: ["456789sfa", "fsda589745"],
   poster: File,
   trailer: { url: "https://", public_id: "fkasdfi456" },
