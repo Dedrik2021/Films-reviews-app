@@ -37,7 +37,7 @@ const validatorActorInfo = [
 const validateMovie = [
 	check('title').trim().not().isEmpty().withMessage('Muvie title is missing!'),
 	check('storyLine').trim().not().isEmpty().withMessage('StoryLine is important!'),
-	check('releaseDate').isDate().withMessage('Release date is missing!'),
+	check('releseDate').isDate().withMessage('Relese date is missing!'),
 	check('language').trim().not().isEmpty().withMessage('Language is missing!'),
 	check('type').trim().not().isEmpty().withMessage('Movie type is missing!'),
 	check('status')
@@ -47,7 +47,7 @@ const validateMovie = [
 		.isArray()
 		.withMessage('Genres mus be an array of string!')
 		.custom((value) => {
-			for (const g of value) {
+			for (let g of value) {
 				if (!genres.includes(g)) throw Error('Invalid genres!');
 			}
 			return true;
@@ -56,7 +56,7 @@ const validateMovie = [
 		.isArray({ min: 1 })
 		.withMessage('Tags must be an array of strings!')
 		.custom((tags) => {
-			for (const tag of tags) {
+			for (let tag of tags) {
 				if (typeof tag !== 'string') throw Error('Tags must be an array of string!');
 			}
 			return true;
@@ -65,7 +65,7 @@ const validateMovie = [
 		.isArray()
 		.withMessage('Cast must be an array of objects!')
 		.custom((cast) => {
-			for (const c of cast) {
+			for (let c of cast) {
 				if (!isValidObjectId(c.actor)) throw Error('Invalid cast id inside cast!');
 				if (!c.roleAs?.trim()) throw Error('Role as is missing inside cast!');
 				if (typeof c.leadActor !== 'boolean')
@@ -88,14 +88,13 @@ const validateMovie = [
 				if (public_id !== publicId) throw Error('Trailer public_id is invalid!');
 
 				return true;
-
 			} catch (error) {
 				throw Error('Trailer url is invalid!');
 			}
 		}),
 	check('poster').custom((_, { req }) => {
 		if (!req.file) throw Error('Poster file is missing!');
-		return true
+		return true;
 	}),
 ];
 

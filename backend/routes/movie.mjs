@@ -15,8 +15,8 @@ router.post(
 	isAdmin,
 	uploadImage.single('poster'),
 	parseData,
-	// validateMovie,
-    // validate,
+	validateMovie,
+    validate,
 	createMovie,
 );
 

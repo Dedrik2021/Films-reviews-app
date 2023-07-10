@@ -1,11 +1,8 @@
-import dotenv from 'dotenv';
 import { isValidObjectId } from 'mongoose';
 
 import { sendError } from '../utils/helper.mjs';
 import cloudinary from '../cloud/index.mjs';
 import Movie from '../models/movie.mjs';
-
-dotenv.config();
 
 const uploadTrailer = async (req, res) => {
 	const { file } = req;
@@ -24,7 +21,7 @@ const createMovie = async (req, res) => {
 		title,
 		storyLine,
 		director,
-		releaseDate,
+		releseDate,
 		status,
 		type,
 		genres,
@@ -38,7 +35,7 @@ const createMovie = async (req, res) => {
 	const newMovie = new Movie({
 		title,
 		storyLine,
-		releaseDate,
+		releseDate,
 		status,
 		type,
 		genres,

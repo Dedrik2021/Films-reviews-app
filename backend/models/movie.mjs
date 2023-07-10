@@ -18,7 +18,7 @@ const movieShema = mongoose.Schema(
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Actor',
 		},
-		releaseDate: {
+		releseDate: {
 			type: Date,
 			required: true,
 		},
@@ -44,7 +44,7 @@ const movieShema = mongoose.Schema(
 			{
 				actor: { type: mongoose.Schema.Types.ObjectId, ref: 'Actor' },
 				roleAs: String,
-				loadActor: Boolean,
+				leadActor: Boolean,
 			},
 		],
 		writers: [
