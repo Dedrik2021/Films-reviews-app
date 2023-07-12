@@ -26,7 +26,7 @@ router.post(
 
 router.post(
 	'/update/:actorId',
-    isAuth,
+	isAuth,
 	isAdmin,
 	uploadImage.single('avatar'),
 	validatorActorInfo,

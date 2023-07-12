@@ -17,6 +17,7 @@ const uploadTrailer = async (req, res) => {
 
 const createMovie = async (req, res) => {
 	const { file, body } = req;
+	console.log(body);
 	const {
 		title,
 		storyLine,

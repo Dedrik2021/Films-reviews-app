@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import { isValidObjectId } from 'mongoose';
 
 import Actor from '../models/actor.mjs';
@@ -6,17 +5,14 @@ import { sendError, uploadImageToCloud } from '../utils/helper.mjs';
 import cloudinary from '../cloud/index.mjs';
 import { formatActor } from '../utils/helper.mjs';
 
-dotenv.config();
-
 const createActor = async (req, res) => {
 	const { name, about, gender } = req.body;
 
 	const file = req.file;
 	const newActor = new Actor({ name, about, gender });
 
-	if (file) {
-		const {url, public_id} = await uploadImageToCloud(file.path)
-		newActor.avatar = {url, public_id}
+	if (file) { 
+		newActor.avatar = await uploadImageToCloud(file.path)
 	}
 	await newActor.save();
 
@@ -43,7 +39,6 @@ const updateActor = async (req, res) => {
 	}
 
 	if (file) {
-		// const {url, public_id} = await uploadImageToCloud(file.path)
 		actor.avatar = await uploadImageToCloud(file.path);
 	}
 

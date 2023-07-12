@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import { genres } from '../utils/genres.mjs';
+import {genres} from '../utils/genres.mjs'
 
 const movieShema = mongoose.Schema(
 	{

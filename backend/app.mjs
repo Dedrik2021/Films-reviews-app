@@ -5,8 +5,9 @@ import 'express-async-errors'
 import './db/index.mjs';
 
 import userRouter from './routes/user.mjs';
-import actorRoter from './routes/actor.mjs'
-import movieRoter from './routes/movie.mjs'
+import actorRouter from './routes/actor.mjs'
+import movieRouter from './routes/movie.mjs'
+
 import { errorHandler } from './middlewares/error.mjs';
 import { handleNotFound } from './utils/helper.mjs';
 
@@ -16,9 +17,10 @@ const PORT = process.env.PORT || 4000;
 app.use(morgan('dev'))
 app.use(cors())
 app.use(express.json());
+
 app.use('/api/user', userRouter);
-app.use('/api/actor', actorRoter)
-app.use('/api/movie', movieRoter)
+app.use('/api/actor', actorRouter)
+app.use('/api/movie', movieRouter)
 
 app.use('/*', handleNotFound)
 

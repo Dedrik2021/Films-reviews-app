@@ -1,6 +1,8 @@
 import { check, validationResult } from 'express-validator';
 import { isValidObjectId } from 'mongoose';
 
+import { genres } from '../utils/genres.mjs';
+
 const userValidator = [
 	check('name').trim().not().isEmpty().withMessage('Name is missing!'),
 	check('email').normalizeEmail().isEmail().withMessage('Email is invalid!'),
@@ -41,7 +43,7 @@ const validateMovie = [
 	check('language').trim().not().isEmpty().withMessage('Language is missing!'),
 	check('type').trim().not().isEmpty().withMessage('Movie type is missing!'),
 	check('status')
-		.isIn(['public, private'])
+		.isIn('public, private')
 		.withMessage('Movie status must be public or private!'),
 	check('genres')
 		.isArray()
@@ -76,20 +78,18 @@ const validateMovie = [
 		}),
 	check('trailer')
 		.isObject()
-		.withMessage('Trailer must be an object with url and public_id')
-		.custom(({ url, public_id }) => {
+		.withMessage('Trailer must be an object with url and public_id').custom(({url, public_id}) => {
 			try {
-				const result = new URL(url);
-				if (!result.protocol.includes('http')) throw Error('Trailer url is invalid!');
+				const result = new URL(url)
+				if (!result.protocol.includes('http')) throw Error("Trailer url is invalid!")
 
-				const arr = url.split('/');
-				const publicId = arr[arr.length - 1].split('.')[0];
+				const arr = url.split('/')
+				const publicId = arr[arr.length - 1].split('.')[0]
+				if (public_id !== publicId) throw Error("Trailer public_id is invalid!")
 
-				if (public_id !== publicId) throw Error('Trailer public_id is invalid!');
-
-				return true;
-			} catch (error) {
-				throw Error('Trailer url is invalid!');
+				return true
+			} catch(error) {
+				throw Error("Trailer url is invalid!")
 			}
 		}),
 	check('poster').custom((_, { req }) => {
