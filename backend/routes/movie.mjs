@@ -6,6 +6,7 @@ import {
 	createMovie,
 	updateMovieWithoutPoster,
 	updateMovieWithPoster,
+	removeMovie
 } from '../controllers/movie.mjs';
 import { uploadImage, uploadVideo } from '../middlewares/multer.mjs';
 import { validate, validateMovie } from '../middlewares/validator.mjs';
@@ -43,5 +44,6 @@ router.patch(
 	validate,
 	updateMovieWithPoster,
 );
+router.delete('/:movieId', isAuth, isAdmin, removeMovie)
 
 export default router;

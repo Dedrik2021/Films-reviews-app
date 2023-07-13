@@ -152,7 +152,7 @@ const updateMovieWithPoster = async (req, res) => {
 
 	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie ID!');
 
-	if (!file) return sendError(res, "Movie poster is missing!")
+	if (!file) return sendError(res, 'Movie poster is missing!');
 
 	const movie = await Movie.findById(movieId);
 	if (!movie) return sendError(res, 'Movie not found!', 404);
@@ -195,12 +195,12 @@ const updateMovieWithPoster = async (req, res) => {
 		movie.writers = writers;
 	}
 
-	const posterId = movie.poster?.public_id
+	const posterId = movie.poster?.public_id;
 	if (posterId) {
-		const {result} = await cloudinary.uploader.destroy(posterId)
+		const { result } = await cloudinary.uploader.destroy(posterId);
 		if (result !== 'ok') {
-			return sendError(res, "Could not update the poster at the moment!")
-		} 
+			return sendError(res, 'Could not update the poster at the moment!');
+		}
 	}
 
 	const {
@@ -236,4 +236,31 @@ const updateMovieWithPoster = async (req, res) => {
 	res.status(201).json({ message: 'Movie is updated', movie });
 };
 
-export { uploadTrailer, createMovie, updateMovieWithoutPoster, updateMovieWithPoster };
+const removeMovie = async (req, res) => {
+	const { movieId } = req.params;
+
+	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie ID!');
+
+	const movie = await Movie.findById(movieId);
+	if (!movie) return sendError(res, 'Movie not found!', 404);
+
+	const publicId = movie.poster?.public_id;
+	if (publicId) {
+		const { result } = await cloudinary.uploader.destroy(publicId);
+		if (result !== 'ok') return sendError(res, 'Could not remove poster from cloud!');
+	}
+
+	const trailerId = movie.trailer?.public_id;
+	if (!trailerId) return sendError(res, 'Could not find trailer in the cloud!');
+
+	const { result } = await cloudinary.uploader.destroy(trailerId, {
+		resource_type: 'video',
+	});
+	if (result !== 'ok') return sendError(res, 'Could not remove trailer from cloud!');
+
+	await Movie.findByIdAndDelete(movieId);
+
+	res.status(201).json({ message: 'Movie removed successfully!' });
+};
+
+export { uploadTrailer, createMovie, updateMovieWithoutPoster, updateMovieWithPoster, removeMovie };
