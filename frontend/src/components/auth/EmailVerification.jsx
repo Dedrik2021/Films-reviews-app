@@ -31,6 +31,14 @@ const EmailVerification = () => {
 	const { state } = useLocation();
 	const user = state?.user;
 
+	let userId = ''
+	for (const key in user) {
+		if (Object.hasOwnProperty.call(user, key)) {
+			const userKey = user[key];
+			userId = userKey.id
+		}
+	}
+
 	const inputRef = useRef();
 	const [otp, setOtp] = useState(new Array(OTP_LENGTH).fill(''));
 	const [activeOtpIndex, setActiveOtpIndex] = useState(0);
@@ -81,7 +89,7 @@ const EmailVerification = () => {
 			error,
 			message,
 			user: userResponse,
-		} = await verifyUserEmail({ OTP: otp.join(''), userId: user.id });
+		} = await verifyUserEmail({ OTP: otp.join(''), userId });
 
 		if (error) return updateNotification('error', error);
 		updateNotification('success', message);
@@ -90,7 +98,7 @@ const EmailVerification = () => {
 	};
 
     const handleOTPResend = async () => {
-        const {error, message} = await resendEmailVerificationToken(user.id)
+        const {error, message} = await resendEmailVerificationToken(userId)
 
         if (error) return updateNotification('error', error)
         updateNotification('success', message)

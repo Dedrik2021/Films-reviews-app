@@ -8,8 +8,12 @@ import EmailVerification from './components/auth/EmailVerification';
 import ForgetPassword from './components/auth/ForgetPassword';
 import ConfirmPassword from './components/auth/ConfirmPassword';
 import NotFound from './components/NotFound';
+import { useAuth } from './hooks';
 
 const App = () => {
+	const {authInfo} = useAuth()
+	console.log(authInfo);
+	
 	return (
 		<>
 			<Navbar />
@@ -26,6 +30,6 @@ const App = () => {
 			</Routes>
 		</>
 	);
-}
+};
 
 export default App;

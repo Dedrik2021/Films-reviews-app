@@ -33,7 +33,7 @@ const create = async (req, res) => {
 	await newEmailVerificationToken.save();
 
 	transport.sendMail({
-		from: email_service,
+		from: `Films Reviews <${email_service}>`,
 		to: email,
 		subject: 'Email Verification',
 		html: `
@@ -55,6 +55,7 @@ const verifyEmail = async (req, res) => {
 	const { userId, OTP } = req.body;
 
 	if (!isValidObjectId(userId)) return sendError(res, 'Invalid user id!');
+
 	const user = await User.findById(userId);
 	if (!user) return sendError(res, 'User not found!', 404);
 	if (user.isVerified) return sendError(res, 'User is already verified!');
@@ -70,7 +71,7 @@ const verifyEmail = async (req, res) => {
 	await EmailVerificationToken.findByIdAndDelete(token._id);
 
 	transport.sendMail({
-		from: email_service,
+		from: `Films Reviews <${email_service}>`,
 		to: user.email,
 		subject: 'Welcome Email',
 		html: `<h1>Welcome to our app and thanks for choosing us</h1>`,
@@ -83,6 +84,7 @@ const verifyEmail = async (req, res) => {
 			name: user.name,
 			email: user.email,
 			token: jwtToken,
+			role: user.role,
 			isVerified: user.isVerified,
 		},
 		message: 'Your email is verified!',
@@ -110,7 +112,7 @@ const resendEmailVerifivationToken = async (req, res) => {
 	await newEmailVerificationToken.save();
 
 	transport.sendMail({
-		from: email_service,
+		from: `Films Reviews <${email_service}>`,
 		to: user.email,
 		subject: 'Welcome Email',
 		html: `<h1>Welcome to our app and thanks for choosing us</h1>`,
@@ -138,7 +140,7 @@ const forgetPassword = async (req, res) => {
 	const resetPasswordUrl = `http://localhost:3000/auth/reset-password?token=${token}&id=${user._id}`;
 
 	transport.sendMail({
-		from: email_service,
+		from: `Films Reviews <${email_service}>`,
 		to: user.email,
 		subject: 'Reset Password Link',
 		html: `
@@ -167,7 +169,7 @@ const resetPassword = async (req, res) => {
 	await PasswordResetToken.findByIdAndDelete(req.resetToken._id);
 
 	transport.sendMail({
-		from: email_service,
+		from: `Films Reviews <${email_service}>`,
 		to: user.email,
 		subject: 'Password reset successfully!',
 		html: `
@@ -191,7 +193,9 @@ const signIn = async (req, res, next) => {
 	const { _id, name, role, isVerified } = user;
 
 	const jwtToken = jwt.sign({ userId: user._id }, JWT_TOKEN);
-	res.status(201).json({ user: { id: _id, name, role, email, token: jwtToken, isVerified } });
+	res.status(201).json({
+		user: { id: _id, name, role, email, token: jwtToken, role, isVerified },
+	});
 };
 
 export {
