@@ -4,7 +4,11 @@ import { BiMoviePlay } from 'react-icons/bi';
 import { FaUserNinja } from 'react-icons/fa';
 import { FiLogOut } from 'react-icons/fi';
 
+import { useAuth } from '../../hooks';
+
 const Navbar = () => {
+    const {handleLogout} = useAuth()
+
 	return (
 		<nav className="w-48 min-h-screen bg-secondary border-r border-gray-300">
 			<div className=" flex flex-col justify-between sticky top-0 h-screen pl-5 pt-1 pb-5 ">
@@ -36,6 +40,7 @@ const Navbar = () => {
 				<div className=" flex flex-col items-start">
 					<span className="font-semibold text-white text-xl">Admin</span>
 					<button
+                        onClick={handleLogout}
 						type="button"
 						className="flex items-center space-x-2 text-dark-subtle text-sm hover:text-white transition"
 					>
