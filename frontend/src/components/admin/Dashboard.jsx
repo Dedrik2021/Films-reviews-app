@@ -2,7 +2,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 
 const Dashboard = () => {
 	return (
-		<div className="flex items-center justify-between">
+		<div className="flex items-center justify-between relative">
 			<div>
 				<label htmlFor="search"></label>
 				<input
@@ -17,6 +17,11 @@ const Dashboard = () => {
 				<span>Create</span>
 				<AiOutlinePlus />
 			</button>
+
+            <div className='absolute right-0 top-12 flex flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg'>
+                <button className='dark:text-white text-secondary hover:opacity-80 transition' type='submit'>Add Actor</button>
+                <button className='dark:text-white text-secondary hover:opacity-80 transition' type='submit'>Add Movie</button>
+            </div>
 		</div>
 	);
 };
