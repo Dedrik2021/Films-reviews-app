@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react';
+import { createContext, useState, useEffect } from 'react';
 import {useNavigate} from 'react-router-dom'
 
 import { signinUser, getIsAuth } from '../../api/auth';
@@ -54,9 +54,9 @@ const AuthProvider = ({ children }) => {
         navigate('/auth/signin', {replace: true})
     }
 
-    // useEffect(() => {
-    //     isAuth()
-    // }, [])
+    useEffect(() => {
+        isAuth()
+    }, [])
 
 	return (
 		<AuthContext.Provider value={{ authInfo, handleLogin, handleLogout, isAuth }}>{children}</AuthContext.Provider>
