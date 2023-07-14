@@ -29,6 +29,8 @@ const AuthProvider = ({ children }) => {
 			return setAuthInfo({ ...authInfo, isPending: false, error });
 		}
 
+		navigate('/', {replace: true})
+
 		setAuthInfo({ profile: { ...user }, isLoggedIn: true, isPending: false, error: '' });
 
 		localStorage.setItem('auth-token', user.token);
