@@ -18,11 +18,29 @@ const Dashboard = () => {
 				<AiOutlinePlus />
 			</button>
 
-            <div className='absolute right-0 top-12 flex flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg'>
-                <button className='dark:text-white text-secondary hover:opacity-80 transition' type='submit'>Add Actor</button>
-                <button className='dark:text-white text-secondary hover:opacity-80 transition' type='submit'>Add Movie</button>
-            </div>
+			<CreateOptions />
 		</div>
+	);
+};
+
+const CreateOptions = () => {
+	return (
+		<div className="absolute right-0 top-12 flex flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg">
+			<Option>Add Movie</Option>
+			<Option>Add Actor</Option>
+		</div>
+	);
+};
+
+const Option = ({ children, onClick }) => {
+	return (
+		<button
+			onClick={onClick}
+			className="dark:text-white text-secondary hover:opacity-80 transition"
+			type="submit"
+		>
+			{children}
+		</button>
 	);
 };
 
