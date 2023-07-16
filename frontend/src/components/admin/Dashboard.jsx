@@ -30,7 +30,7 @@ const CreateOptions = ({visible}) => {
 	if (!visible) return null
 
 	return (
-		<div className="absolute right-0 top-12 flex flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg">
+		<div className="absolute right-0 top-12 flex flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg animate-scale">
 			<Option>Add Movie</Option>
 			<Option>Add Actor</Option>
 		</div>
