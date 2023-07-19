@@ -1,14 +1,14 @@
-import client from "./client";
+import client from './client';
 
 const uploadTrailer = async (formData) => {
-    const token = localStorage.getItem('auth-token')
+	const token = localStorage.getItem('auth-token');
 	try {
 		const { data } = await client.post('/movie/upload-trailer', formData, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        });
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'multipart/form-data',
+			},
+		});
 		return data;
 	} catch (error) {
 		const { response } = error;
@@ -18,4 +18,4 @@ const uploadTrailer = async (formData) => {
 	}
 };
 
-export {uploadTrailer}
+export { uploadTrailer };
