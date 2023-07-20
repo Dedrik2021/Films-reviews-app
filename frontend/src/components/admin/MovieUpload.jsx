@@ -7,14 +7,15 @@ import { uploadTrailer } from '../../api/movie';
 
 const MovieUpload = () => {
 	const { updateNotification } = useNotification();
-	const [videoSelected, setVideoSelected] = useState(true);
+	const [videoSelected, setVideoSelected] = useState(false);
+	const [uploadProgress, setUploadProgress] = useState(0);
 
 	const handleChange = async (file) => {
 		const formData = new FormData();
 		formData.append('video', file);
 
-		const res = await uploadTrailer(formData);
-		console.log(res);
+		const res = await uploadTrailer(formData, setUploadProgress);
+		
 	};
 
 	const handleTypeError = (error) => {
@@ -24,7 +25,7 @@ const MovieUpload = () => {
 	return (
 		<div className="fixed inset-0 dark:bg-white dark:bg-opacity-50 bg-primary bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
 			<div className="dark:bg-primary bg-white rounded w-[45rem] h-[40rem] overflow-auto ">
-				<UploadProgress visible message='Upload progress 20%' width={20} />
+				<UploadProgress visible message={`Upload progress ${uploadProgress}%`} width={uploadProgress} />
 				<TrailerSelector
 					onTypeError={handleTypeError}
 					handleChange={handleChange}
@@ -63,11 +64,11 @@ const UploadProgress = ({width, message, visible}) => {
 			<div className="h-3 dark:bg-dark-subtle bg-light-subtle relative overflow-hidden">
 				<div
 					style={{ width: `${width}%` }}
-					className={`h-full absolute left-0 dark:bg-white bg-secondary`}
+					className='h-full absolute left-0 dark:bg-white bg-dark-subtle'
 				></div>
 			</div>
 			<p className="font-semibold dark:text-dark-subtle text-light-subtle animate-pulse mt-2">
-				{message}
+				{width === 100 ? 'File uploaded successfully!' : message}
 			</p>
 		</div>
 	);
