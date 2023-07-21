@@ -8,24 +8,66 @@ import { uploadTrailer } from '../../api/movie';
 const MovieUpload = () => {
 	const { updateNotification } = useNotification();
 	const [videoSelected, setVideoSelected] = useState(false);
+	const [videoUploaded, setVideoUploaded] = useState(false);
 	const [uploadProgress, setUploadProgress] = useState(0);
+	const [videoInfo, setVideoInfo] = useState({})
+	const [movieInfo, setMovieInfo] = useState({
+		title: '',
+		storyLine: '',
+		tags: [],
+		cast: [],
+		director: '',
+		writers: '',
+		releseDate: '',
+		poster: null,
+		genres: [],
+		type: '',
+		language: '',
+		status: '',
+		trailer: {
+			url: '',
+			public_id: ''
+		}
+	})
 
-	const handleChange = async (file) => {
+	const handleUploadTrailer = async (data) => {
+		const {error, url, public_id} = await uploadTrailer(data, setUploadProgress);
+
+        if (error) return updateNotification('error', error)
+        setVideoUploaded(true)
+		setVideoInfo({url, public_id})
+	}
+
+	console.log(videoInfo);
+
+	const handleChange = (file) => {
 		const formData = new FormData();
 		formData.append('video', file);
-
-		const res = await uploadTrailer(formData, setUploadProgress);
-		
+        setVideoSelected(true)
+		handleUploadTrailer(formData)
 	};
 
 	const handleTypeError = (error) => {
 		updateNotification('error', error);
 	};
 
+    const getUploadProgressValue = () => {
+        if (!videoUploaded && uploadProgress >= 100) {
+            return 'Processing'
+        }
+
+        return `Upload progress ${uploadProgress}%`
+    }
+
 	return (
 		<div className="fixed inset-0 dark:bg-white dark:bg-opacity-50 bg-primary bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
-			<div className="dark:bg-primary bg-white rounded w-[45rem] h-[40rem] overflow-auto ">
-				<UploadProgress visible message={`Upload progress ${uploadProgress}%`} width={uploadProgress} />
+			<div className="dark:bg-primary bg-white rounded w-[45rem] h-[40rem] overflow-auto p-2">
+				<UploadProgress
+					visible={!videoUploaded && videoSelected}
+					message={getUploadProgressValue()}
+					width={uploadProgress}
+				/>
+
 				<TrailerSelector
 					onTypeError={handleTypeError}
 					handleChange={handleChange}
@@ -40,7 +82,7 @@ const TrailerSelector = ({ visible, handleChange, onTypeError }) => {
 	if (!visible) return null;
 
 	return (
-		<div className="flex items-center justify-center h-full">
+		<div className=" h-full flex items-center justify-center">
 			<FileUploader
 				handleChange={handleChange}
 				name="file"
@@ -56,19 +98,19 @@ const TrailerSelector = ({ visible, handleChange, onTypeError }) => {
 	);
 };
 
-const UploadProgress = ({width, message, visible}) => {
-    if (!visible) return null
+const UploadProgress = ({ width, message, visible }) => {
+	if (!visible) return null;
 
 	return (
 		<div className="dark:bg-secondary bg-white drop-shadow-lg rounded p-3">
 			<div className="h-3 dark:bg-dark-subtle bg-light-subtle relative overflow-hidden">
 				<div
 					style={{ width: `${width}%` }}
-					className='h-full absolute left-0 dark:bg-white bg-dark-subtle'
+					className="h-full absolute left-0 dark:bg-white bg-dark-subtle"
 				></div>
 			</div>
 			<p className="font-semibold dark:text-dark-subtle text-light-subtle animate-pulse mt-2">
-				{width === 100 ? 'File uploaded successfully!' : message}
+				{message}
 			</p>
 		</div>
 	);
