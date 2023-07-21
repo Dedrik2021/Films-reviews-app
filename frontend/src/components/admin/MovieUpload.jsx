@@ -4,6 +4,7 @@ import { useState } from 'react';
 
 import { useNotification } from '../../hooks';
 import { uploadTrailer } from '../../api/movie';
+import MovieForm from './MovieForm';
 
 const MovieUpload = () => {
 	const { updateNotification } = useNotification();
@@ -62,7 +63,7 @@ const MovieUpload = () => {
 	return (
 		<div className="fixed inset-0 dark:bg-white dark:bg-opacity-50 bg-primary bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
 			<div className="dark:bg-primary bg-white rounded w-[45rem] h-[40rem] overflow-auto p-2">
-				<UploadProgress
+				{/* <UploadProgress
 					visible={!videoUploaded && videoSelected}
 					message={getUploadProgressValue()}
 					width={uploadProgress}
@@ -72,7 +73,9 @@ const MovieUpload = () => {
 					onTypeError={handleTypeError}
 					handleChange={handleChange}
 					visible={!videoSelected}
-				/>
+				/> */}
+
+				<MovieForm/>
 			</div>
 		</div>
 	);
