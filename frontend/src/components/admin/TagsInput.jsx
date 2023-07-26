@@ -21,6 +21,9 @@ const TagsInput = () => {
 		}
 	};
 
+    console.log(tags);
+    console.log(tag);
+
 	return (
 		<div>
 			<div
@@ -28,7 +31,7 @@ const TagsInput = () => {
 				className="border-2 bg-transparent dark:border-dark-subtle border-light-subtle px-2 h-10 rounded w-full text-white flex items-center"
 			>
 				{tags.map((t) => {
-					<Tag key={t}>{t}</Tag>;
+					return <Tag key={t}>{t}</Tag>;
 				})}
 				<input
 					type="text"
