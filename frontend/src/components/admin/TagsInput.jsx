@@ -35,7 +35,7 @@ const TagsInput = () => {
 		<div>
 			<div
 				onKeyDown={handleKeyDown}
-				className="border-2 bg-transparent dark:border-dark-subtle border-light-subtle px-2 h-10 rounded w-full text-white flex items-center"
+				className="border-2 bg-transparent dark:border-dark-subtle border-light-subtle px-2 h-10 rounded w-full text-white flex items-center overflow-x-auto custom-scroll-bar"
 			>
 				{tags.map((t) => {
 					return <Tag onClick={() => removeTag(t)} key={t}>{t}</Tag>;
@@ -54,7 +54,7 @@ const TagsInput = () => {
 
 const Tag = ({ children, onClick }) => {
 	return (
-		<span className="w-1/2 dark:bg-white bg-primary dark:text-primary text-white flex items-center justify-center text-sm p-1 mr-2">
+		<span className="w-1/2 dark:bg-white bg-primary dark:text-primary text-white flex items-center justify-center text-sm p-1 mr-2 whitespace-nowrap">
 			{children}
 			<button type="button" onClick={onClick}>
 				<AiOutlineClose size={16} />
