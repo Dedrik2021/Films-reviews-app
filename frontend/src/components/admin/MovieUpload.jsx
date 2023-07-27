@@ -39,8 +39,6 @@ const MovieUpload = () => {
 		setVideoInfo({url, public_id})
 	}
 
-	console.log(videoInfo);
-
 	const handleChange = (file) => {
 		const formData = new FormData();
 		formData.append('video', file);
