@@ -26,6 +26,11 @@ const TagsInput = () => {
 		}
 	};
 
+	const removeTag = (t) => {
+		const newTags = tags.filter((tag) => tag !== t)
+		setTags([...newTags])
+	}
+
 	return (
 		<div>
 			<div
@@ -33,7 +38,7 @@ const TagsInput = () => {
 				className="border-2 bg-transparent dark:border-dark-subtle border-light-subtle px-2 h-10 rounded w-full text-white flex items-center"
 			>
 				{tags.map((t) => {
-					return <Tag key={t}>{t}</Tag>;
+					return <Tag onClick={() => removeTag(t)} key={t}>{t}</Tag>;
 				})}
 				<input
 					type="text"
