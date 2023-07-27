@@ -5,7 +5,8 @@ const TagsInput = () => {
 	const [tag, setTag] = useState('');
 	const [tags, setTags] = useState([]);
 
-	const inputRef = useRef()
+	const inputRef = useRef();
+	const tagsInputRef = useRef();
 
 	const handleOnChange = ({ target }) => {
 		const { value } = target;
@@ -22,37 +23,54 @@ const TagsInput = () => {
 			setTag('');
 		}
 
-		if (key === "Backspace" && !tag && tags.length) {
-			const newTags = tags.filter((_, index) => index !== tags.length - 1)
-			setTags([...newTags])
+		if (key === 'Backspace' && !tag && tags.length) {
+			const newTags = tags.filter((_, index) => index !== tags.length - 1);
+			setTags([...newTags]);
 		}
 	};
 
 	const removeTag = (t) => {
-		const newTags = tags.filter((tag) => tag !== t)
-		setTags([...newTags])
-	}
+		const newTags = tags.filter((tag) => tag !== t);
+		setTags([...newTags]);
+	};
 
 	useEffect(() => {
-		inputRef.current.scrollIntoView()
-	}, [tag])
+		inputRef.current.scrollIntoView();
+	}, [tag]);
+
+	const handleOnFocus = () => {
+		tagsInputRef.current.classList.remove('dark:border-dark-subtle', 'border-light-subtle');
+		tagsInputRef.current.classList.add('dark:border-white', 'border-primary');
+	};
+
+	const handleOnBlur = () => {
+		tagsInputRef.current.classList.add('dark:border-dark-subtle', 'border-light-subtle');
+		tagsInputRef.current.classList.remove('dark:border-white', 'border-primary');
+	};
 
 	return (
 		<div>
 			<div
+				ref={tagsInputRef}
 				onKeyDown={handleKeyDown}
-				className="border-2 bg-transparent dark:border-dark-subtle border-light-subtle px-2 h-10 rounded w-full text-white flex items-center overflow-x-auto custom-scroll-bar"
+				className="border-2 bg-transparent dark:border-dark-subtle border-light-subtle px-2 h-10 rounded w-full text-white flex items-center overflow-x-auto custom-scroll-bar transition"
 			>
 				{tags.map((t) => {
-					return <Tag onClick={() => removeTag(t)} key={t}>{t}</Tag>;
+					return (
+						<Tag onClick={() => removeTag(t)} key={t}>
+							{t}
+						</Tag>
+					);
 				})}
 				<input
-				ref={inputRef}
+					ref={inputRef}
 					type="text"
 					className="h-full w-full flex-grow bg-transparent outline-none dark:text-white"
 					placeholder="Tag one, Tag two..."
 					value={tag}
 					onChange={handleOnChange}
+					onFocus={handleOnFocus}
+					onBlur={handleOnBlur}
 				/>
 			</div>
 		</div>
