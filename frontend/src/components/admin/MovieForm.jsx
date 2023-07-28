@@ -1,7 +1,6 @@
 import TagsInput from "./TagsInput";
-
-const commonInputClasses =
-	'w-full bg-transparent outline-none dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary transition dark:text-white text-primary';
+import LiveSearch from "../LiveSearch";
+import { commonInputClasses } from "../../utils/theme";
 
 const MovieForm = () => {
 	const handleSubmit = (e) => {
@@ -29,6 +28,7 @@ const MovieForm = () => {
 					></textarea>
 				</div>
                 <TagsInput/>
+				<LiveSearch/>
 			</div>
 			<div className="w-[30%] h-5 bg-blue-400"></div>
 		</form>
