@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { commonInputClasses } from '../utils/theme';
 
 export const results = [
@@ -34,6 +35,16 @@ export const results = [
 ];
 
 const LiveSearch = () => {
+    const [displaySearch, setDisplaySearch] = useState(false)
+
+    const handleOnFocus = () => {
+        if (results.length) setDisplaySearch(true)
+    }
+
+    const handleOnBlur = () => {
+        setDisplaySearch(false)
+    }
+
 	return (
 		<div className="relative">
 			<label htmlFor="search"></label>
@@ -42,17 +53,30 @@ const LiveSearch = () => {
 				id="search"
 				className={`${commonInputClasses} border-2 rounded p-1 pl-2 pr-2 text-lg`}
 				placeholder="Search profile"
+                onFocus={handleOnFocus}
+                onBlur={handleOnBlur}
 			/>
-			<div className="absolute right-0 left-0 top-10 bg-white dark:bg-secondary shadow-md p-2 max-h-64 overflow-auto space-y-2 mt-1 custom-scroll-bar">
-				{results.map(({ id, avatar, name }) => {
-					return (
-						<div key={id} className='cursor-pointer rounded overflow-hidden dark:hover:bg-dark-subtle hover:bg-light-subtle transition flex space-x-2 '>
-							<img className='w-16 h-16 rounded object-cover' src={avatar} alt={name} />
-							<p className='dark:text-white font-semibold'>{name}</p>
-						</div>
-					);
-				})}
-			</div>
+            <SearchResults visible={displaySearch} results={results}/>
+		</div>
+	);
+};
+
+const SearchResults = ({visible, results = []}) => {
+    if (!visible) return null
+
+	return (
+		<div className="absolute right-0 left-0 top-10 bg-white dark:bg-secondary shadow-md p-2 max-h-64 overflow-auto space-y-2 mt-1 custom-scroll-bar">
+			{results.map(({ id, avatar, name }) => {
+				return (
+					<div
+						key={id}
+						className="cursor-pointer rounded overflow-hidden dark:hover:bg-dark-subtle hover:bg-light-subtle transition flex space-x-2 "
+					>
+						<img className="w-16 h-16 rounded object-cover" src={avatar} alt={name} />
+						<p className="dark:text-white font-semibold">{name}</p>
+					</div>
+				);
+			})}
 		</div>
 	);
 };
