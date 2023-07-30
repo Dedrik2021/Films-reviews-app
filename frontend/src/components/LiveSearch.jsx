@@ -35,15 +35,32 @@ export const results = [
 ];
 
 const LiveSearch = () => {
-    const [displaySearch, setDisplaySearch] = useState(false)
+	const [displaySearch, setDisplaySearch] = useState(false);
+	const [focusIndex, setFocusIndex] = useState(-1);
 
-    const handleOnFocus = () => {
-        if (results.length) setDisplaySearch(true)
-    }
+	const handleOnFocus = () => {
+		if (results.length) setDisplaySearch(true);
+	};
 
-    const handleOnBlur = () => {
-        setDisplaySearch(false)
-    }
+	const handleOnBlur = () => {
+		setDisplaySearch(false);
+	};
+
+	const handleKeyDown = ({ key }) => {
+		let nextCount;
+		const keys = ['ArrowDown', 'ArrowUp', 'Enter', 'Escape'];
+		if (!keys.includes(key)) return;
+
+		if (key === 'ArrowDown') {
+			nextCount = focusIndex + 1;
+		}
+
+		if (key === 'ArrowUp') {
+			nextCount = focusIndex - 1;
+		}
+
+		setFocusIndex(nextCount);
+	};
 
 	return (
 		<div className="relative">
@@ -53,24 +70,25 @@ const LiveSearch = () => {
 				id="search"
 				className={`${commonInputClasses} border-2 rounded p-1 pl-2 pr-2 text-lg`}
 				placeholder="Search profile"
-                onFocus={handleOnFocus}
-                onBlur={handleOnBlur}
+				onFocus={handleOnFocus}
+				onBlur={handleOnBlur}
+				onKeyDown={handleKeyDown}
 			/>
-            <SearchResults visible={displaySearch} results={results}/>
+			<SearchResults visible={displaySearch} results={results} focusIndex={focusIndex} />
 		</div>
 	);
 };
 
-const SearchResults = ({visible, results = []}) => {
-    if (!visible) return null
+const SearchResults = ({ visible, results = [], focusIndex }) => {
+	if (!visible) return null;
 
 	return (
 		<div className="absolute right-0 left-0 top-10 bg-white dark:bg-secondary shadow-md p-2 max-h-64 overflow-auto space-y-2 mt-1 custom-scroll-bar">
-			{results.map(({ id, avatar, name }) => {
+			{results.map(({ id, avatar, name }, index) => {
 				return (
 					<div
 						key={id}
-						className="cursor-pointer rounded overflow-hidden dark:hover:bg-dark-subtle hover:bg-light-subtle transition flex space-x-2 "
+						className={`${index === focusIndex ? "dark:bg-dark-subtle bg-light-subtle" : ""}  cursor-pointer rounded overflow-hidden dark:hover:bg-dark-subtle hover:bg-light-subtle transition flex space-x-2`}
 					>
 						<img className="w-16 h-16 rounded object-cover" src={avatar} alt={name} />
 						<p className="dark:text-white font-semibold">{name}</p>
