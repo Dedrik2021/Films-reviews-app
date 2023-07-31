@@ -52,11 +52,11 @@ const LiveSearch = () => {
 		if (!keys.includes(key)) return;
 
 		if (key === 'ArrowDown') {
-			nextCount = focusIndex + 1;
+			nextCount = (focusIndex + 1) % results.length;
 		}
 
 		if (key === 'ArrowUp') {
-			nextCount = focusIndex - 1;
+			nextCount = (focusIndex + results.length - 1) % results.length;
 		}
 
 		setFocusIndex(nextCount);
