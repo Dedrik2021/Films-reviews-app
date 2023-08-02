@@ -44,6 +44,7 @@ const LiveSearch = () => {
 
 	const handleOnBlur = () => {
 		setDisplaySearch(false);
+        setFocusIndex(-1)
 	};
 
 	const handleKeyDown = ({ key }) => {
