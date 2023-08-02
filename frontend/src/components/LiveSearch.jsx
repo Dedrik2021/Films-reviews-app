@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { commonInputClasses } from '../utils/theme';
 
 export const results = [
@@ -80,6 +80,15 @@ const LiveSearch = () => {
 };
 
 const SearchResults = ({ visible, results = [], focusIndex }) => {
+    const resultContainerRef = useRef()
+
+    useEffect(() => {
+        resultContainerRef.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    }, [focusIndex])
+
 	if (!visible) return null;
 
 	return (
@@ -87,6 +96,7 @@ const SearchResults = ({ visible, results = [], focusIndex }) => {
 			{results.map(({ id, avatar, name }, index) => {
 				return (
 					<div
+                        ref={index === focusIndex ? resultContainerRef : null}
 						key={id}
 						className={`${index === focusIndex ? "dark:bg-dark-subtle bg-light-subtle" : ""}  cursor-pointer rounded overflow-hidden dark:hover:bg-dark-subtle hover:bg-light-subtle transition flex space-x-2`}
 					>
