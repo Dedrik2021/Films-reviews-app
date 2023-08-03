@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, forwardRef } from 'react';
 import { commonInputClasses } from '../utils/theme';
 
 export const results = [
@@ -91,7 +91,24 @@ const LiveSearch = () => {
 	);
 };
 
-const SearchResults = ({ visible, results = [], focusedIndex, onSelect }) => {
+// const renderItem = ({ id, name, avatar }) => {
+// 	return (
+// 		<div className='flex'>
+// 			<img className="w-16 h-16 rounded object-cover" src={avatar} alt={name} />
+// 			<p className="dark:text-white font-semibold">{name}</p>
+// 		</div>
+// 	);
+// };
+
+const SearchResults = ({
+	visible,
+	results = [],
+	focusedIndex,
+	onSelect,
+	renderItem,
+	resultContainerStyle,
+	selectedResultStyle,
+}) => {
 	const resultContainerRef = useRef();
 
 	useEffect(() => {
@@ -106,23 +123,49 @@ const SearchResults = ({ visible, results = [], focusedIndex, onSelect }) => {
 	return (
 		<div className="absolute right-0 left-0 top-10 bg-white dark:bg-secondary shadow-md p-2 max-h-64 overflow-auto space-y-2 mt-1 custom-scroll-bar">
 			{results.map((result, index) => {
-				const { id, avatar, name } = result;
+				const getSelectedClass = () => {
+					return selectedResultStyle
+						? selectedResultStyle
+						: 'dark:bg-dark-subtle bg-light-subtle';
+				};
+
 				return (
-					<div
-						onClick={() => onSelect(result)}
+					<ResultCard
+						key={result.id}
 						ref={index === focusedIndex ? resultContainerRef : null}
-						key={id}
-						className={`${
-							index === focusedIndex ? 'dark:bg-dark-subtle bg-light-subtle' : ''
-						}  cursor-pointer rounded overflow-hidden dark:hover:bg-dark-subtle hover:bg-light-subtle transition flex space-x-2`}
-					>
-						<img className="w-16 h-16 rounded object-cover" src={avatar} alt={name} />
-						<p className="dark:text-white font-semibold">{name}</p>
-					</div>
+						item={result}
+						index={index}
+						onMouseDown={() => onSelect(result)}
+						renderItem={renderItem}
+						resultContainerStyle={resultContainerStyle}
+						selectedResultStyle={index === focusedIndex ? getSelectedClass() : ''}
+					/>
 				);
 			})}
 		</div>
 	);
 };
+
+const ResultCard = forwardRef((props, ref) => {
+	const { item, renderItem, resultContainerStyle, selectedResultStyle, onMouseDown } = props;
+
+	const getClasses = () => {
+		if (resultContainerStyle) {
+			return resultContainerStyle + ' ' + selectedResultStyle;
+		}
+
+		return `${selectedResultStyle}  cursor-pointer rounded overflow-hidden dark:hover:bg-dark-subtle hover:bg-light-subtle transition flex space-x-2`;
+	};
+	return (
+		<div
+			onMouseDown={onMouseDown}
+			// ref={index === focusedIndex ? resultContainerRef : null}
+			ref={ref}
+			className={getClasses()}
+		>
+			{renderItem(item)}
+		</div>
+	);
+});
 
 export default LiveSearch;
