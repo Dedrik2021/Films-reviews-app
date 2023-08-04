@@ -1,40 +1,17 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
 import { commonInputClasses } from '../utils/theme';
 
-export const results = [
-	{
-		id: '1',
-		avatar: 'https://images.unsplash.com/photo-1643713303351-01f540054fd7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80',
-		name: 'John Doe',
-	},
-	{
-		id: '2',
-		avatar: 'https://images.unsplash.com/photo-1643883135036-98ec2d9e50a1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80',
-		name: 'Chandri Anggara',
-	},
-	{
-		id: '3',
-		avatar: 'https://images.unsplash.com/photo-1578342976795-062a1b744f37?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80',
-		name: 'Amin RK',
-	},
-	{
-		id: '4',
-		avatar: 'https://images.unsplash.com/photo-1564227901-6b1d20bebe9d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80',
-		name: 'Edward Howell',
-	},
-	{
-		id: '5',
-		avatar: 'https://images.unsplash.com/photo-1578342976795-062a1b744f37?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80',
-		name: 'Amin RK',
-	},
-	{
-		id: '6',
-		avatar: 'https://images.unsplash.com/photo-1564227901-6b1d20bebe9d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=200&q=80',
-		name: 'Edward Howell',
-	},
-];
-
-const LiveSearch = () => {
+const LiveSearch = ({
+	results = [],
+	selectedResultStyle,
+	resultContainerStyle,
+	renderItem = null,
+    placeholder = "",
+	value = "",
+	onChange = null,
+    onSelect = null,
+    inputStyle
+}) => {
 	const [displaySearch, setDisplaySearch] = useState(false);
 	const [focusedIndex, setfocusedIndex] = useState(-1);
 
@@ -48,7 +25,7 @@ const LiveSearch = () => {
 	};
 
 	const handleSelection = (selectedItem) => {
-		console.log(selectedItem);
+		onSelect(selectedItem);
 	};
 
 	const handleKeyDown = ({ key }) => {
@@ -69,36 +46,36 @@ const LiveSearch = () => {
 		setfocusedIndex(nextCount);
 	};
 
+    const getInputStyle = () => {
+        return inputStyle ? inputStyle : `${commonInputClasses} border-2 rounded p-1 pl-2 pr-2 text-lg`
+    }
+
 	return (
 		<div className="relative">
 			<label htmlFor="search"></label>
 			<input
 				type="text"
 				id="search"
-				className={`${commonInputClasses} border-2 rounded p-1 pl-2 pr-2 text-lg`}
-				placeholder="Search profile"
+				className={getInputStyle()}
+				placeholder={placeholder}
 				onFocus={handleOnFocus}
 				onBlur={handleOnBlur}
 				onKeyDown={handleKeyDown}
+				value={value}
+				onChange={onChange}
 			/>
 			<SearchResults
 				visible={displaySearch}
 				results={results}
 				focusedIndex={focusedIndex}
 				onSelect={handleSelection}
+				renderItem={renderItem}
+				resultContainerStyle={resultContainerStyle}
+				selectedResultStyle={selectedResultStyle}
 			/>
 		</div>
 	);
 };
-
-// const renderItem = ({ id, name, avatar }) => {
-// 	return (
-// 		<div className='flex'>
-// 			<img className="w-16 h-16 rounded object-cover" src={avatar} alt={name} />
-// 			<p className="dark:text-white font-semibold">{name}</p>
-// 		</div>
-// 	);
-// };
 
 const SearchResults = ({
 	visible,
@@ -157,12 +134,7 @@ const ResultCard = forwardRef((props, ref) => {
 		return `${selectedResultStyle}  cursor-pointer rounded overflow-hidden dark:hover:bg-dark-subtle hover:bg-light-subtle transition flex space-x-2`;
 	};
 	return (
-		<div
-			onMouseDown={onMouseDown}
-			// ref={index === focusedIndex ? resultContainerRef : null}
-			ref={ref}
-			className={getClasses()}
-		>
+		<div onMouseDown={onMouseDown} ref={ref} className={getClasses()}>
 			{renderItem(item)}
 		</div>
 	);
