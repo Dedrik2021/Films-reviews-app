@@ -100,7 +100,7 @@ const SearchResults = ({
 	if (!visible) return null;
 
 	return (
-		<div className="absolute right-0 left-0 top-10 bg-white dark:bg-secondary shadow-md p-2 max-h-64 overflow-auto space-y-2 mt-1 custom-scroll-bar">
+		<div className="absolute right-0 left-0 top-10 bg-white dark:bg-secondary shadow-md p-2 max-h-64 overflow-auto space-y-2 mt-1 custom-scroll-bar z-20">
 			{results.map((result, index) => {
 				const getSelectedClass = () => {
 					return selectedResultStyle
@@ -110,7 +110,7 @@ const SearchResults = ({
 
 				return (
 					<ResultCard
-						key={result.id}
+						key={index.toString()}
 						ref={index === focusedIndex ? resultContainerRef : null}
 						item={result}
 						index={index}
