@@ -3,6 +3,7 @@ import { useState } from 'react';
 import TagsInput from './TagsInput';
 import LiveSearch from '../LiveSearch';
 import { commonInputClasses } from '../../utils/theme';
+import SubmitBtn from '../form/SubmitBtn';
 
 export const results = [
 	{
@@ -57,6 +58,8 @@ const MovieForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		console.log(movieInfo);
 	};
 
 	const renderItem = (result) => {
@@ -75,6 +78,10 @@ const MovieForm = () => {
 	const handleChange = ({target}) => {
 		const {value, name} = target
 		setMovieInfo({...movieInfo, [name]: value})
+	}
+
+	const updateTags = (tags) => {
+		setMovieInfo({...movieInfo, tags})
 	}
 
 	const {title, storyLine, director} = movieInfo
@@ -105,13 +112,14 @@ const MovieForm = () => {
 						placeholder="Movie story line"
 					></textarea>
 				</div>
-				<TagsInput />
+				<TagsInput onChange={updateTags} />
 				<LiveSearch
 					placeholder='Search profile...'
 					results={results}
 					renderItem={renderItem}
 					onSelect={(result) => console.log(result)}
 				/>
+				<SubmitBtn>Upload</SubmitBtn>
 			</div>
 			<div className="w-[30%] h-5 bg-blue-400"></div>
 		</form>

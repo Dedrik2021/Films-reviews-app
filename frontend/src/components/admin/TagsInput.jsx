@@ -1,16 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineClose } from 'react-icons/ai';
 
-const TagsInput = () => {
+const TagsInput = ({ name, onChange }) => {
 	const [tag, setTag] = useState('');
 	const [tags, setTags] = useState([]);
 
 	const inputRef = useRef();
 	const tagsInputRef = useRef();
 
+	useEffect(() => {
+		onChange(tags);
+	}, [tags]);
+
 	const handleOnChange = ({ target }) => {
 		const { value } = target;
 		if (value !== ',') setTag(value);
+
+		onChange(tags);
 	};
 
 	const handleKeyDown = ({ key }) => {
@@ -55,9 +61,9 @@ const TagsInput = () => {
 				onKeyDown={handleKeyDown}
 				className="border-2 bg-transparent dark:border-dark-subtle border-light-subtle px-2 h-10 rounded w-full text-white flex items-center overflow-x-auto custom-scroll-bar transition"
 			>
-				{tags.map((t) => {
+				{tags.map((t, i) => {
 					return (
-						<Tag onClick={() => removeTag(t)} key={t}>
+						<Tag onClick={() => removeTag(t)} key={i}>
 							{t}
 						</Tag>
 					);
@@ -65,6 +71,7 @@ const TagsInput = () => {
 				<input
 					ref={inputRef}
 					type="text"
+					name={name}
 					className="h-full w-full flex-grow bg-transparent outline-none dark:text-white"
 					placeholder="Tag one, Tag two..."
 					value={tag}
