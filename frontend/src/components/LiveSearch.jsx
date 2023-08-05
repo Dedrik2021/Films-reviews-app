@@ -10,7 +10,8 @@ const LiveSearch = ({
 	value = "",
 	onChange = null,
     onSelect = null,
-    inputStyle
+    inputStyle,
+    name
 }) => {
 	const [displaySearch, setDisplaySearch] = useState(false);
 	const [focusedIndex, setfocusedIndex] = useState(-1);
@@ -55,7 +56,8 @@ const LiveSearch = ({
 			<label htmlFor="search"></label>
 			<input
 				type="text"
-				id="search"
+				id={name}
+                name={name}
 				className={getInputStyle()}
 				placeholder={placeholder}
 				onFocus={handleOnFocus}

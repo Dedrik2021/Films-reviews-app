@@ -39,22 +39,22 @@ export const results = [
 ];
 
 const defaultMuvieInfo = {
-	title: "",
-	storyLine: "",
+	title: '',
+	storyLine: '',
 	tags: [],
 	cast: [],
 	director: {},
 	writers: [],
-	releseDate: "",
+	releseDate: '',
 	poster: null,
 	genres: [],
-	type: "",
-	language: "",
-	status: ""
-}
+	type: '',
+	language: '',
+	status: '',
+};
 
 const MovieForm = () => {
-	const [movieInfo, setMovieInfo] = useState({...defaultMuvieInfo})
+	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -73,18 +73,22 @@ const MovieForm = () => {
 				<p className="dark:text-white font-semibold">{result.name}</p>
 			</div>
 		);
-	}
+	};
 
-	const handleChange = ({target}) => {
-		const {value, name} = target
-		setMovieInfo({...movieInfo, [name]: value})
-	}
+	const handleChange = ({ target }) => {
+		const { value, name } = target;
+		setMovieInfo({ ...movieInfo, [name]: value });
+	};
 
 	const updateTags = (tags) => {
-		setMovieInfo({...movieInfo, tags})
-	}
+		setMovieInfo({ ...movieInfo, tags });
+	};
 
-	const {title, storyLine, director} = movieInfo
+	const updateDirector = (profile) => {
+		setMovieInfo({ ...movieInfo, director: profile });
+	};
+
+	const { title, storyLine, director } = movieInfo;
 
 	return (
 		<form onSubmit={handleSubmit} className="flex space-x-3">
@@ -96,7 +100,7 @@ const MovieForm = () => {
 						type="text"
 						value={title}
 						onChange={handleChange}
-						name='title'
+						name="title"
 						className={`${commonInputClasses} border-b-2 font-semibold text-xl p-1`}
 						placeholder="Title"
 					/>
@@ -104,7 +108,7 @@ const MovieForm = () => {
 				<div>
 					<Label htmlFor="storyLine">Story Line</Label>
 					<textarea
-						name='storyLine'
+						name="storyLine"
 						value={storyLine}
 						onChange={handleChange}
 						id="storyLine"
@@ -112,13 +116,20 @@ const MovieForm = () => {
 						placeholder="Movie story line"
 					></textarea>
 				</div>
-				<TagsInput onChange={updateTags} />
-				<LiveSearch
-					placeholder='Search profile...'
-					results={results}
-					renderItem={renderItem}
-					onSelect={(result) => console.log(result)}
-				/>
+				<Label htmlFor="tags">Tags</Label>
+				<TagsInput name="tags" onChange={updateTags} />
+
+				<div>
+					<Label htmlFor="director">Director</Label>
+					<LiveSearch
+						name="director"
+						value={director.name}
+						placeholder="Search profile..."
+						results={results}
+						renderItem={renderItem}
+						onSelect={updateDirector}
+					/>
+				</div>
 				<SubmitBtn>Upload</SubmitBtn>
 			</div>
 			<div className="w-[30%] h-5 bg-blue-400"></div>
