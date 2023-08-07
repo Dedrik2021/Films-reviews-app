@@ -5,6 +5,7 @@ import LiveSearch from '../LiveSearch';
 import { commonInputClasses } from '../../utils/theme';
 import SubmitBtn from '../form/SubmitBtn';
 import { useNotification } from '../../hooks/index';
+import ModalContainer from '../Modals/ModalContainer';
 
 export const results = [
 	{
@@ -56,6 +57,7 @@ const defaultMuvieInfo = {
 
 const MovieForm = () => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
+	const [showModal, setShowModal] = useState(false)
 
 	const updateNotification = useNotification();
 
@@ -104,69 +106,75 @@ const MovieForm = () => {
 	const { title, storyLine, director, writers } = movieInfo;
 
 	return (
-		<form onSubmit={handleSubmit} className="flex space-x-3">
-			<div className="w-[70%] h-5 space-y-5">
-				<div>
-					<Label htmlFor="title">Title</Label>
-					<input
-						id="title"
-						type="text"
-						value={title}
-						onChange={handleChange}
-						name="title"
-						className={`${commonInputClasses} border-b-2 font-semibold text-xl p-1`}
-						placeholder="Title"
-					/>
-				</div>
-				<div>
-					<Label htmlFor="storyLine">Story Line</Label>
-					<textarea
-						name="storyLine"
-						value={storyLine}
-						onChange={handleChange}
-						id="storyLine"
-						className={`${commonInputClasses} resize-none h-24 border-b-2`}
-						placeholder="Movie story line"
-					></textarea>
-				</div>
-				<Label htmlFor="tags">Tags</Label>
-				<TagsInput name="tags" onChange={updateTags} />
-
-				<div>
-					<Label htmlFor="director">Director</Label>
-					<LiveSearch
-						name="director"
-						value={director.name}
-						placeholder="Search profile..."
-						results={results}
-						renderItem={renderItem}
-						onSelect={updateDirector}
-					/>
-				</div>
-				<div>
-					<div className="flex justify-between">
-						<LabelWithBadge badge={writers.length} htmlFor="writers">
-							Writers
-						</LabelWithBadge>
-						<button
-							className="dark:text-white text-primary hover:underline transition"
-							type="button"
-						>
-							View All
-						</button>
+		<>
+			<form onSubmit={handleSubmit} className="flex space-x-3">
+				<div className="w-[70%] h-5 space-y-5">
+					<div>
+						<Label htmlFor="title">Title</Label>
+						<input
+							id="title"
+							type="text"
+							value={title}
+							onChange={handleChange}
+							name="title"
+							className={`${commonInputClasses} border-b-2 font-semibold text-xl p-1`}
+							placeholder="Title"
+						/>
 					</div>
-					<LiveSearch
-						name="writers"
-						placeholder="Search profile..."
-						results={results}
-						renderItem={renderItem}
-						onSelect={updateWriters}
-					/>
+					<div>
+						<Label htmlFor="storyLine">Story Line</Label>
+						<textarea
+							name="storyLine"
+							value={storyLine}
+							onChange={handleChange}
+							id="storyLine"
+							className={`${commonInputClasses} resize-none h-24 border-b-2`}
+							placeholder="Movie story line"
+						></textarea>
+					</div>
+					<Label htmlFor="tags">Tags</Label>
+					<TagsInput name="tags" onChange={updateTags} />
+
+					<div>
+						<Label htmlFor="director">Director</Label>
+						<LiveSearch
+							name="director"
+							value={director.name}
+							placeholder="Search profile..."
+							results={results}
+							renderItem={renderItem}
+							onSelect={updateDirector}
+						/>
+					</div>
+					<div>
+						<div className="flex justify-between">
+							<LabelWithBadge badge={writers.length} htmlFor="writers">
+								Writers
+							</LabelWithBadge>
+							<button	
+								onClick={() => setShowModal(true)}
+								className="dark:text-white text-primary hover:underline transition"
+								type="button"
+							>
+								View All
+							</button>
+						</div>
+						<LiveSearch
+							name="writers"
+							placeholder="Search profile..."
+							results={results}
+							renderItem={renderItem}
+							onSelect={updateWriters}
+						/>
+					</div>
+					<SubmitBtn>Upload</SubmitBtn>
 				</div>
-				<SubmitBtn>Upload</SubmitBtn>
-			</div>
-			<div className="w-[30%] h-5 bg-blue-400"></div>
-		</form>
+				<div className="w-[30%] h-5 bg-blue-400"></div>
+			</form>
+			<ModalContainer visible={showModal} onClose={() => setShowModal(false)}>
+				<div className='p-20 bg-red-200'></div>
+			</ModalContainer>
+		</>
 	);
 };
 
