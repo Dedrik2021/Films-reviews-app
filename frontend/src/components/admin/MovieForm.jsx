@@ -104,7 +104,25 @@ const MovieForm = () => {
 		setMovieInfo({ ...movieInfo, writers: [...writers, profile] });
 	};
 
+	const hideWritersModal = () => {
+		setShowWritersModal(false)
+	}
+
+	const displayWritersModal = () => {
+		const {writers} = movieInfo
+		if (!writers.length) return hideWritersModal()
+		setShowWritersModal(true)
+	}
+
+	const handleWriterRemove = (writerId) => {
+		const {writers} = movieInfo
+		const newWriters = writers.filter((writer) => writer.id !== writerId)
+		if (!newWriters.length) hideWritersModal()
+		setMovieInfo({...movieInfo, writers: [...newWriters]})
+	}
+
 	const { title, storyLine, director, writers } = movieInfo;
+	
 
 	return (
 		<>
@@ -153,7 +171,7 @@ const MovieForm = () => {
 								Writers
 							</LabelWithBadge>
 							<button	
-								onClick={() => setShowWritersModal(true)}
+								onClick={displayWritersModal}
 								className="dark:text-white text-primary hover:underline transition"
 								type="button"
 							>
@@ -172,7 +190,7 @@ const MovieForm = () => {
 				</div>
 				<div className="w-[30%] h-5 bg-blue-400"></div>
 			</form>
-			<WritersModal onClose={() => setShowWritersModal(false)} profiles={writers} visible={showWritersModal}/>
+			<WritersModal onClose={hideWritersModal} profiles={writers} visible={showWritersModal} onRemoveClick={handleWriterRemove}/>
 		</>
 	);
 };
