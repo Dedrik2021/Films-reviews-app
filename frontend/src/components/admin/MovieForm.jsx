@@ -6,6 +6,7 @@ import { commonInputClasses } from '../../utils/theme';
 import SubmitBtn from '../form/SubmitBtn';
 import { useNotification } from '../../hooks/index';
 import ModalContainer from '../Modals/ModalContainer';
+import WritersModal from '../Modals/WritersModal';
 
 export const results = [
 	{
@@ -57,7 +58,7 @@ const defaultMuvieInfo = {
 
 const MovieForm = () => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
-	const [showModal, setShowModal] = useState(false)
+	const [showWritersModal, setShowWritersModal] = useState(false)
 
 	const updateNotification = useNotification();
 
@@ -152,7 +153,7 @@ const MovieForm = () => {
 								Writers
 							</LabelWithBadge>
 							<button	
-								onClick={() => setShowModal(true)}
+								onClick={() => setShowWritersModal(true)}
 								className="dark:text-white text-primary hover:underline transition"
 								type="button"
 							>
@@ -171,9 +172,7 @@ const MovieForm = () => {
 				</div>
 				<div className="w-[30%] h-5 bg-blue-400"></div>
 			</form>
-			<ModalContainer visible={showModal} onClose={() => setShowModal(false)}>
-				<div className='p-20 bg-red-200'></div>
-			</ModalContainer>
+			<WritersModal onClose={() => setShowWritersModal(false)} profiles={writers} visible={showWritersModal}/>
 		</>
 	);
 };
