@@ -5,8 +5,8 @@ import LiveSearch from '../LiveSearch';
 import { commonInputClasses } from '../../utils/theme';
 import SubmitBtn from '../form/SubmitBtn';
 import { useNotification } from '../../hooks/index';
-import ModalContainer from '../Modals/ModalContainer';
 import WritersModal from '../Modals/WritersModal';
+import CastForm from '../form/CastForm';
 
 export const results = [
 	{
@@ -186,6 +186,7 @@ const MovieForm = () => {
 							onSelect={updateWriters}
 						/>
 					</div>
+					<CastForm/>
 					<SubmitBtn>Upload</SubmitBtn>
 				</div>
 				<div className="w-[30%] h-5 bg-blue-400"></div>
