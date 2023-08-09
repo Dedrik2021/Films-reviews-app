@@ -41,6 +41,19 @@ export const results = [
 	},
 ];
 
+export const renderItem = (result) => {
+	return (
+		<div className="flex space-x-2 rounded overflow-hidden" key={result.id}>
+			<img
+				className="w-16 h-16 rounded object-cover"
+				src={result.avatar}
+				alt={result.name}
+			/>
+			<p className="dark:text-white font-semibold">{result.name}</p>
+		</div>
+	);
+};
+
 const defaultMuvieInfo = {
 	title: '',
 	storyLine: '',
@@ -66,19 +79,6 @@ const MovieForm = () => {
 		e.preventDefault();
 
 		console.log(movieInfo);
-	};
-
-	const renderItem = (result) => {
-		return (
-			<div className="flex space-x-2 rounded overflow-hidden" key={result.key}>
-				<img
-					className="w-16 h-16 rounded object-cover"
-					src={result.avatar}
-					alt={result.name}
-				/>
-				<p className="dark:text-white font-semibold">{result.name}</p>
-			</div>
-		);
 	};
 
 	const handleChange = ({ target }) => {
