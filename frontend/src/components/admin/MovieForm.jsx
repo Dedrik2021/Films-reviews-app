@@ -44,11 +44,7 @@ export const results = [
 export const renderItem = (result) => {
 	return (
 		<div className="flex space-x-2 rounded overflow-hidden" key={result.id}>
-			<img
-				className="w-16 h-16 rounded object-cover"
-				src={result.avatar}
-				alt={result.name}
-			/>
+			<img className="w-16 h-16 rounded object-cover" src={result.avatar} alt={result.name} />
 			<p className="dark:text-white font-semibold">{result.name}</p>
 		</div>
 	);
@@ -71,9 +67,9 @@ const defaultMuvieInfo = {
 
 const MovieForm = () => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
-	const [showWritersModal, setShowWritersModal] = useState(false)
+	const [showWritersModal, setShowWritersModal] = useState(false);
 
-	const updateNotification = useNotification();
+	const {updateNotification} = useNotification();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -105,24 +101,28 @@ const MovieForm = () => {
 	};
 
 	const hideWritersModal = () => {
-		setShowWritersModal(false)
-	}
+		setShowWritersModal(false);
+	};
 
 	const displayWritersModal = () => {
-		const {writers} = movieInfo
-		if (!writers.length) return hideWritersModal()
-		setShowWritersModal(true)
-	}
+		const { writers } = movieInfo;
+		if (!writers.length) return hideWritersModal();
+		setShowWritersModal(true);
+	};
 
 	const handleWriterRemove = (writerId) => {
-		const {writers} = movieInfo
-		const newWriters = writers.filter((writer) => writer.id !== writerId)
-		if (!newWriters.length) hideWritersModal()
-		setMovieInfo({...movieInfo, writers: [...newWriters]})
+		const { writers } = movieInfo;
+		const newWriters = writers.filter((writer) => writer.id !== writerId);
+		if (!newWriters.length) hideWritersModal();
+		setMovieInfo({ ...movieInfo, writers: [...newWriters] });
+	};
+
+	const updateCast = (castInfo) => {
+		const {cast} = movieInfo
+		setMovieInfo({...movieInfo, cast: [...cast, castInfo]})
 	}
 
 	const { title, storyLine, director, writers } = movieInfo;
-	
 
 	return (
 		<>
@@ -170,7 +170,7 @@ const MovieForm = () => {
 							<LabelWithBadge badge={writers.length} htmlFor="writers">
 								Writers
 							</LabelWithBadge>
-							<button	
+							<button
 								onClick={displayWritersModal}
 								className="dark:text-white text-primary hover:underline transition"
 								type="button"
@@ -186,25 +186,33 @@ const MovieForm = () => {
 							onSelect={updateWriters}
 						/>
 					</div>
-					<CastForm/>
+					<div>
+						<LabelWithBadge>Add Cast & Crew</LabelWithBadge>
+						<CastForm onSubmit={updateCast} />
+					</div>
 					<SubmitBtn>Upload</SubmitBtn>
 				</div>
 				<div className="w-[30%] h-5 bg-blue-400"></div>
 			</form>
-			<WritersModal onClose={hideWritersModal} profiles={writers} visible={showWritersModal} onRemoveClick={handleWriterRemove}/>
+			<WritersModal
+				onClose={hideWritersModal}
+				profiles={writers}
+				visible={showWritersModal}
+				onRemoveClick={handleWriterRemove}
+			/>
 		</>
 	);
 };
 
 const Label = ({ children, htmlFor }) => {
 	return (
-		<label htmlFor={htmlFor} className="dark:text-dark-subtle text-light-subtle font-semibold">
+		<label htmlFor={htmlFor} className="dark:text-dark-subtle text-light-subtle flex justify-center font-semibold">
 			{children}
 		</label>
 	);
 };
 
-const LabelWithBadge = ({ children, htmlFor, badge }) => {
+const LabelWithBadge = ({ children, htmlFor, badge = 0 }) => {
 	const renderBage = () => {
 		return (
 			<span className="dark:bg-dark-subtle bg-light-subtle text-white absolute translate-x-5 -translate-y-1 text-xs top-0 right-0 w-5 h-5 rounded-full flex justify-center items-center">

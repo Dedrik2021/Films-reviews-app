@@ -4,6 +4,7 @@ import LiveSearch from '../LiveSearch';
 import { commonInputClasses } from '../../utils/theme';
 import { results } from '../admin/MovieForm';
 import { renderItem } from '../admin/MovieForm';
+import { useNotification } from '../../hooks';
 
 // const cast = [{actor: 3, roles: "", leadActor: true}]
 const defaultCastInfo = {
@@ -12,9 +13,11 @@ const defaultCastInfo = {
 	leadActor: false,
 };
 
-const CastForm = () => {
+const CastForm = ({onSubmit}) => {
 	const [castInfo, setCastInfo] = useState({ ...defaultCastInfo });
 	const { leadActor, profile, roleAs } = castInfo;
+
+    const {updateNotification} = useNotification()
 
     const handleOnChange = ({target}) => {
         const {value, name, checked} = target
@@ -27,14 +30,19 @@ const CastForm = () => {
     }
 
     const handleSubmit = () => {
-        console.log(castInfo);
+        const { profile, roleAs } = castInfo;
+        if (!profile.name) return updateNotification('error', "Cast profile is missing!")
+        if (!roleAs.trim()) return updateNotification('error', "Cast role is missing!")
+
+        onSubmit(castInfo)
+        setCastInfo({...defaultCastInfo})
     }
 
 	return (
 		<div className="flex  flex-col space-x-2">
 			<div className="flex items-center space-x-2 mb-1">
 				<label
-					className="dark:text-dark-subtle text-light-subtle font-semibold"
+					className="dark:text-dark-subtle text-light-subtle"
 					htmlFor="lead-actor"
 				>
 					Lead Actor

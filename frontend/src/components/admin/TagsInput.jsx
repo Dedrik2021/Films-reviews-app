@@ -86,7 +86,7 @@ const TagsInput = ({ name, onChange }) => {
 
 const Tag = ({ children, onClick }) => {
 	return (
-		<span className="w-1/2 dark:bg-white bg-primary dark:text-primary text-white flex items-center justify-center text-sm p-1 mr-2 whitespace-nowrap">
+		<span className="w-1/2 dark:bg-white bg-primary dark:text-primary text-white flex items-center justify-center text-sm p-1 whitespace-nowrap">
 			{children}
 			<button type="button" onClick={onClick}>
 				<AiOutlineClose size={16} />
