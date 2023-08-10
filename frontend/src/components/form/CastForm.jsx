@@ -54,6 +54,7 @@ const CastForm = ({onSubmit}) => {
 					className="w-4 h-4"
 					checked={leadActor}
                     onChange={handleOnChange}
+                    title='Set as lead actor'
 				/>
 			</div>
 			<div className="flex items-center space-x-2">
