@@ -69,7 +69,7 @@ const MovieForm = () => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
 
-	const {updateNotification} = useNotification();
+	const { updateNotification } = useNotification();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -105,8 +105,6 @@ const MovieForm = () => {
 	};
 
 	const displayWritersModal = () => {
-		const { writers } = movieInfo;
-		if (!writers.length) return hideWritersModal();
 		setShowWritersModal(true);
 	};
 
@@ -118,11 +116,11 @@ const MovieForm = () => {
 	};
 
 	const updateCast = (castInfo) => {
-		const {cast} = movieInfo
-		setMovieInfo({...movieInfo, cast: [...cast, castInfo]})
-	}
+		const { cast } = movieInfo;
+		setMovieInfo({ ...movieInfo, cast: [...cast, castInfo] });
+	};
 
-	const { title, storyLine, director, writers } = movieInfo;
+	const { title, storyLine, director, writers, cast } = movieInfo;
 
 	return (
 		<>
@@ -170,13 +168,9 @@ const MovieForm = () => {
 							<LabelWithBadge badge={writers.length} htmlFor="writers">
 								Writers
 							</LabelWithBadge>
-							<button
-								onClick={displayWritersModal}
-								className="dark:text-white text-primary hover:underline transition"
-								type="button"
-							>
-								View All
-							</button>
+							<ViewAllBtn visible={writers.length} onClick={displayWritersModal}>
+								View all
+							</ViewAllBtn>
 						</div>
 						<LiveSearch
 							name="writers"
@@ -187,7 +181,14 @@ const MovieForm = () => {
 						/>
 					</div>
 					<div>
-						<LabelWithBadge>Add Cast & Crew</LabelWithBadge>
+						<div className="flex justify-between">
+							<LabelWithBadge badge={cast.length}>
+								Add Cast & Crew
+							</LabelWithBadge>
+							<ViewAllBtn visible={cast.length} onClick={displayWritersModal}>
+								View all
+							</ViewAllBtn>
+						</div>
 						<CastForm onSubmit={updateCast} />
 					</div>
 					<SubmitBtn>Upload</SubmitBtn>
@@ -206,7 +207,10 @@ const MovieForm = () => {
 
 const Label = ({ children, htmlFor }) => {
 	return (
-		<label htmlFor={htmlFor} className="dark:text-dark-subtle text-light-subtle flex justify-center font-semibold">
+		<label
+			htmlFor={htmlFor}
+			className="dark:text-dark-subtle text-light-subtle flex justify-center font-semibold"
+		>
 			{children}
 		</label>
 	);
@@ -214,6 +218,8 @@ const Label = ({ children, htmlFor }) => {
 
 const LabelWithBadge = ({ children, htmlFor, badge = 0 }) => {
 	const renderBage = () => {
+		if (!badge) return null
+
 		return (
 			<span className="dark:bg-dark-subtle bg-light-subtle text-white absolute translate-x-5 -translate-y-1 text-xs top-0 right-0 w-5 h-5 rounded-full flex justify-center items-center">
 				{badge <= 9 ? badge : '9+'}
@@ -226,6 +232,20 @@ const LabelWithBadge = ({ children, htmlFor, badge = 0 }) => {
 			<Label htmlFor={htmlFor}>{children}</Label>
 			{renderBage()}
 		</div>
+	);
+};
+
+const ViewAllBtn = ({ visible, children, onClick }) => {
+	if (!visible) return null;
+
+	return (
+		<button
+			onClick={onClick}
+			className="dark:text-white text-primary hover:underline transition"
+			type="button"
+		>
+			{children}
+		</button>
 	);
 };
 
