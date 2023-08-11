@@ -123,11 +123,18 @@ const MovieForm = () => {
 	};
 
 	const hideCastModal = () => {
-		setShowWritersModal(false);
+		setShowCastModal(false);
 	}
 
 	const displayCastModal = () => {
 		setShowCastModal(true);
+	};
+
+	const handleCastRemove = (castId) => {
+		const { cast } = movieInfo;
+		const newCast = cast.filter(({profile}) => profile.id !== castId);
+		if (!newCast.length) hideCastModal();
+		setMovieInfo({ ...movieInfo, cast: [...newCast] });
 	};
 
 	const { title, storyLine, director, writers, cast } = movieInfo;
@@ -215,7 +222,7 @@ const MovieForm = () => {
 				onClose={hideCastModal}
 				cast={cast}
 				visible={showCastModal}
-				// onRemoveClick={handleWriterRemove}
+				onRemoveClick={handleCastRemove}
 			/>
 		</>
 	);
