@@ -26,7 +26,10 @@ const LiveSearch = ({
 	};
 
 	const handleSelection = (selectedItem) => {
-		onSelect(selectedItem);
+		if(selectedItem) {
+			onSelect(selectedItem)
+			handleOnBlur()
+		};
 	};
 
 	const handleKeyDown = ({ key }) => {
@@ -41,6 +44,8 @@ const LiveSearch = ({
 		if (key === 'ArrowUp') {
 			nextCount = (focusedIndex + results.length - 1) % results.length;
 		}
+
+		if (key === 'Escape') return handleOnBlur();
 
 		if (key === 'Enter') return handleSelection(results[focusedIndex]);
 

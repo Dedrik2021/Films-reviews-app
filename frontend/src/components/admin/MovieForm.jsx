@@ -141,7 +141,7 @@ const MovieForm = () => {
 
 	return (
 		<>
-			<form onSubmit={handleSubmit} className="flex space-x-3">
+			<div className="flex space-x-3">
 				<div className="w-[70%] h-5 space-y-5">
 					<div>
 						<Label htmlFor="title">Title</Label>
@@ -198,7 +198,7 @@ const MovieForm = () => {
 						/>
 					</div>
 					<div>
-						<div className="flex justify-between">
+						<div className="flex justify-between mb-2">
 							<LabelWithBadge badge={cast.length}>
 								Add Cast & Crew
 							</LabelWithBadge>
@@ -206,12 +206,13 @@ const MovieForm = () => {
 								View all
 							</ViewAllBtn>
 						</div>
+						<hr />
 						<CastForm onSubmit={updateCast} />
 					</div>
-					<SubmitBtn>Upload</SubmitBtn>
+					<SubmitBtn onClick={handleSubmit} type="button" >Upload</SubmitBtn>
 				</div>
 				<div className="w-[30%] h-5 bg-blue-400"></div>
-			</form>
+			</div>
 			<WritersModal
 				onClose={hideWritersModal}
 				profiles={writers}
