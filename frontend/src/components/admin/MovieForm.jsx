@@ -7,6 +7,7 @@ import SubmitBtn from '../form/SubmitBtn';
 import { useNotification } from '../../hooks/index';
 import WritersModal from '../Modals/WritersModal';
 import CastForm from '../form/CastForm';
+import CastModal from '../Modals/CastModal';
 
 export const results = [
 	{
@@ -68,6 +69,7 @@ const defaultMuvieInfo = {
 const MovieForm = () => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
+	const [showCastModal, setShowCastModal] = useState(false);
 
 	const { updateNotification } = useNotification();
 
@@ -118,6 +120,14 @@ const MovieForm = () => {
 	const updateCast = (castInfo) => {
 		const { cast } = movieInfo;
 		setMovieInfo({ ...movieInfo, cast: [...cast, castInfo] });
+	};
+
+	const hideCastModal = () => {
+		setShowWritersModal(false);
+	}
+
+	const displayCastModal = () => {
+		setShowCastModal(true);
 	};
 
 	const { title, storyLine, director, writers, cast } = movieInfo;
@@ -185,7 +195,7 @@ const MovieForm = () => {
 							<LabelWithBadge badge={cast.length}>
 								Add Cast & Crew
 							</LabelWithBadge>
-							<ViewAllBtn visible={cast.length} onClick={displayWritersModal}>
+							<ViewAllBtn visible={cast.length} onClick={displayCastModal}>
 								View all
 							</ViewAllBtn>
 						</div>
@@ -200,6 +210,12 @@ const MovieForm = () => {
 				profiles={writers}
 				visible={showWritersModal}
 				onRemoveClick={handleWriterRemove}
+			/>
+			<CastModal
+				onClose={hideCastModal}
+				cast={cast}
+				visible={showCastModal}
+				// onRemoveClick={handleWriterRemove}
 			/>
 		</>
 	);
