@@ -11,17 +11,34 @@ const GenresModal = ({ visible, onClose }) => {
 			<div className="space-y-3">
 				{genres.map((genr, i) => {
 					return (
-						<button
-							className={(i === 5 ? "dark:bg-white dark:text-black bg-light-subtle text-white" : "") + "border-2 dark:border-dark-subtle border-light-subtle dark:text-white text-primary p-1 rounded mr-3"}
-							key={genr}
-							type="button"
-						>
+						<Genre key={i} selected={i === 5}>
 							{genr}
-						</button>
+						</Genre>
 					);
 				})}
 			</div>
 		</ModalContainer>
+	);
+};
+
+const Genre = ({ children, selected, onClick }) => {
+	const getSelectedStyle = () => {
+		return selected
+			? 'dark:bg-white dark:text-black bg-light-subtle text-white'
+			: '';
+	};
+
+	return (
+		<button
+			onClick={onClick}
+			className={
+				getSelectedStyle() +
+				'border-2 dark:border-dark-subtle border-light-subtle p-1 rounded mr-3 text-primary dark:text-white'
+			}
+			type="button"
+		>
+			{children}
+		</button>
 	);
 };
 
