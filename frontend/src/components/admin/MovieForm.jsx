@@ -10,6 +10,7 @@ import CastForm from '../form/CastForm';
 import CastModal from '../Modals/CastModal';
 import PosterSelector from '../PosterSelector';
 import GenresSelector from '../GenresSelector';
+import GenresModal from '../Modals/GenresModal';
 
 export const results = [
 	{
@@ -72,6 +73,7 @@ const MovieForm = () => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
 	const [showCastModal, setShowCastModal] = useState(false);
+	const [showGenresModal, setShowGenresModal] = useState(false);
 	const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
 
 	const { updateNotification } = useNotification();
@@ -150,6 +152,14 @@ const MovieForm = () => {
 		if (!newCast.length) hideCastModal();
 		setMovieInfo({ ...movieInfo, cast: [...newCast] });
 	};
+
+	const hideGenresModal = () => {
+		setShowGenresModal(false)
+	}
+
+	const displayGenresModal = () => {
+		setShowGenresModal(true)
+	}
 
 	const { title, storyLine, director, writers, cast, tags } = movieInfo;
 
@@ -239,7 +249,7 @@ const MovieForm = () => {
 						onChange={handleChange}
 						accept="image/jpeg, image/jpg, image/png"
 					/>
-					<GenresSelector/>
+					<GenresSelector onClick={displayGenresModal}/>
 				</div>
 			</div>
 			<WritersModal
@@ -253,6 +263,10 @@ const MovieForm = () => {
 				cast={cast}
 				visible={showCastModal}
 				onRemoveClick={handleCastRemove}
+			/>
+			<GenresModal
+				visible={showGenresModal}
+				onClose={hideGenresModal}
 			/>
 		</>
 	);
