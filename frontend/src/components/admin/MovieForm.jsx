@@ -9,6 +9,7 @@ import WritersModal from '../Modals/WritersModal';
 import CastForm from '../form/CastForm';
 import CastModal from '../Modals/CastModal';
 import PosterSelector from '../PosterSelector';
+import GenresSelector from '../GenresSelector';
 
 export const results = [
 	{
@@ -71,7 +72,7 @@ const MovieForm = () => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
 	const [showCastModal, setShowCastModal] = useState(false);
-	const [selectedPosterForUI, setSelectedPosterForUI] = useState('')
+	const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
 
 	const { updateNotification } = useNotification();
 
@@ -82,16 +83,16 @@ const MovieForm = () => {
 	};
 
 	const updatePosterForUI = (file) => {
-		const url = URL.createObjectURL(file)
-		setSelectedPosterForUI(url)
-	}
+		const url = URL.createObjectURL(file);
+		setSelectedPosterForUI(url);
+	};
 
 	const handleChange = ({ target }) => {
 		const { value, name, files } = target;
 
 		if (name === 'poster') {
-			const poster = files[0]
-			updatePosterForUI(poster)
+			const poster = files[0];
+			updatePosterForUI(poster);
 			return setMovieInfo({ ...movieInfo, poster });
 		}
 		setMovieInfo({ ...movieInfo, [name]: value });
@@ -137,7 +138,7 @@ const MovieForm = () => {
 
 	const hideCastModal = () => {
 		setShowCastModal(false);
-	}
+	};
 
 	const displayCastModal = () => {
 		setShowCastModal(true);
@@ -145,7 +146,7 @@ const MovieForm = () => {
 
 	const handleCastRemove = (castId) => {
 		const { cast } = movieInfo;
-		const newCast = cast.filter(({profile}) => profile.id !== castId);
+		const newCast = cast.filter(({ profile }) => profile.id !== castId);
 		if (!newCast.length) hideCastModal();
 		setMovieInfo({ ...movieInfo, cast: [...newCast] });
 	};
@@ -212,9 +213,7 @@ const MovieForm = () => {
 					</div>
 					<div>
 						<div className="flex justify-between mb-2">
-							<LabelWithBadge badge={cast.length}>
-								Add Cast & Crew
-							</LabelWithBadge>
+							<LabelWithBadge badge={cast.length}>Add Cast & Crew</LabelWithBadge>
 							<ViewAllBtn visible={cast.length} onClick={displayCastModal}>
 								View all
 							</ViewAllBtn>
@@ -222,12 +221,25 @@ const MovieForm = () => {
 						<hr />
 						<CastForm onSubmit={updateCast} />
 					</div>
-					<input type="date" className={`${commonInputClasses} border-2 rounded p-1 w-auto`} name='releseDate' onChange={handleChange} />
+					<input
+						type="date"
+						className={`${commonInputClasses} border-2 rounded p-1 w-auto`}
+						name="releseDate"
+						onChange={handleChange}
+					/>
 
-					<SubmitBtn onClick={handleSubmit} type="button" >Upload</SubmitBtn>
+					<SubmitBtn onClick={handleSubmit} type="button">
+						Upload
+					</SubmitBtn>
 				</div>
-				<div className="w-[30%]">
-					<PosterSelector name="poster" selectedPoster={selectedPosterForUI} onChange={handleChange} accept="image/jpeg, image/jpg, image/png"/>
+				<div className="w-[30%] space-y-5">
+					<PosterSelector
+						name="poster"
+						selectedPoster={selectedPosterForUI}
+						onChange={handleChange}
+						accept="image/jpeg, image/jpg, image/png"
+					/>
+					<GenresSelector/>
 				</div>
 			</div>
 			<WritersModal
@@ -259,7 +271,7 @@ const Label = ({ children, htmlFor }) => {
 
 const LabelWithBadge = ({ children, htmlFor, badge = 0 }) => {
 	const renderBage = () => {
-		if (!badge) return null
+		if (!badge) return null;
 
 		return (
 			<span className="dark:bg-dark-subtle bg-light-subtle text-white absolute translate-x-5 -translate-y-1 text-xs top-0 right-0 w-5 h-5 rounded-full flex justify-center items-center">
