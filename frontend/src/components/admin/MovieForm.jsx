@@ -8,6 +8,7 @@ import { useNotification } from '../../hooks/index';
 import WritersModal from '../Modals/WritersModal';
 import CastForm from '../form/CastForm';
 import CastModal from '../Modals/CastModal';
+import PosterSelector from '../PosterSelector';
 
 export const results = [
 	{
@@ -213,7 +214,9 @@ const MovieForm = () => {
 
 					<SubmitBtn onClick={handleSubmit} type="button" >Upload</SubmitBtn>
 				</div>
-				<div className="w-[30%] h-5 bg-blue-400"></div>
+				<div className="w-[30%]">
+					<PosterSelector/>
+				</div>
 			</div>
 			<WritersModal
 				onClose={hideWritersModal}
