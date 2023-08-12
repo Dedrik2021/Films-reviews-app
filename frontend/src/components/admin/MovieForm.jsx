@@ -209,6 +209,8 @@ const MovieForm = () => {
 						<hr />
 						<CastForm onSubmit={updateCast} />
 					</div>
+					<input type="date" className={`${commonInputClasses} border-2 rounded p-1 w-auto`} name='releseDate' onChange={handleChange} />
+
 					<SubmitBtn onClick={handleSubmit} type="button" >Upload</SubmitBtn>
 				</div>
 				<div className="w-[30%] h-5 bg-blue-400"></div>
