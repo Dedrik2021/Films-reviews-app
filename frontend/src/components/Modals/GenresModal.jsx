@@ -1,7 +1,21 @@
+import { useState } from 'react';
+
 import { genres } from '../../utils/genres';
 import ModalContainer from './ModalContainer';
 
 const GenresModal = ({ visible, onClose }) => {
+	const [selectedGenres, setSelectedGenres] = useState([]);
+
+	const handleGenresSelector = (genr) => {
+		let newGenres = [];
+
+		if (selectedGenres.includes(genr)) {
+			newGenres = selectedGenres.filter((gen) => gen !== genr);
+		} else newGenres = [...selectedGenres, genr];
+
+		setSelectedGenres([...newGenres]);
+	};
+
 	return (
 		<ModalContainer visible={visible} onClose={onClose}>
 			<h1 className="dark:text-white text-primary text-2xl font-semibold text-center">
@@ -11,7 +25,11 @@ const GenresModal = ({ visible, onClose }) => {
 			<div className="space-y-3">
 				{genres.map((genr, i) => {
 					return (
-						<Genre key={i} selected={i === 5}>
+						<Genre
+							onClick={() => handleGenresSelector(genr)}
+							key={i}
+							selected={selectedGenres.includes(genr)}
+						>
 							{genr}
 						</Genre>
 					);
@@ -24,8 +42,8 @@ const GenresModal = ({ visible, onClose }) => {
 const Genre = ({ children, selected, onClick }) => {
 	const getSelectedStyle = () => {
 		return selected
-			? 'dark:bg-white dark:text-black bg-light-subtle text-white'
-			: '';
+			? 'dark:bg-white dark:text-primary bg-light-subtle text-white p-1 mr-3'
+			: 'text-black dark:text-white border-2 border-light-subtle dark:border-dark-subtle p-1 mr-3';
 	};
 
 	return (
@@ -33,7 +51,7 @@ const Genre = ({ children, selected, onClick }) => {
 			onClick={onClick}
 			className={
 				getSelectedStyle() +
-				'border-2 dark:border-dark-subtle border-light-subtle p-1 rounded mr-3 text-primary dark:text-white'
+				'p-1 rounded mr-3'
 			}
 			type="button"
 		>
