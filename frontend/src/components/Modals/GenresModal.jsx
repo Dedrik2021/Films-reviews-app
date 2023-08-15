@@ -2,8 +2,9 @@ import { useState } from 'react';
 
 import { genres } from '../../utils/genres';
 import ModalContainer from './ModalContainer';
+import SubmitBtn from '../form/SubmitBtn';
 
-const GenresModal = ({ visible, onClose }) => {
+const GenresModal = ({ visible, onClose, onSubmit }) => {
 	const [selectedGenres, setSelectedGenres] = useState([]);
 
 	const handleGenresSelector = (genr) => {
@@ -16,24 +17,42 @@ const GenresModal = ({ visible, onClose }) => {
 		setSelectedGenres([...newGenres]);
 	};
 
-	return (
-		<ModalContainer visible={visible} onClose={onClose}>
-			<h1 className="dark:text-white text-primary text-2xl font-semibold text-center">
-				Select Genres
-			</h1>
+	const handleSubmit = () => {
+		onSubmit(selectedGenres);
+		onClose();
+	};
 
-			<div className="space-y-3">
-				{genres.map((genr, i) => {
-					return (
-						<Genre
-							onClick={() => handleGenresSelector(genr)}
-							key={i}
-							selected={selectedGenres.includes(genr)}
-						>
-							{genr}
-						</Genre>
-					);
-				})}
+	const handleClose = () => {
+		setSelectedGenres([]);
+		onClose();
+	};
+
+	return (
+		<ModalContainer visible={visible} onClose={handleClose}>
+			<div className="flex flex-col justify-between h-full">
+				<div>
+					<h1 className="dark:text-white text-primary text-2xl font-semibold text-center">
+						Select Genres
+					</h1>
+					<div className="space-y-3">
+						{genres.map((genr, i) => {
+							return (
+								<Genre
+									onClick={() => handleGenresSelector(genr)}
+									key={i}
+									selected={selectedGenres.includes(genr)}
+								>
+									{genr}
+								</Genre>
+							);
+						})}
+					</div>
+				</div>
+				<div className="w-56 self-end">
+					<SubmitBtn type="button" onClick={handleSubmit}>
+						Select
+					</SubmitBtn>
+				</div>
 			</div>
 		</ModalContainer>
 	);
@@ -47,14 +66,7 @@ const Genre = ({ children, selected, onClick }) => {
 	};
 
 	return (
-		<button
-			onClick={onClick}
-			className={
-				getSelectedStyle() +
-				'p-1 rounded mr-3'
-			}
-			type="button"
-		>
+		<button onClick={onClick} className={getSelectedStyle() + 'p-1 rounded mr-3'} type="button">
 			{children}
 		</button>
 	);
