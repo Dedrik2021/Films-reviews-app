@@ -165,7 +165,7 @@ const MovieForm = () => {
 		setShowGenresModal(true)
 	}
 
-	const { title, storyLine, director, writers, cast, tags } = movieInfo;
+	const { title, storyLine, director, writers, cast, tags, genres } = movieInfo;
 
 	return (
 		<>
@@ -253,7 +253,7 @@ const MovieForm = () => {
 						onChange={handleChange}
 						accept="image/jpeg, image/jpg, image/png"
 					/>
-					<GenresSelector onClick={displayGenresModal}/>
+					<GenresSelector badge={genres.length} onClick={displayGenresModal}/>
 				</div>
 			</div>
 			<WritersModal
