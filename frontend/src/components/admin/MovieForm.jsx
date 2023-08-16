@@ -138,6 +138,10 @@ const MovieForm = () => {
 		setMovieInfo({ ...movieInfo, cast: [...cast, castInfo] });
 	};
 
+	const updateGenres = (genres) => {
+		setMovieInfo({ ...movieInfo, genres });
+	};
+
 	const hideCastModal = () => {
 		setShowCastModal(false);
 	};
@@ -267,6 +271,7 @@ const MovieForm = () => {
 			<GenresModal
 				visible={showGenresModal}
 				onClose={hideGenresModal}
+				onSubmit={updateGenres}
 			/>
 		</>
 	);
