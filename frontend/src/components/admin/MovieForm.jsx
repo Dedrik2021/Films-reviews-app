@@ -158,12 +158,12 @@ const MovieForm = () => {
 	};
 
 	const hideGenresModal = () => {
-		setShowGenresModal(false)
-	}
+		setShowGenresModal(false);
+	};
 
 	const displayGenresModal = () => {
-		setShowGenresModal(true)
-	}
+		setShowGenresModal(true);
+	};
 
 	const { title, storyLine, director, writers, cast, tags, genres } = movieInfo;
 
@@ -253,7 +253,7 @@ const MovieForm = () => {
 						onChange={handleChange}
 						accept="image/jpeg, image/jpg, image/png"
 					/>
-					<GenresSelector badge={genres.length} onClick={displayGenresModal}/>
+					<GenresSelector badge={genres.length} onClick={displayGenresModal} />
 				</div>
 			</div>
 			<WritersModal
@@ -272,6 +272,7 @@ const MovieForm = () => {
 				visible={showGenresModal}
 				onClose={hideGenresModal}
 				onSubmit={updateGenres}
+				previousSelection={genres}
 			/>
 		</>
 	);
