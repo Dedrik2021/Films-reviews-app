@@ -11,6 +11,7 @@ import CastModal from '../Modals/CastModal';
 import PosterSelector from '../PosterSelector';
 import GenresSelector from '../GenresSelector';
 import GenresModal from '../Modals/GenresModal';
+import Selected from '../Selected';
 
 export const results = [
 	{
@@ -254,6 +255,15 @@ const MovieForm = () => {
 						accept="image/jpeg, image/jpg, image/png"
 					/>
 					<GenresSelector badge={genres.length} onClick={displayGenresModal} />
+					<Selected 
+						label="Type"
+					/>
+					<Selected 
+						label="Language"
+					/>
+					<Selected 
+						label="Status"
+					/>
 				</div>
 			</div>
 			<WritersModal
