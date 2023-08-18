@@ -168,12 +168,13 @@ const MovieForm = () => {
 		setShowGenresModal(true);
 	};
 
-	const { title, storyLine, director, writers, cast, tags, genres } = movieInfo;
+	const { title, storyLine, director, writers, cast, tags, genres, type, language, status } =
+		movieInfo;
 
 	return (
 		<>
 			<div className="flex space-x-3">
-				<div className="w-[70%] h-5 space-y-5">
+				<div className="w-[70%] space-y-5">
 					<div>
 						<Label htmlFor="title">Title</Label>
 						<input
@@ -257,17 +258,26 @@ const MovieForm = () => {
 						accept="image/jpeg, image/jpg, image/png"
 					/>
 					<GenresSelector badge={genres.length} onClick={displayGenresModal} />
-					<Selected 
+					<Selected
 						label="Type"
 						options={typeOptions}
+						onChange={handleChange}
+						name="type"
+						value={type}
 					/>
-					<Selected 
+					<Selected
 						label="Language"
 						options={languageOptions}
+						onChange={handleChange}
+						name="language"
+						value={language}
 					/>
-					<Selected 
+					<Selected
 						label="Status"
 						options={statusOptions}
+						onChange={handleChange}
+						name="status"
+						value={status}
 					/>
 				</div>
 			</div>

@@ -5,7 +5,7 @@ const Selected = ({ name, label, options, value, onChange }) => {
 			id={name}
 			value={value}
 			onChange={onChange}
-			className="border-2 dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary p-1 pr-10 outline-none transition rounded bg-transparent text-light-subtle dark:text-dark-subtle dark:focus:text-white focus:text-primary cursor-pointer"
+			className="border-2 dark:border-dark-subtle border-light-subtle dark:focus:border-white focus:border-primary p-1 pr-10 outline-none dark:bg-primary transition rounded bg-transparent text-light-subtle dark:text-dark-subtle dark:focus:text-white focus:text-primary cursor-pointer"
 		>
 			<option value="">{label}</option>
 			{options.map(({ title, value }) => {
