@@ -13,6 +13,8 @@ import GenresSelector from '../GenresSelector';
 import GenresModal from '../Modals/GenresModal';
 import Selected from '../Selected';
 
+import { typeOptions, statusOptions, languageOptions } from '../../utils/options';
+
 export const results = [
 	{
 		id: '1',
@@ -257,12 +259,15 @@ const MovieForm = () => {
 					<GenresSelector badge={genres.length} onClick={displayGenresModal} />
 					<Selected 
 						label="Type"
+						options={typeOptions}
 					/>
 					<Selected 
 						label="Language"
+						options={languageOptions}
 					/>
 					<Selected 
 						label="Status"
+						options={statusOptions}
 					/>
 				</div>
 			</div>
