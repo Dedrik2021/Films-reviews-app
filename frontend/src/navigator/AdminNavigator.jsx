@@ -8,9 +8,11 @@ import NotFound from '../components/NotFound';
 import Navbar from '../components/admin/Navbar';
 import Header from '../components/admin/Header';
 import MovieUpload from '../components/admin/MovieUpload';
+import ActorUpload from '../components/Modals/ActorUpload';
 
 const AdminNavigator = () => {
 	const [showMovieUploadModal, setShowMovieUploadModal] = useState(false)
+	const [showActorUploadModal, setShowActorUploadModal] = useState(false)
 
 	const displayMovieUploadModal = () => {
 		setShowMovieUploadModal(true)
@@ -20,13 +22,21 @@ const AdminNavigator = () => {
 		setShowMovieUploadModal(false)
 	}
 
+	const displayActorUploadModal = () => {
+		setShowActorUploadModal(true)
+	}
+
+	const hideActorUploadModal = () => {
+		setShowActorUploadModal(false)
+	}
+
 	return (
 		<>
 			<div className="flex bg-white dark:bg-primary">
 				<Navbar />
 				<div className="flex-1 p-2 max-w-screen-xl">
 					<Header
-						// onAddActorClick={() => console.log('add actor')}
+						onAddActorClick={displayActorUploadModal}
 						onAddMovieClick={displayMovieUploadModal}
 					/>
 					<Routes>
@@ -39,6 +49,7 @@ const AdminNavigator = () => {
 				</div>
 			</div>
 			<MovieUpload visible={showMovieUploadModal} onClose={hideMovieUploadModal} />
+			<ActorUpload visible={showActorUploadModal} onClose={hideActorUploadModal} />
 		</>
 	);
 };
