@@ -37,19 +37,24 @@ const Header = ({onAddActorClick, onAddMovieClick}) => {
 					<AiOutlinePlus />
 				</button>
 
-				<CreateOptions visible={showOptions} options={options} />
+				<CreateOptions visible={showOptions} options={options} onClose={() => setShowOptions(false)} />
 			</div>
 		</div>
 	);
 };
 
-const CreateOptions = ({ visible, options }) => {
+const CreateOptions = ({ visible, options, onClose }) => {
+	const handleClick = (fn) => {
+		fn()
+		onClose()
+	}
+
 	if (!visible) return null;
 
 	return (
 		<div className="absolute right-0 top-12 flex flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg animate-scale">
             {options.map(({title, onClick}) => {
-                return <Option key={title} onClick={onClick}>{title}</Option>
+                return <Option key={title} onClick={() => handleClick(onClick)}>{title}</Option>
             })}
 		</div>
 	);
