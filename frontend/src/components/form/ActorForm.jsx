@@ -1,4 +1,5 @@
 import { commonInputClasses } from '../../utils/theme';
+import PosterSelector from '../PosterSelector';
 
 const ActorForm = ({ title, btnTitle }) => {
 	return (
@@ -13,12 +14,13 @@ const ActorForm = ({ title, btnTitle }) => {
 				</button>
 			</div>
 			<form className="flex space-x-2">
-				<img
+				{/* <img
 					src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
 					alt=""
 					className="w-36 h-36 aspect-square object-cover rounded"
-				/>
-				<div className="flex-grow flex flex-col">
+				/> */}
+                <PosterSelector className="w-36 h-36 aspect-square object-cover"/>
+				<div className="flex-grow flex flex-col space-y-2">
 					<input
 						type="text"
 						className={`${commonInputClasses} border-b-2`}
