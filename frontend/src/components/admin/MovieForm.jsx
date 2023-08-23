@@ -253,6 +253,7 @@ const MovieForm = () => {
 				<div className="w-[30%] space-y-5">
 					<PosterSelector
 						name="poster"
+						label="Select Poster"
 						selectedPoster={selectedPosterForUI}
 						onChange={handleChange}
 						accept="image/jpeg, image/jpg, image/png"
