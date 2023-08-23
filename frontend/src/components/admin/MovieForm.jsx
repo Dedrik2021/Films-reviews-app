@@ -11,7 +11,7 @@ import CastModal from '../Modals/CastModal';
 import PosterSelector from '../PosterSelector';
 import GenresSelector from '../GenresSelector';
 import GenresModal from '../Modals/GenresModal';
-import Selected from '../Selected';
+import Selected from '../Selector';
 
 import { typeOptions, statusOptions, languageOptions } from '../../utils/options';
 

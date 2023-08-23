@@ -2,18 +2,26 @@ import { useState } from 'react';
 
 import { commonInputClasses } from '../../utils/theme';
 import PosterSelector from '../PosterSelector';
+import Selector from '../Selector';
 
 const defaultActorInfo = {
 	name: '',
 	about: '',
 	avatar: null,
+	gender: '',
 };
+
+const genderOptions = [
+	{ title: 'Male', value: 'male' },
+	{ title: 'Female', value: 'female' },
+	{ title: 'Other', value: 'other' },
+];
 
 const ActorForm = ({ title, btnTitle }) => {
 	const [actorInfo, setActorInfo] = useState({ ...defaultActorInfo });
 	const [selectedAvatarForUI, setSelectedAvatarForUI] = useState('');
 
-	const { name, about } = actorInfo;
+	const { name, about, gender } = actorInfo;
 
 	const updatePosterForUI = (file) => {
 		const url = URL.createObjectURL(file);
@@ -73,6 +81,15 @@ const ActorForm = ({ title, btnTitle }) => {
 						value={about}
 					></textarea>
 				</div>
+			</div>
+			<div className="mt-3">
+				<Selector
+					options={genderOptions}
+					label="Gender"
+					value={gender}
+					onChange={handleChange}
+					name="gender"
+				/>
 			</div>
 		</form>
 	);
