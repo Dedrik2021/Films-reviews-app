@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {ImSpinner3} from 'react-icons/im'
 
 import { commonInputClasses } from '../../utils/theme';
 import PosterSelector from '../PosterSelector';
@@ -28,7 +29,7 @@ const validateActor = (actor) => {
     return {error: null}
 }
 
-const ActorForm = ({ title, btnTitle, onSubmit }) => {
+const ActorForm = ({ title, btnTitle, busy, onSubmit }) => {
 	const [actorInfo, setActorInfo] = useState({ ...defaultActorInfo });
 	const [selectedAvatarForUI, setSelectedAvatarForUI] = useState('');
 
@@ -70,9 +71,9 @@ const ActorForm = ({ title, btnTitle, onSubmit }) => {
 				<h1 className="font-semibold text-xl dark:text-white text-primary">{title}</h1>
 				<button
 					type="submit"
-					className="px-3 py-3 bg-primary text-white dark:bg-white dark:text-primary hover:opacity-80 transition rounded"
+					className="h-8 w-24 bg-primary text-white dark:bg-white dark:text-primary hover:opacity-80 transition rounded flex items-center justify-center"
 				>
-					{btnTitle}
+					{busy ? <ImSpinner3 className="animate-spin"/> : btnTitle}
 				</button>
 			</div>
 			<div className="flex space-x-2">
