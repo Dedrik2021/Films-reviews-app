@@ -1,7 +1,9 @@
 import client from "./client";
+import { getToken } from "../utils/helper";
+import { catchError } from "../utils/helper";
 
 const createActor = async (formData) => {
-    const token = localStorage.getItem('auth-token');
+    const token = getToken()
 	try {
 		const { data } = await client.post('/actor/create', formData, {
 			headers: {
@@ -11,10 +13,7 @@ const createActor = async (formData) => {
 		});
 		return data;
 	} catch (error) {
-		const { response } = error;
-		if (response?.data) return response.data;
-
-		return { error: error.message || error };
+		return catchError(error)
 	}
 }
 
