@@ -78,7 +78,7 @@ const searchActor = async (req, res) => {
 
     const actors = result.map(actor => formatActor(actor))
 
-	res.status(201).json(actors);
+	res.status(201).json({results: actors});
 };
 
 const getLatestActors = async (req, res) => {
