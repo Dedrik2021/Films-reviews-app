@@ -81,7 +81,7 @@ const MovieForm = () => {
 	const [showGenresModal, setShowGenresModal] = useState(false);
 	const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
 
-	const {handleSearch, searching, results} = useSearch()
+	const {handleSearch, searching, resetSearch, results} = useSearch()
 
 	const { updateNotification } = useNotification();
 
@@ -113,6 +113,7 @@ const MovieForm = () => {
 
 	const updateDirector = (profile) => {
 		setMovieInfo({ ...movieInfo, director: profile });
+		resetSearch()
 	};
 
 	const updateWriters = (profile) => {
@@ -220,6 +221,7 @@ const MovieForm = () => {
 							renderItem={renderItem}
 							onSelect={updateDirector}
 							onChange={handleProfileChange}
+							visible={results.length}
 						/>
 					</div>
 					<div>

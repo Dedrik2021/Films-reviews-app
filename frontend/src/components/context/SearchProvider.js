@@ -14,33 +14,41 @@ const debounce = (func, delay) => {
 };
 
 const SearchProvider = ({ children }) => {
-    const [searching, setSearching] = useState(false)
-    const [results, setResults] = useState([])
-    const [resultNotFound, setResultNotFound] = useState(false)
+	const [searching, setSearching] = useState(false);
+	const [results, setResults] = useState([]);
+	const [resultNotFound, setResultNotFound] = useState(false);
 
-    const {updateNotification} = useNotification()
+	const { updateNotification } = useNotification();
 
-    const search = async (method, query) => {
-        const {error, results} = await method(query)
-        if (error) return updateNotification('error', error)
+	const search = async (method, query) => {
+		const { error, results } = await method(query);
+		if (error) return updateNotification('error', error);
 
-        if (!results.length) return setResultNotFound(true)
-        setResults(results)
-    }
+		if (!results.length) return setResultNotFound(true);
+		setResults(results);
+	};
 
-    const debounceFunc = debounce(search, 300)
+	const debounceFunc = debounce(search, 300);
 
-    const handleSearch = (method, query) => {
-        setSearching(true)
-        if (!query.trim()) {
-            setSearching(false)
-            setResults([])
-            setResultNotFound(false)
-        }
-        debounceFunc(method, query)
-    }
+	const handleSearch = (method, query) => {
+		setSearching(true);
+		if (!query.trim()) {
+            resetSearch()
+		}
+		debounceFunc(method, query);
+	};
 
-	return <SearchContext.Provider value={{handleSearch, searching, resultNotFound, results}}>{children}</SearchContext.Provider>;
+	const resetSearch = () => {
+		setSearching(false);
+		setResults([]);
+		setResultNotFound(false);
+	};
+
+	return (
+		<SearchContext.Provider value={{ handleSearch, resetSearch, searching, resultNotFound, results }}>
+			{children}
+		</SearchContext.Provider>
+	);
 };
 
 export default SearchProvider;
