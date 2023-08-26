@@ -12,6 +12,8 @@ import PosterSelector from '../PosterSelector';
 import GenresSelector from '../GenresSelector';
 import GenresModal from '../Modals/GenresModal';
 import Selected from '../Selector';
+import { useSearch } from '../../hooks/index';
+import { searchActor } from '../../api/actor';
 
 import { typeOptions, statusOptions, languageOptions } from '../../utils/options';
 
@@ -78,6 +80,8 @@ const MovieForm = () => {
 	const [showCastModal, setShowCastModal] = useState(false);
 	const [showGenresModal, setShowGenresModal] = useState(false);
 	const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
+
+	const {handleSearch, searching, results} = useSearch()
 
 	const { updateNotification } = useNotification();
 
@@ -168,6 +172,11 @@ const MovieForm = () => {
 		setShowGenresModal(true);
 	};
 
+	const handleProfileChange = ({target}) => {
+		setMovieInfo({...movieInfo, director: {name: target.value}})
+		handleSearch(searchActor, target.value)
+	}
+
 	const { title, storyLine, director, writers, cast, tags, genres, type, language, status } =
 		movieInfo;
 
@@ -210,6 +219,7 @@ const MovieForm = () => {
 							results={results}
 							renderItem={renderItem}
 							onSelect={updateDirector}
+							onChange={handleProfileChange}
 						/>
 					</div>
 					<div>
@@ -227,6 +237,7 @@ const MovieForm = () => {
 							results={results}
 							renderItem={renderItem}
 							onSelect={updateWriters}
+							
 						/>
 					</div>
 					<div>

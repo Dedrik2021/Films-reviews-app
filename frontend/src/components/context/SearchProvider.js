@@ -28,7 +28,7 @@ const SearchProvider = ({ children }) => {
         setResults(results)
     }
 
-    const debiunceFunc = debounce(search, 300)
+    const debounceFunc = debounce(search, 300)
 
     const handleSearch = (method, query) => {
         setSearching(true)
@@ -37,6 +37,7 @@ const SearchProvider = ({ children }) => {
             setResults([])
             setResultNotFound(false)
         }
+        debounceFunc(method, query)
     }
 
 	return <SearchContext.Provider value={{handleSearch, searching, resultNotFound, results}}>{children}</SearchContext.Provider>;
