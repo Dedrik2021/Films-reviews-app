@@ -80,6 +80,7 @@ const MovieForm = () => {
 	const [showCastModal, setShowCastModal] = useState(false);
 	const [showGenresModal, setShowGenresModal] = useState(false);
 	const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
+	const [writerName, setWriterName] = useState('');
 
 	const {handleSearch, searching, resetSearch, results} = useSearch()
 
@@ -103,6 +104,10 @@ const MovieForm = () => {
 			const poster = files[0];
 			updatePosterForUI(poster);
 			return setMovieInfo({ ...movieInfo, poster });
+		}
+
+		if (name === 'writer') {
+			return setWriterName(value)
 		}
 		setMovieInfo({ ...movieInfo, [name]: value });
 	};
@@ -239,7 +244,8 @@ const MovieForm = () => {
 							results={results}
 							renderItem={renderItem}
 							onSelect={updateWriters}
-							
+							onChange={handleChange}
+							value={writerName}
 						/>
 					</div>
 					<div>
