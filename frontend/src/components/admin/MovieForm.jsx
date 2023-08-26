@@ -105,10 +105,6 @@ const MovieForm = () => {
 			updatePosterForUI(poster);
 			return setMovieInfo({ ...movieInfo, poster });
 		}
-
-		if (name === 'writer') {
-			return setWriterName(value)
-		}
 		setMovieInfo({ ...movieInfo, [name]: value });
 	};
 
@@ -179,8 +175,10 @@ const MovieForm = () => {
 	};
 
 	const handleProfileChange = ({target}) => {
-		setMovieInfo({...movieInfo, director: {name: target.value}})
-		handleSearch(searchActor, target.value)
+		const {name, value} = target
+		if (name === 'director') setMovieInfo({...movieInfo, director: {name: value}})
+		if (name === 'writers') setWriterName(value)
+		handleSearch(searchActor, value)
 	}
 
 	const { title, storyLine, director, writers, cast, tags, genres, type, language, status } =
@@ -244,8 +242,9 @@ const MovieForm = () => {
 							results={results}
 							renderItem={renderItem}
 							onSelect={updateWriters}
-							onChange={handleChange}
+							onChange={handleProfileChange}
 							value={writerName}
+							visible={results.length}
 						/>
 					</div>
 					<div>
