@@ -81,6 +81,8 @@ const MovieForm = () => {
 	const [showGenresModal, setShowGenresModal] = useState(false);
 	const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
 	const [writerName, setWriterName] = useState('');
+	const [writersProfile, setWritersProfile] = useState([])
+	const [directorsProfile, setDirectorsProfile] = useState([])
 
 	const {handleSearch, searching, resetSearch, results} = useSearch()
 
@@ -176,9 +178,14 @@ const MovieForm = () => {
 
 	const handleProfileChange = ({target}) => {
 		const {name, value} = target
-		if (name === 'director') setMovieInfo({...movieInfo, director: {name: value}})
-		if (name === 'writers') setWriterName(value)
-		handleSearch(searchActor, value)
+		if (name === 'director') {
+			setMovieInfo({...movieInfo, director: {name: value}})
+			handleSearch(searchActor, value, setDirectorsProfile)
+		}
+		if (name === 'writers') {
+			setWriterName(value)
+			handleSearch(searchActor, value, setWritersProfile)
+		}
 	}
 
 	const { title, storyLine, director, writers, cast, tags, genres, type, language, status } =
@@ -220,11 +227,11 @@ const MovieForm = () => {
 							name="director"
 							value={director.name}
 							placeholder="Search profile..."
-							results={results}
+							results={directorsProfile}
 							renderItem={renderItem}
 							onSelect={updateDirector}
 							onChange={handleProfileChange}
-							visible={results.length}
+							visible={directorsProfile.length}
 						/>
 					</div>
 					<div>
@@ -239,12 +246,12 @@ const MovieForm = () => {
 						<LiveSearch
 							name="writers"
 							placeholder="Search profile..."
-							results={results}
+							results={writersProfile}
 							renderItem={renderItem}
 							onSelect={updateWriters}
 							onChange={handleProfileChange}
 							value={writerName}
-							visible={results.length}
+							visible={writersProfile.length}
 						/>
 					</div>
 					<div>
