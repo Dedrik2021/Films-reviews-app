@@ -127,6 +127,7 @@ const MovieForm = () => {
 			}
 		}
 		setMovieInfo({ ...movieInfo, writers: [...writers, profile] });
+		setWriterName("")
 	};
 
 	const hideWritersModal = () => {
