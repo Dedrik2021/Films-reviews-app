@@ -11,8 +11,7 @@ const LiveSearch = ({
 	onChange = null,
     onSelect = null,
     inputStyle,
-    name,
-	visible
+    name
 }) => {
 	const [displaySearch, setDisplaySearch] = useState(false);
 	const [focusedIndex, setfocusedIndex] = useState(-1);
@@ -68,9 +67,9 @@ const LiveSearch = ({
 	}
 
 	useEffect(() => {
-		if (visible) return setDisplaySearch(true)
+		if (results.length) return setDisplaySearch(true)
 		setDisplaySearch(false)
-	}, [visible])
+	}, [results.length])
 
 	return (
 		<div className="relative">

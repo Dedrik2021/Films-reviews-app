@@ -14,6 +14,10 @@ import GenresModal from '../Modals/GenresModal';
 import Selected from '../Selector';
 import { useSearch } from '../../hooks/index';
 import { searchActor } from '../../api/actor';
+import { renderItem } from '../../utils/helper';
+import Label from '../Label';
+import DirectorSelector from '../DirectorSelector';
+
 
 import { typeOptions, statusOptions, languageOptions } from '../../utils/options';
 
@@ -49,15 +53,6 @@ export const results = [
 		name: 'Edward Howell',
 	},
 ];
-
-export const renderItem = (result) => {
-	return (
-		<div className="flex space-x-2 rounded overflow-hidden" key={result.id}>
-			<img className="w-16 h-16 rounded object-cover" src={result.avatar} alt={result.name} />
-			<p className="dark:text-white font-semibold">{result.name}</p>
-		</div>
-	);
-};
 
 const defaultMuvieInfo = {
 	title: '',
@@ -116,7 +111,6 @@ const MovieForm = () => {
 
 	const updateDirector = (profile) => {
 		setMovieInfo({ ...movieInfo, director: profile });
-		resetSearch()
 	};
 
 	const updateWriters = (profile) => {
@@ -221,20 +215,8 @@ const MovieForm = () => {
 					</div>
 					<Label htmlFor="tags">Tags</Label>
 					<TagsInput value={tags} name="tags" onChange={updateTags} />
-
-					<div>
-						<Label htmlFor="director">Director</Label>
-						<LiveSearch
-							name="director"
-							value={director.name}
-							placeholder="Search profile..."
-							results={directorsProfile}
-							renderItem={renderItem}
-							onSelect={updateDirector}
-							onChange={handleProfileChange}
-							visible={directorsProfile.length}
-						/>
-					</div>
+					<DirectorSelector onSelect={updateDirector} />
+					
 					<div>
 						<div className="flex justify-between">
 							<LabelWithBadge badge={writers.length} htmlFor="writers">
@@ -327,17 +309,6 @@ const MovieForm = () => {
 				previousSelection={genres}
 			/>
 		</>
-	);
-};
-
-const Label = ({ children, htmlFor }) => {
-	return (
-		<label
-			htmlFor={htmlFor}
-			className="dark:text-dark-subtle text-light-subtle flex justify-center font-semibold"
-		>
-			{children}
-		</label>
 	);
 };
 

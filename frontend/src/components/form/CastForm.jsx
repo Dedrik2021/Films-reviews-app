@@ -3,8 +3,8 @@ import { useState } from 'react';
 import LiveSearch from '../LiveSearch';
 import { commonInputClasses } from '../../utils/theme';
 import { results } from '../admin/MovieForm';
-import { renderItem } from '../admin/MovieForm';
 import { useNotification } from '../../hooks';
+import { renderItem } from '../../utils/helper';
 
 // const cast = [{actor: 3, roles: "", leadActor: true}]
 const defaultCastInfo = {
