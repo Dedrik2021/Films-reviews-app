@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import TagsInput from './TagsInput';
-import LiveSearch from '../LiveSearch';
 import { commonInputClasses } from '../../utils/theme';
 import SubmitBtn from '../form/SubmitBtn';
 import { useNotification } from '../../hooks/index';
@@ -12,14 +11,11 @@ import PosterSelector from '../PosterSelector';
 import GenresSelector from '../GenresSelector';
 import GenresModal from '../Modals/GenresModal';
 import Selected from '../Selector';
-import { useSearch } from '../../hooks/index';
-import { searchActor } from '../../api/actor';
-import { renderItem } from '../../utils/helper';
 import Label from '../Label';
 import DirectorSelector from '../DirectorSelector';
 
-
 import { typeOptions, statusOptions, languageOptions } from '../../utils/options';
+import WritersSelector from '../WritersSelector';
 
 export const results = [
 	{
@@ -75,11 +71,6 @@ const MovieForm = () => {
 	const [showCastModal, setShowCastModal] = useState(false);
 	const [showGenresModal, setShowGenresModal] = useState(false);
 	const [selectedPosterForUI, setSelectedPosterForUI] = useState('');
-	const [writerName, setWriterName] = useState('');
-	const [writersProfile, setWritersProfile] = useState([])
-	const [directorsProfile, setDirectorsProfile] = useState([])
-
-	const {handleSearch, searching, resetSearch, results} = useSearch()
 
 	const { updateNotification } = useNotification();
 
@@ -121,7 +112,6 @@ const MovieForm = () => {
 			}
 		}
 		setMovieInfo({ ...movieInfo, writers: [...writers, profile] });
-		setWriterName("")
 	};
 
 	const hideWritersModal = () => {
@@ -171,19 +161,7 @@ const MovieForm = () => {
 		setShowGenresModal(true);
 	};
 
-	const handleProfileChange = ({target}) => {
-		const {name, value} = target
-		if (name === 'director') {
-			setMovieInfo({...movieInfo, director: {name: value}})
-			handleSearch(searchActor, value, setDirectorsProfile)
-		}
-		if (name === 'writers') {
-			setWriterName(value)
-			handleSearch(searchActor, value, setWritersProfile)
-		}
-	}
-
-	const { title, storyLine, director, writers, cast, tags, genres, type, language, status } =
+	const { title, storyLine, writers, cast, tags, genres, type, language, status } =
 		movieInfo;
 
 	return (
@@ -226,16 +204,7 @@ const MovieForm = () => {
 								View all
 							</ViewAllBtn>
 						</div>
-						<LiveSearch
-							name="writers"
-							placeholder="Search profile..."
-							results={writersProfile}
-							renderItem={renderItem}
-							onSelect={updateWriters}
-							onChange={handleProfileChange}
-							value={writerName}
-							visible={writersProfile.length}
-						/>
+						<WritersSelector onSelect={updateWriters} />
 					</div>
 					<div>
 						<div className="flex justify-between mb-2">
