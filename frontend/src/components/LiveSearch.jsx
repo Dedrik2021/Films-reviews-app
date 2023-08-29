@@ -18,7 +18,7 @@ const LiveSearch = ({
 	const [defaultValue, setDefaultValue] = useState("")
 
 	useEffect(() => {
-		if (value) setDefaultValue(value)
+		setDefaultValue(value)
 	}, [value])
 
 	const handleOnFocus = () => {
