@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 import LiveSearch from '../LiveSearch';
 import { commonInputClasses } from '../../utils/theme';
-import { results } from '../admin/MovieForm';
+// import { results } from '../admin/MovieForm';
 import { useNotification } from '../../hooks';
 import { renderItem } from '../../utils/helper';
+import { useSearch } from '../../hooks';
+import { searchActor } from '../../api/actor';
 
 // const cast = [{actor: 3, roles: "", leadActor: true}]
 const defaultCastInfo = {
@@ -15,9 +17,11 @@ const defaultCastInfo = {
 
 const CastForm = ({onSubmit}) => {
 	const [castInfo, setCastInfo] = useState({ ...defaultCastInfo });
+	const [profiles, setProfiles] = useState([])
 	const { leadActor, profile, roleAs } = castInfo;
 
     const {updateNotification} = useNotification()
+	const {handleSearch, resetSearch} = useSearch()
 
     const handleOnChange = ({target}) => {
         const {value, name, checked} = target
@@ -35,8 +39,18 @@ const CastForm = ({onSubmit}) => {
         if (!roleAs.trim()) return updateNotification('error', "Cast role is missing!")
 
         onSubmit(castInfo)
-        setCastInfo({...defaultCastInfo})
+        setCastInfo({...defaultCastInfo, profile: {name: ""}})
+		resetSearch()
+		setProfiles([])
     }
+
+	const handleProfileChange = ({target}) => {
+		const {value} = target
+		const {profile} = castInfo
+		profile.name = value
+		setCastInfo({...castInfo, ...profile})
+		handleSearch(searchActor, value, setProfiles)
+	}
 
 	return (
 		<div className="flex  flex-col space-x-2">
@@ -58,7 +72,7 @@ const CastForm = ({onSubmit}) => {
 				/>
 			</div>
 			<div className="flex items-center space-x-2">
-				<LiveSearch placeholder="Search Profile..." value={profile.name} results={results} onSelect={handleProfileSelect} renderItem={renderItem} />
+				<LiveSearch placeholder="Search Profile..." value={profile.name} results={profiles} onSelect={handleProfileSelect} renderItem={renderItem} onChange={handleProfileChange} />
 				<span className="dark:text-dark-subtle text-light-subtle font-semibold">as</span>
 
 				<div className="flex-grow">
