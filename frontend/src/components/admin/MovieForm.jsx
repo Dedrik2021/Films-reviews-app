@@ -34,6 +34,33 @@ const defaultMuvieInfo = {
 	status: '',
 };
 
+const validateMovie = (movieInfo) => {
+	const { title, storyLine, language, releseDate, status, type, genres, tags, cast } = movieInfo;
+	if (!title.trim()) return {error: "Title is missing!"}
+	if (!storyLine.trim()) return {error: "Story line is missing!"}
+	if (!language.trim()) return {error: "Language is missing!"}
+	if (!releseDate.trim()) return {error: "Relese date is missing!"}
+	if (!status.trim()) return {error: "Status is missing!"}
+	if (!type.trim()) return {error: "Type is missing!"}
+
+	if (!Array.isArray(genres)) return {error: "Genres are missing!"}
+	for (const gen of genres) {
+		if (!gen.trim()) return {error: "Invalid genres!"}
+	}
+
+	if (!Array.isArray(tags)) return {error: "Tags are missing!"}
+	for (const tag of tags) {
+		if (!tag.trim()) return {error: "Invalid tags!"}
+	}
+
+	if (!Array.isArray(cast)) return {error: "Cast and crew are missing!"}
+	for (const c of cast) {
+		if (typeof c !== 'object') return {error: "Invalid cast!"}
+	}
+
+	return {error: null}
+};
+
 const MovieForm = () => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
@@ -45,6 +72,9 @@ const MovieForm = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+
+		const { error } = validateMovie(movieInfo);
+		if (error) return console.log(error);
 
 		console.log(movieInfo);
 	};
@@ -130,8 +160,7 @@ const MovieForm = () => {
 		setShowGenresModal(true);
 	};
 
-	const { title, storyLine, writers, cast, tags, genres, type, language, status } =
-		movieInfo;
+	const { title, storyLine, writers, cast, tags, genres, type, language, status } = movieInfo;
 
 	return (
 		<>
@@ -163,7 +192,7 @@ const MovieForm = () => {
 					<Label htmlFor="tags">Tags</Label>
 					<TagsInput value={tags} name="tags" onChange={updateTags} />
 					<DirectorSelector onSelect={updateDirector} />
-					
+
 					<div>
 						<div className="flex justify-between">
 							<LabelWithBadge badge={writers.length} htmlFor="writers">
