@@ -58,40 +58,42 @@ const createMovie = async (req, res) => {
 		newMovie.writers = writers;
 	}
 
-	const {
-		secure_url: url,
-		public_id,
-		responsive_breakpoints,
-	} = await cloudinary.uploader.upload(file.path, {
-		transformation: {
-			width: 1280,
-			height: 1280,
-		},
-		responsive_breakpoints: {
-			create_derived: true,
-			max_width: 640,
-			max_images: 3,
-		},
-	});
+	if (fiel) {
+		const {
+			secure_url: url,
+			public_id,
+			responsive_breakpoints,
+		} = await cloudinary.uploader.upload(file.path, {
+			transformation: {
+				width: 1280,
+				height: 1280,
+			},
+			responsive_breakpoints: {
+				create_derived: true,
+				max_width: 640,
+				max_images: 3,
+			},
+		});
 
-	const finalPoster = { url, public_id, responsive: [] };
-	const { breakpoints } = responsive_breakpoints[0];
+		const finalPoster = { url, public_id, responsive: [] };
+		const { breakpoints } = responsive_breakpoints[0];
 
-	if (breakpoints.length) {
-		for (const imgObj of breakpoints) {
-			const { secure_url } = imgObj;
-			finalPoster.responsive.push(secure_url);
+		if (breakpoints.length) {
+			for (const imgObj of breakpoints) {
+				const { secure_url } = imgObj;
+				finalPoster.responsive.push(secure_url);
+			}
+			newMovie.poster = finalPoster;
 		}
+
+
+		await newMovie.save();
+
+		res.status(201).json({
+			id: newMovie._id,
+			title,
+		});
 	}
-
-	newMovie.poster = finalPoster;
-
-	await newMovie.save();
-
-	res.status(201).json({
-		id: newMovie._id,
-		title,
-	});
 };
 
 const updateMovieWithoutPoster = async (req, res) => {
