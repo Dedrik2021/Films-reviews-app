@@ -59,6 +59,10 @@ const MovieUpload = ({ visible, onClose }) => {
 		return `Upload progress ${uploadProgress}%`;
 	};
 
+	const handleSubmit = (data) => {
+		console.log(data);
+	}
+
 	return (
 		<ModalContainer visible={visible}>
 			{/* <UploadProgress
@@ -73,7 +77,7 @@ const MovieUpload = ({ visible, onClose }) => {
 				visible={!videoSelected}
 			/> */}
 
-			<MovieForm />
+			<MovieForm onSubmit={handleSubmit} />
 		</ModalContainer>
 	);
 };

@@ -15,6 +15,7 @@ import Label from '../Label';
 import DirectorSelector from '../DirectorSelector';
 import ViewAllButton from '../ViewAllButton';
 import LabelWithBadge from '../LabelWithBage';
+import { validateMovie } from '../../utils/validator';
 
 import { typeOptions, statusOptions, languageOptions } from '../../utils/options';
 import WritersSelector from '../WritersSelector';
@@ -34,34 +35,7 @@ const defaultMuvieInfo = {
 	status: '',
 };
 
-const validateMovie = (movieInfo) => {
-	const { title, storyLine, language, releseDate, status, type, genres, tags, cast } = movieInfo;
-	if (!title.trim()) return {error: "Title is missing!"}
-	if (!storyLine.trim()) return {error: "Story line is missing!"}
-	if (!language.trim()) return {error: "Language is missing!"}
-	if (!releseDate.trim()) return {error: "Relese date is missing!"}
-	if (!status.trim()) return {error: "Status is missing!"}
-	if (!type.trim()) return {error: "Type is missing!"}
-
-	if (!genres.length) return {error: "Genres are missing!"}
-	for (const gen of genres) {
-		if (!gen.trim()) return {error: "Invalid genres!"}
-	}
-
-	if (!tags.length) return {error: "Tags are missing!"}
-	for (const tag of tags) {
-		if (!tag.trim()) return {error: "Invalid tags!"}
-	}
-
-	if (!cast.length) return {error: "Cast and crew are missing!"}
-	for (const c of cast) {
-		if (typeof c !== 'object') return {error: "Invalid cast!"}
-	}
-
-	return {error: null}
-};
-
-const MovieForm = () => {
+const MovieForm = ({onSubmit}) => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
 	const [showCastModal, setShowCastModal] = useState(false);
@@ -74,9 +48,9 @@ const MovieForm = () => {
 		e.preventDefault();
 
 		const { error } = validateMovie(movieInfo);
-		if (error) return console.log(error);
+		if (error) return updateNotification('error', error);
 
-		console.log(movieInfo);
+		onSubmit(movieInfo);
 	};
 
 	const updatePosterForUI = (file) => {
