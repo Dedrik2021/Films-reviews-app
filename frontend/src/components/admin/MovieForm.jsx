@@ -43,17 +43,17 @@ const validateMovie = (movieInfo) => {
 	if (!status.trim()) return {error: "Status is missing!"}
 	if (!type.trim()) return {error: "Type is missing!"}
 
-	if (!Array.isArray(genres)) return {error: "Genres are missing!"}
+	if (!genres.length) return {error: "Genres are missing!"}
 	for (const gen of genres) {
 		if (!gen.trim()) return {error: "Invalid genres!"}
 	}
 
-	if (!Array.isArray(tags)) return {error: "Tags are missing!"}
+	if (!tags.length) return {error: "Tags are missing!"}
 	for (const tag of tags) {
 		if (!tag.trim()) return {error: "Invalid tags!"}
 	}
 
-	if (!Array.isArray(cast)) return {error: "Cast and crew are missing!"}
+	if (!cast.length) return {error: "Cast and crew are missing!"}
 	for (const c of cast) {
 		if (typeof c !== 'object') return {error: "Invalid cast!"}
 	}
