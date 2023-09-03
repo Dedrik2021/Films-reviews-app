@@ -3,7 +3,7 @@ import { AiOutlineCloudUpload } from 'react-icons/ai';
 import { useState } from 'react';
 
 import { useNotification } from '../../hooks';
-import { uploadTrailer } from '../../api/movie';
+import { uploadTrailer, uploadMovie } from '../../api/movie';
 import MovieForm from './MovieForm';
 import ModalContainer from '../Modals/ModalContainer';
 
@@ -41,11 +41,13 @@ const MovieUpload = ({ visible, onClose }) => {
 		return `Upload progress ${uploadProgress}%`;
 	};
 
-	const handleSubmit = (data) => {
-		if (!videoInfo.url || !videoInfo.public_id) return updateNotification('error', 'Trailer is missing!')
-		data.append('trailer', JSON.stringify(videoInfo))
-		console.log(data);
-	}
+	const handleSubmit = async (data) => {
+		if (!videoInfo.url || !videoInfo.public_id)
+			return updateNotification('error', 'Trailer is missing!');
+		data.append('trailer', JSON.stringify(videoInfo));
+		const res = await uploadMovie(data);
+		console.log(res);
+	};
 
 	return (
 		<ModalContainer visible={visible}>
@@ -54,14 +56,15 @@ const MovieUpload = ({ visible, onClose }) => {
 				message={getUploadProgressValue()}
 				width={uploadProgress}
 			/>
-
-			<TrailerSelector
-				onTypeError={handleTypeError}
-				handleChange={handleChange}
-				visible={!videoSelected}
-			/>
-
-			<MovieForm onSubmit={handleSubmit} />
+			{!videoSelected ? (
+				<TrailerSelector
+					onTypeError={handleTypeError}
+					handleChange={handleChange}
+					visible={!videoSelected}
+				/>
+			) : (
+				<MovieForm onSubmit={handleSubmit} />
+			)}
 		</ModalContainer>
 	);
 };
