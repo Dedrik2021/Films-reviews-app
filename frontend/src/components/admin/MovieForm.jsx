@@ -50,24 +50,35 @@ const MovieForm = ({onSubmit}) => {
 		const { error } = validateMovie(movieInfo);
 		if (error) return updateNotification('error', error);
 
-		const {tags, genres, writers, cast, director} = movieInfo
+		const {tags, genres, writers, cast, director, poster} = movieInfo
 		const formData = new FormData()
-		formData.append('tags', JSON.stringify(tags))
-		formData.append('genres', JSON.stringify(genres))
+
+		const finalMovieInfo = {
+			...movieInfo
+		}
+
+		finalMovieInfo.tags = JSON.stringify(tags)
+		finalMovieInfo.genres = JSON.stringify(genres)
 
 		const finalCast = cast.map(c => c.id)
-		formData.append('cast', JSON.stringify(finalCast))
+		finalMovieInfo.cast = JSON.stringify(finalCast)
 
 		if (writers.length) {
 			const finalWriters = writers.map(w => w.id)
-			formData.append('writers', JSON.stringify(finalWriters))
+			finalMovieInfo.writers = JSON.stringify(finalWriters)
 		}
 
 		if (director.id) {
-			formData.append('director', director.id)
+			finalMovieInfo.director = director.id
 		}
 
-		onSubmit(movieInfo);
+		if (poster) finalMovieInfo.poster = poster
+
+		for (const key in finalMovieInfo) {
+			formData.append(key, finalMovieInfo[key])
+		}
+
+		onSubmit(formData);
 	};
 
 	const updatePosterForUI = (file) => {
