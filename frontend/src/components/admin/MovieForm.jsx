@@ -35,7 +35,7 @@ const defaultMuvieInfo = {
 	status: '',
 };
 
-const MovieForm = ({onSubmit}) => {
+const MovieForm = ({onSubmit, busy}) => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
 	const [showCastModal, setShowCastModal] = useState(false);
@@ -227,7 +227,7 @@ const MovieForm = ({onSubmit}) => {
 						onChange={handleChange}
 					/>
 
-					<SubmitBtn onClick={handleSubmit} type="button">
+					<SubmitBtn busy={busy} onClick={handleSubmit} type="button">
 						Upload
 					</SubmitBtn>
 				</div>
