@@ -1,4 +1,5 @@
 import AppInfoBox from '../AppInfoBox';
+import LatestUploads from '../LatestUploads';
 
 const Dashboard = () => {
 	return (
@@ -6,6 +7,8 @@ const Dashboard = () => {
 			<AppInfoBox title="Total Uploads" subTitle="100" />
 			<AppInfoBox title="Total Reviews" subTitle="100" />
 			<AppInfoBox title="Total Users" subTitle="100" />
+
+			<LatestUploads/>
 		</div>
 	);
 };
