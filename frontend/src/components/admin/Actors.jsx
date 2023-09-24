@@ -14,8 +14,8 @@ const Actors = () => {
 
 	return (
 		<div className="grid grid-cols-4 gap-3 my-5">
-			<div className="bg-white shadow dark:shadow dark:bg-secondary rounded h-20 overflow-hidden">
-				<div className="flex cursor-pointer relative" onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
+			<div className="bg-white shadow dark:shadow dark:bg-secondary rounded overflow-hidden">
+				<div className="flex cursor-pointer h-20 relative" onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseLeave}>
 					<img
 						className="w-20 object-cover aspect-square"
 						src="https://img.freepik.com/premium-photo/life-style-tehnology-travel-concept-bearded-man-wearing-white-tshirt-with-digital-camera-isolated-white-background_118342-60744.jpg?w=360"
@@ -33,11 +33,11 @@ const Actors = () => {
 						</p>
 					</div>
 					{showOptions ? (
-						<div className="absolute inset-0 bg-primary bg-opacity-25 backdrop-blur-sm">
-							<button type='button'>
+						<div className="absolute inset-0 bg-primary bg-opacity-25 backdrop-blur-sm flex justify-center items-center space-x-5">
+							<button className='p-2 rounded-full bg-white text-primary hover:opacity-80 transition' type='button'>
 								<BsTrash/>
 							</button>
-							<button type='button'>
+							<button className='p-2 rounded-full bg-white text-primary hover:opacity-80 transition' type='button'>
 								<BsPencilSquare/>
 							</button>
 							
