@@ -11,12 +11,12 @@ const createActor = async (req, res) => {
 	const file = req.file;
 	const newActor = new Actor({ name, about, gender });
 
-	if (file) { 
-		newActor.avatar = await uploadImageToCloud(file.path)
+	if (file) {
+		newActor.avatar = await uploadImageToCloud(file.path);
 	}
 	await newActor.save();
 
-	res.status(201).json({actor: formatActor(newActor)});
+	res.status(201).json({ actor: formatActor(newActor) });
 };
 
 const updateActor = async (req, res) => {
@@ -76,15 +76,15 @@ const searchActor = async (req, res) => {
 	const { query } = req;
 	const result = await Actor.find({ $text: { $search: `"${query.name}"` } });
 
-    const actors = result.map(actor => formatActor(actor))
+	const actors = result.map((actor) => formatActor(actor));
 
-	res.status(201).json({results: actors});
+	res.status(201).json({ results: actors });
 };
 
 const getLatestActors = async (req, res) => {
 	const result = await Actor.find().sort({ ceratedAt: '-1' }).limit(12);
 
-    const actors = result.map(actor => formatActor(actor))
+	const actors = result.map((actor) => formatActor(actor));
 
 	res.status(201).json(actors);
 };
@@ -100,4 +100,25 @@ const getSingleActor = async (req, res) => {
 	res.status(201).json(formatActor(actor));
 };
 
-export { createActor, updateActor, removeActor, searchActor, getLatestActors, getSingleActor };
+const getActors = async (req, res) => {
+	const { pageNo, limit } = req.query;
+
+	const actors = await Actor.find({})
+		.sort({createdAt: -1})
+		.skip(parseInt(pageNo) * parseInt(limit))
+		.limit(parseInt(limit));
+
+	res.status(201).json({
+		profiles: formatActor(actors)
+	})
+};
+
+export {
+	createActor,
+	updateActor,
+	removeActor,
+	searchActor,
+	getLatestActors,
+	getSingleActor,
+	getActors,
+};
