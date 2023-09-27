@@ -4,25 +4,24 @@ import { BsTrash, BsPencilSquare } from 'react-icons/bs';
 import { getActors } from '../../api/actor';
 import { useNotification } from '../../hooks';
 
-let pageNo = 0
-const limit = 20
+let pageNo = 0;
+const limit = 20;
 
 const Actors = () => {
+	const [actors, setActors] = useState([]);
 
-	const [actors, setActors] = useState([])
-
-	const {updateNotification} = useNotification()
+	const { updateNotification } = useNotification();
 
 	const fetchActors = async () => {
-		const {profiles, error} = await getActors(pageNo, limit)
-		if (error) return updateNotification("error", error)
+		const { profiles, error } = await getActors(pageNo, limit);
+		if (error) return updateNotification('error', error);
 
-		setActors([...profiles])
-	}
+		setActors([...profiles]);
+	};
 
 	useEffect(() => {
-		fetchActors()
-	}, [])
+		fetchActors();
+	}, []);
 
 	// <ActorProfile profile={{
 	// 	name: "Jhon Doe",
@@ -31,15 +30,21 @@ const Actors = () => {
 	// }} />
 
 	return (
-		<div className="grid grid-cols-4 gap-5 my-5">
-			{actors.map(actor => {
-				return <ActorProfile profile={actor} key={actor.id}/>
-			})}
+		<div className="p-5">
+			<div className="grid grid-cols-4 gap-5">
+				{actors.map((actor) => {
+					return <ActorProfile profile={actor} key={actor.id} />;
+				})}
+			</div>
+			<div className="flex justify-end items-center space-x-3 mt-5">
+				<button className='text-primary dark:text-white hover:underline translate' type='button'>Prev</button>
+				<button className='text-primary dark:text-white hover:underline translate' type='button'>Next</button>
+			</div>
 		</div>
 	);
 };
 
-const ActorProfile = ({profile}) => {
+const ActorProfile = ({ profile }) => {
 	const [showOptions, setShowOptions] = useState(false);
 
 	const handleOnMouseEnter = () => {
@@ -50,8 +55,8 @@ const ActorProfile = ({profile}) => {
 		setShowOptions(false);
 	};
 
-	if (!profile) return null
-	const {avatar, name, about = ""} = profile
+	if (!profile) return null;
+	const { avatar, name, about = '' } = profile;
 
 	return (
 		<div className="bg-white shadow dark:shadow dark:bg-secondary rounded overflow-hidden">
@@ -60,18 +65,11 @@ const ActorProfile = ({profile}) => {
 				onMouseEnter={handleOnMouseEnter}
 				onMouseLeave={handleOnMouseLeave}
 			>
-				<img
-					className="w-20 object-cover aspect-square"
-					src={avatar}
-					alt={name}
-				/>
+				<img className="w-20 object-cover aspect-square" src={avatar} alt={name} />
 
 				<div className="px-2">
 					<h2 className="text-xl text-primary dark:text-white font-semibold">{name}</h2>
-					<p className="text-primary dark:text-white">
-						{about.substring(0, 50)}
-						
-					</p>
+					<p className="text-primary dark:text-white">{about.substring(0, 50)}</p>
 				</div>
 				<Options visible={showOptions} />
 			</div>
