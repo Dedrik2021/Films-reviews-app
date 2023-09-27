@@ -1,14 +1,27 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BsTrash, BsPencilSquare } from 'react-icons/bs';
+import { getActors } from '../../api/actor';
 
 const Actors = () => {
+
+	const fetchActors = async () => {
+		const res = await getActors(0, 5)
+		console.log(res);
+	}
+
+	useEffect(() => {
+		fetchActors()
+	}, [])
+
+	// <ActorProfile profile={{
+	// 	name: "Jhon Doe",
+	// 	avatar: "https://img.freepik.com/premium-photo/life-style-tehnology-travel-concept-bearded-man-wearing-white-tshirt-with-digital-camera-isolated-white-background_118342-60744.jpg?w=360",
+	// 	about: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque voluptate quas veritatis enim debitis! Quisquam repellat temporibus explicabo quia? Porro, accusamus? Ab, consequuntur. Accusamus dolorum quae expedita eius velit nisi?"
+	// }} />
+
 	return (
 		<div className="grid grid-cols-4 gap-3 my-5">
-			<ActorProfile profile={{
-				name: "Jhon Doe",
-				avatar: "https://img.freepik.com/premium-photo/life-style-tehnology-travel-concept-bearded-man-wearing-white-tshirt-with-digital-camera-isolated-white-background_118342-60744.jpg?w=360",
-				about: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque voluptate quas veritatis enim debitis! Quisquam repellat temporibus explicabo quia? Porro, accusamus? Ab, consequuntur. Accusamus dolorum quae expedita eius velit nisi?"
-			}} />
+			
 		</div>
 	);
 };

@@ -32,4 +32,19 @@ const searchActor = async (query) => {
 	}
 }
 
-export {createActor, searchActor}
+const getActors = async (pageNo, limit) => {
+    const token = getToken()
+	try {
+		const { data } = await client(`/actor/actors?pageNo=${pageNo}&limit=${limit}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'multipart/form-data',
+			}
+		});
+		return data;
+	} catch (error) {
+		return catchError(error)
+	}
+}
+
+export {createActor, searchActor, getActors}
