@@ -5,7 +5,7 @@ import { getActors } from '../../api/actor';
 const Actors = () => {
 
 	const fetchActors = async () => {
-		const res = await getActors(0, 5)
+		const res = await getActors(0, 3)
 		console.log(res);
 	}
 

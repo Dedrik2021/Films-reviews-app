@@ -108,8 +108,10 @@ const getActors = async (req, res) => {
 		.skip(parseInt(pageNo) * parseInt(limit))
 		.limit(parseInt(limit));
 
+	const profiles = actors.map((actor) => formatActor(actor))
+
 	res.status(201).json({
-		profiles: formatActor(actors)
+		profiles
 	})
 };
 
