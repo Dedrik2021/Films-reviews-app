@@ -4,7 +4,7 @@ import { BsTrash, BsPencilSquare } from 'react-icons/bs';
 import { getActors } from '../../api/actor';
 import { useNotification } from '../../hooks';
 
-let pageNo = 0;
+let currentPageNo = 0;
 const limit = 20;
 
 const Actors = () => {
@@ -12,7 +12,7 @@ const Actors = () => {
 
 	const { updateNotification } = useNotification();
 
-	const fetchActors = async () => {
+	const fetchActors = async (pageNo) => {
 		const { profiles, error } = await getActors(pageNo, limit);
 		if (error) return updateNotification('error', error);
 
@@ -20,8 +20,17 @@ const Actors = () => {
 	};
 
 	useEffect(() => {
-		fetchActors();
+		fetchActors(currentPageNo);
 	}, []);
+
+	const handleOnNextClick = () => {
+		currentPageNo += 1
+		fetchActors(currentPageNo)
+	}
+
+	const handleOnPrevClick = () => {
+
+	}
 
 	// <ActorProfile profile={{
 	// 	name: "Jhon Doe",
@@ -37,8 +46,8 @@ const Actors = () => {
 				})}
 			</div>
 			<div className="flex justify-end items-center space-x-3 mt-5">
-				<button className='text-primary dark:text-white hover:underline translate' type='button'>Prev</button>
-				<button className='text-primary dark:text-white hover:underline translate' type='button'>Next</button>
+				<button className='text-primary dark:text-white hover:underline translate' type='button' onClick={handleOnPrevClick}>Prev</button>
+				<button className='text-primary dark:text-white hover:underline translate' type='button' onClick={handleOnNextClick}>Next</button>
 			</div>
 		</div>
 	);
