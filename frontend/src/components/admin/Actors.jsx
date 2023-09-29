@@ -9,12 +9,17 @@ const limit = 20;
 
 const Actors = () => {
 	const [actors, setActors] = useState([]);
+	const [reachedToEnd, setReachedToEnd] = useState(false);
 
 	const { updateNotification } = useNotification();
 
 	const fetchActors = async (pageNo) => {
 		const { profiles, error } = await getActors(pageNo, limit);
 		if (error) return updateNotification('error', error);
+
+		if (!profiles.length) {
+			return setReachedToEnd(true)
+		}
 
 		setActors([...profiles]);
 	};
@@ -24,6 +29,7 @@ const Actors = () => {
 	}, []);
 
 	const handleOnNextClick = () => {
+		if (reachedToEnd) return
 		currentPageNo += 1
 		fetchActors(currentPageNo)
 	}
