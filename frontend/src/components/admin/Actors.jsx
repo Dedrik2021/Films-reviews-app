@@ -18,6 +18,7 @@ const Actors = () => {
 		if (error) return updateNotification('error', error);
 
 		if (!profiles.length) {
+			currentPageNo = pageNo - 1
 			return setReachedToEnd(true)
 		}
 
@@ -35,7 +36,9 @@ const Actors = () => {
 	}
 
 	const handleOnPrevClick = () => {
-
+		if (currentPageNo <= 0) return
+		currentPageNo -= 1
+		fetchActors(currentPageNo)
 	}
 
 	// <ActorProfile profile={{
