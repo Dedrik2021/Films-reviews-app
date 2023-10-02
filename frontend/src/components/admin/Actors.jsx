@@ -64,6 +64,7 @@ const Actors = () => {
 
 const ActorProfile = ({ profile }) => {
 	const [showOptions, setShowOptions] = useState(false);
+	const acceptNameLength = 15
 
 	const handleOnMouseEnter = () => {
 		setShowOptions(true);
@@ -74,6 +75,13 @@ const ActorProfile = ({ profile }) => {
 	};
 
 	if (!profile) return null;
+
+	const getName = (name) => {
+		if (name.length <= acceptNameLength) return
+
+		return name.substring(0, acceptNameLength) + '...'
+	}
+
 	const { avatar, name, about = '' } = profile;
 
 	return (
@@ -86,7 +94,7 @@ const ActorProfile = ({ profile }) => {
 				<img className="w-20 object-cover aspect-square" src={avatar} alt={name} />
 
 				<div className="px-2">
-					<h2 className="text-xl text-primary dark:text-white font-semibold">{name}</h2>
+					<h2 className="text-xl text-primary dark:text-white font-semibold whitespace-nowrap">{getName(name)}</h2>
 					<p className="text-primary dark:text-white">{about.substring(0, 50)}</p>
 				</div>
 				<Options visible={showOptions} />
