@@ -3,6 +3,7 @@ import { BsTrash, BsPencilSquare } from 'react-icons/bs';
 
 import { getActors } from '../../api/actor';
 import { useNotification } from '../../hooks';
+import NextAndPrevBtns from '../NextAndPrevBtns';
 
 let currentPageNo = 0;
 const limit = 20;
@@ -54,10 +55,11 @@ const Actors = () => {
 					return <ActorProfile profile={actor} key={actor.id} />;
 				})}
 			</div>
-			<div className="flex justify-end items-center space-x-3 mt-5">
-				<button className='text-primary dark:text-white hover:underline translate' type='button' onClick={handleOnPrevClick}>Prev</button>
-				<button className='text-primary dark:text-white hover:underline translate' type='button' onClick={handleOnNextClick}>Next</button>
-			</div>
+			<NextAndPrevBtns
+				onNextClick={handleOnNextClick}
+				onPrevClick={handleOnPrevClick}
+				className="mt-5"
+			/>
 		</div>
 	);
 };
