@@ -86,7 +86,6 @@ const createMovie = async (req, res) => {
 			newMovie.poster = finalPoster;
 		}
 
-
 		await newMovie.save();
 
 		res.status(201).json({
@@ -265,4 +264,30 @@ const removeMovie = async (req, res) => {
 	res.status(201).json({ message: 'Movie removed successfully!' });
 };
 
-export { uploadTrailer, createMovie, updateMovieWithoutPoster, updateMovieWithPoster, removeMovie };
+const getMovies = async (req, res) => {
+	const { pageNo = 0, limit = 10 } = req.params;
+
+	const movies = await Movie.find({})
+		.sort({ createdAt: -1 })
+		.skip(parseInt(pageNo) * parseInt(limit))
+		.limit(parseInt(limit));
+
+	const results = movies.map((movie) => ({
+		id: movie._id,
+		title: movie.title,
+		poster: movie.poster?.url,
+		genres: movie.genres,
+		status: movie.status,
+	}));
+
+	res.status(201).json({movies: results})
+};
+
+export {
+	uploadTrailer,
+	createMovie,
+	updateMovieWithoutPoster,
+	updateMovieWithPoster,
+	removeMovie,
+	getMovies,
+};
