@@ -265,7 +265,7 @@ const removeMovie = async (req, res) => {
 };
 
 const getMovies = async (req, res) => {
-	const { pageNo = 0, limit = 10 } = req.params;
+	const { pageNo = 0, limit = 10 } = req.query;
 
 	const movies = await Movie.find({})
 		.sort({ createdAt: -1 })
