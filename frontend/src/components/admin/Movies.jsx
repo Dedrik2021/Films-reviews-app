@@ -37,7 +37,11 @@ const Movies = () => {
     }
 
     const handleOnPrevClick = () => {
+        if (currentPageNo <= 0) return
+        if (rachedToEnd) setRachedToEnd(false)
 
+        currentPageNo -= 1
+        fetchMovies(currentPageNo)
     }
 
     return ( 
