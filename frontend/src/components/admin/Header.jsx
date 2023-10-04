@@ -52,7 +52,7 @@ const CreateOptions = ({ visible, options, onClose }) => {
 	if (!visible) return null;
 
 	return (
-		<div className="absolute right-0 top-12 flex flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg animate-scale">
+		<div className="absolute right-0 top-12 flex z-50 flex-col space-y-3 p-5 dark:bg-secondary bg-white drop-shadow-lg animate-scale">
             {options.map(({title, onClick}) => {
                 return <Option key={title} onClick={() => handleClick(onClick)}>{title}</Option>
             })}

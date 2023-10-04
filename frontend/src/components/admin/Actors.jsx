@@ -38,6 +38,7 @@ const Actors = () => {
 
 	const handleOnPrevClick = () => {
 		if (currentPageNo <= 0) return
+		if (reachedToEnd) setReachedToEnd(false)
 		currentPageNo -= 1
 		fetchActors(currentPageNo)
 	}
@@ -97,7 +98,7 @@ const ActorProfile = ({ profile }) => {
 
 				<div className="px-2">
 					<h2 className="text-xl text-primary dark:text-white font-semibold whitespace-nowrap">{getName(name)}</h2>
-					<p className="text-primary dark:text-white">{about.substring(0, 50)}</p>
+					<p className="text-primary dark:text-white opacity-70">{about.substring(0, 50)}</p>
 				</div>
 				<Options visible={showOptions} />
 			</div>
