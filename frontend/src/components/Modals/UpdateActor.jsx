@@ -5,13 +5,13 @@ import ActorForm from '../form/ActorForm';
 import { createActor } from '../../api/actor';
 import { useNotification } from '../../hooks';
 
-const UpdateActor = ({ visible, onClose }) => {
+const UpdateActor = ({ visible, onClose, initialState }) => {
 	const { updateNotification } = useNotification();
 	const [busy, setBusy] = useState(false);
 
 	const handleSubmit = async (data) => {
 		setBusy(true);
-		const { error, actor } = await createActor(data);
+		const { error, actor } = await createActor(initialState);
 		setBusy(false);
 		if (error) return updateNotification('error', error);
 		updateNotification('success', 'Actor created successfully!');
@@ -25,6 +25,7 @@ const UpdateActor = ({ visible, onClose }) => {
 				busy={busy}
 				title="Update Actor"
 				btnTitle="Update"
+                initialState={initialState}
 			/>
 		</ModalContainer>
 	);

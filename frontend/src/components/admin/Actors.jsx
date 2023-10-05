@@ -12,7 +12,8 @@ const limit = 20;
 const Actors = () => {
 	const [actors, setActors] = useState([]);
 	const [reachedToEnd, setReachedToEnd] = useState(false);
-	const [showUpdateModal, setShowUpdateModal] = useState(false)
+	const [showUpdateModal, setShowUpdateModal] = useState(false);
+	const [selectedProfile, setSelectedProfile] = useState(null);
 
 	const { updateNotification } = useNotification();
 
@@ -46,13 +47,13 @@ const Actors = () => {
 	};
 
 	const handleOnEditClick = (actor) => {
-		setShowUpdateModal(true)
-		console.log(actor);
+		setShowUpdateModal(true);
+		setSelectedProfile(actor);
 	};
 
 	const hideUpdateModal = () => {
-		setShowUpdateModal(false)
-	}
+		setShowUpdateModal(false);
+	};
 
 	// <ActorProfile profile={{
 	// 	name: "Jhon Doe",
@@ -80,7 +81,11 @@ const Actors = () => {
 					className="mt-5"
 				/>
 			</div>
-			<UpdateActor visible={showUpdateModal} onClose={hideUpdateModal}/>
+			<UpdateActor
+				visible={showUpdateModal}
+				onClose={hideUpdateModal}
+				initialState={selectedProfile}
+			/>
 		</>
 	);
 };

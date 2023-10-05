@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import {ImSpinner3} from 'react-icons/im'
+import { useState, useEffect } from 'react';
+import { ImSpinner3 } from 'react-icons/im';
 
 import { commonInputClasses } from '../../utils/theme';
 import PosterSelector from '../PosterSelector';
@@ -20,20 +20,21 @@ const genderOptions = [
 ];
 
 const validateActor = (actor) => {
-    const {about, name, avatar, gender} = actor
+	const { about, name, avatar, gender } = actor;
 
-    if (!name.trim()) return {error: "Actor name is missing!"}
-    if (!about.trim()) return {error: "Actor section is empty!"}
-    if (!gender.trim()) return {error: "Actor gender is missing!"}
-    if (avatar && !avatar.type?.startsWith("image")) return {error: "Invalid Image / Avatar file!"}
-    return {error: null}
-}
+	if (!name.trim()) return { error: 'Actor name is missing!' };
+	if (!about.trim()) return { error: 'Actor section is empty!' };
+	if (!gender.trim()) return { error: 'Actor gender is missing!' };
+	if (avatar && !avatar.type?.startsWith('image'))
+		return { error: 'Invalid Image / Avatar file!' };
+	return { error: null };
+};
 
-const ActorForm = ({ title, btnTitle, busy, onSubmit }) => {
+const ActorForm = ({ title, initialState, btnTitle, busy, onSubmit }) => {
 	const [actorInfo, setActorInfo] = useState({ ...defaultActorInfo });
 	const [selectedAvatarForUI, setSelectedAvatarForUI] = useState('');
 
-    const {updateNotification} = useNotification()
+	const { updateNotification } = useNotification();
 
 	const { name, about, gender } = actorInfo;
 
@@ -55,15 +56,22 @@ const ActorForm = ({ title, btnTitle, busy, onSubmit }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		const {error} = validateActor(actorInfo);
-        if (error) return updateNotification('error', error)
+		const { error } = validateActor(actorInfo);
+		if (error) return updateNotification('error', error);
 
-        const formData = new FormData()
-        for (let key in actorInfo) {
-            if (key) formData.append(key, actorInfo[key])
-        }
-        onSubmit(formData)
+		const formData = new FormData();
+		for (let key in actorInfo) {
+			if (key) formData.append(key, actorInfo[key]);
+		}
+		onSubmit(formData);
 	};
+
+	useState(() => {
+		if (initialState) {
+			setActorInfo({...initialState, avatar: null});
+			setSelectedAvatarForUI(initialState.avatar)
+		}
+	}, [initialState]);
 
 	return (
 		<form className="dark:bg-primary bg-white p-3 w-[35rem] rounded" onSubmit={handleSubmit}>
@@ -73,7 +81,7 @@ const ActorForm = ({ title, btnTitle, busy, onSubmit }) => {
 					type="submit"
 					className="h-8 w-24 bg-primary text-white dark:bg-white dark:text-primary hover:opacity-80 transition rounded flex items-center justify-center"
 				>
-					{busy ? <ImSpinner3 className="animate-spin"/> : btnTitle}
+					{busy ? <ImSpinner3 className="animate-spin" /> : btnTitle}
 				</button>
 			</div>
 			<div className="flex space-x-2">
