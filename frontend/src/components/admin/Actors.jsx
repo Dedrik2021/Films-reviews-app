@@ -43,6 +43,10 @@ const Actors = () => {
 		fetchActors(currentPageNo)
 	}
 
+	const handleOnEditClick = (actor) => {
+		console.log(actor);
+	}
+
 	// <ActorProfile profile={{
 	// 	name: "Jhon Doe",
 	// 	avatar: "https://img.freepik.com/premium-photo/life-style-tehnology-travel-concept-bearded-man-wearing-white-tshirt-with-digital-camera-isolated-white-background_118342-60744.jpg?w=360",
@@ -53,7 +57,7 @@ const Actors = () => {
 		<div className="p-5">
 			<div className="grid grid-cols-4 gap-5">
 				{actors.map((actor) => {
-					return <ActorProfile profile={actor} key={actor.id} />;
+					return <ActorProfile profile={actor} key={actor.id} onEditClick={() => handleOnEditClick(actor)} />;
 				})}
 			</div>
 			<NextAndPrevBtns
@@ -65,7 +69,7 @@ const Actors = () => {
 	);
 };
 
-const ActorProfile = ({ profile }) => {
+const ActorProfile = ({ profile, onEditClick }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const acceptNameLength = 15
 
@@ -100,7 +104,7 @@ const ActorProfile = ({ profile }) => {
 					<h2 className="text-xl text-primary dark:text-white font-semibold whitespace-nowrap">{getName(name)}</h2>
 					<p className="text-primary dark:text-white opacity-70">{about.substring(0, 50)}</p>
 				</div>
-				<Options visible={showOptions} />
+				<Options onEditClick={onEditClick} visible={showOptions} />
 			</div>
 		</div>
 	);
