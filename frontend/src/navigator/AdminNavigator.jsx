@@ -34,7 +34,7 @@ const AdminNavigator = () => {
 		<>
 			<div className="flex bg-white dark:bg-primary">
 				<Navbar />
-				<div className="flex-1 p-2 max-w-screen-xl">
+				<div className="flex-1 max-w-screen-xl">
 					<Header
 						onAddActorClick={displayActorUploadModal}
 						onAddMovieClick={displayMovieUploadModal}

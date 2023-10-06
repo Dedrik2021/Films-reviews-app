@@ -5,6 +5,7 @@ import { getActors } from '../../api/actor';
 import { useNotification } from '../../hooks';
 import NextAndPrevBtns from '../NextAndPrevBtns';
 import UpdateActor from '../Modals/UpdateActor';
+import AppSearchForm from '../form/AppSearchForm';
 
 let currentPageNo = 0;
 const limit = 20;
@@ -56,20 +57,23 @@ const Actors = () => {
 	};
 
 	const handleOnActorUpdate = (profile) => {
-		const updatedActors = actors.map(actor => {
+		const updatedActors = actors.map((actor) => {
 			if (profile.id === actor.id) {
-				return profile
+				return profile;
 			}
 
-			return actor
-		})
+			return actor;
+		});
 
-		setActors([...updatedActors])
+		setActors([...updatedActors]);
 	};
 
 	return (
 		<>
 			<div className="p-5">
+				<div className="flex justify-end mb-5">
+					<AppSearchForm placeholder="Search Actors..." />
+				</div>
 				<div className="grid grid-cols-4 gap-5">
 					{actors.map((actor) => {
 						return (
