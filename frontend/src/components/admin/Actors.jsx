@@ -55,11 +55,17 @@ const Actors = () => {
 		setShowUpdateModal(false);
 	};
 
-	// <ActorProfile profile={{
-	// 	name: "Jhon Doe",
-	// 	avatar: "https://img.freepik.com/premium-photo/life-style-tehnology-travel-concept-bearded-man-wearing-white-tshirt-with-digital-camera-isolated-white-background_118342-60744.jpg?w=360",
-	// 	about: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque voluptate quas veritatis enim debitis! Quisquam repellat temporibus explicabo quia? Porro, accusamus? Ab, consequuntur. Accusamus dolorum quae expedita eius velit nisi?"
-	// }} />
+	const handleOnActorUpdate = (profile) => {
+		const updatedActors = actors.map(actor => {
+			if (profile.id === actor.id) {
+				return profile
+			}
+
+			return actor
+		})
+
+		setActors([...updatedActors])
+	};
 
 	return (
 		<>
@@ -85,6 +91,7 @@ const Actors = () => {
 				visible={showUpdateModal}
 				onClose={hideUpdateModal}
 				initialState={selectedProfile}
+				onSuccess={handleOnActorUpdate}
 			/>
 		</>
 	);
