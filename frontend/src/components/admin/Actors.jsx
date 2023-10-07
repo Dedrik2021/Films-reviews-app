@@ -1,22 +1,25 @@
 import { useState, useEffect } from 'react';
 import { BsTrash, BsPencilSquare } from 'react-icons/bs';
 
-import { getActors } from '../../api/actor';
+import { getActors, searchActor } from '../../api/actor';
 import { useNotification } from '../../hooks';
 import NextAndPrevBtns from '../NextAndPrevBtns';
 import UpdateActor from '../Modals/UpdateActor';
 import AppSearchForm from '../form/AppSearchForm';
+import { useSearch } from '../../hooks';
 
 let currentPageNo = 0;
 const limit = 20;
 
 const Actors = () => {
 	const [actors, setActors] = useState([]);
+	const [results, setResults] = useState([]);
 	const [reachedToEnd, setReachedToEnd] = useState(false);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [selectedProfile, setSelectedProfile] = useState(null);
 
 	const { updateNotification } = useNotification();
+	const { handleSearch } = useSearch();
 
 	const fetchActors = async (pageNo) => {
 		const { profiles, error } = await getActors(pageNo, limit);
@@ -69,8 +72,8 @@ const Actors = () => {
 	};
 
 	const handleOnSubmit = (value) => {
-		console.log(value);
-	}
+		handleSearch(searchActor, value, setResults);
+	};
 
 	return (
 		<>
@@ -79,21 +82,33 @@ const Actors = () => {
 					<AppSearchForm placeholder="Search Actors..." onSubmit={handleOnSubmit} />
 				</div>
 				<div className="grid grid-cols-4 gap-5">
-					{actors.map((actor) => {
-						return (
-							<ActorProfile
-								profile={actor}
-								key={actor.id}
-								onEditClick={() => handleOnEditClick(actor)}
-							/>
-						);
-					})}
+					{results.length
+						? results.map((actor) => {
+								return (
+									<ActorProfile
+										profile={actor}
+										key={actor.id}
+										onEditClick={() => handleOnEditClick(actor)}
+									/>
+								);
+						})
+						: actors.map((actor) => {
+								return (
+									<ActorProfile
+										profile={actor}
+										key={actor.id}
+										onEditClick={() => handleOnEditClick(actor)}
+									/>
+								);
+						})}
 				</div>
-				<NextAndPrevBtns
-					onNextClick={handleOnNextClick}
-					onPrevClick={handleOnPrevClick}
-					className="mt-5"
-				/>
+				{!results.length ? (
+					<NextAndPrevBtns
+						onNextClick={handleOnNextClick}
+						onPrevClick={handleOnPrevClick}
+						className="mt-5"
+					/>
+				) : null}
 			</div>
 			<UpdateActor
 				visible={showUpdateModal}
