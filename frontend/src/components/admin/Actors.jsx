@@ -79,7 +79,7 @@ const Actors = () => {
 		<>
 			<div className="p-5">
 				<div className="flex justify-end mb-5">
-					<AppSearchForm placeholder="Search Actors..." onSubmit={handleOnSubmit} />
+					<AppSearchForm showResetIcon={results.length} placeholder="Search Actors..." onSubmit={handleOnSubmit} />
 				</div>
 				<div className="grid grid-cols-4 gap-5">
 					{results.length
