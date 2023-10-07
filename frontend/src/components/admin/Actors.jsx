@@ -19,7 +19,7 @@ const Actors = () => {
 	const [selectedProfile, setSelectedProfile] = useState(null);
 
 	const { updateNotification } = useNotification();
-	const { handleSearch } = useSearch();
+	const { handleSearch, resetSearch } = useSearch();
 
 	const fetchActors = async (pageNo) => {
 		const { profiles, error } = await getActors(pageNo, limit);
@@ -75,11 +75,16 @@ const Actors = () => {
 		handleSearch(searchActor, value, setResults);
 	};
 
+	const handleSearchOnReset = () => {
+		resetSearch()
+		setResults([])
+	}
+
 	return (
 		<>
 			<div className="p-5">
 				<div className="flex justify-end mb-5">
-					<AppSearchForm showResetIcon={results.length} placeholder="Search Actors..." onSubmit={handleOnSubmit} />
+					<AppSearchForm onReset={handleSearchOnReset} showResetIcon={results.length} placeholder="Search Actors..." onSubmit={handleOnSubmit} />
 				</div>
 				<div className="grid grid-cols-4 gap-5">
 					{results.length
