@@ -68,11 +68,15 @@ const Actors = () => {
 		setActors([...updatedActors]);
 	};
 
+	const handleOnSubmit = (value) => {
+		console.log(value);
+	}
+
 	return (
 		<>
 			<div className="p-5">
 				<div className="flex justify-end mb-5">
-					<AppSearchForm placeholder="Search Actors..." />
+					<AppSearchForm placeholder="Search Actors..." onSubmit={handleOnSubmit} />
 				</div>
 				<div className="grid grid-cols-4 gap-5">
 					{actors.map((actor) => {
