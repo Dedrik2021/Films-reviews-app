@@ -19,7 +19,7 @@ const Actors = () => {
 	const [selectedProfile, setSelectedProfile] = useState(null);
 
 	const { updateNotification } = useNotification();
-	const { handleSearch, resetSearch } = useSearch();
+	const { handleSearch, resetSearch, resultNotFound } = useSearch();
 
 	const fetchActors = async (pageNo) => {
 		const { profiles, error } = await getActors(pageNo, limit);
@@ -76,37 +76,48 @@ const Actors = () => {
 	};
 
 	const handleSearchOnReset = () => {
-		resetSearch()
-		setResults([])
-	}
+		resetSearch();
+		setResults([]);
+	};
 
 	return (
 		<>
 			<div className="p-5">
 				<div className="flex justify-end mb-5">
-					<AppSearchForm onReset={handleSearchOnReset} showResetIcon={results.length} placeholder="Search Actors..." onSubmit={handleOnSubmit} />
+					<AppSearchForm
+						onReset={handleSearchOnReset}
+						showResetIcon={results.length}
+						placeholder="Search Actors..."
+						onSubmit={handleOnSubmit}
+					/>
 				</div>
-				<div className="grid grid-cols-4 gap-5">
-					{results.length
-						? results.map((actor) => {
-								return (
-									<ActorProfile
-										profile={actor}
-										key={actor.id}
-										onEditClick={() => handleOnEditClick(actor)}
-									/>
-								);
-						})
-						: actors.map((actor) => {
-								return (
-									<ActorProfile
-										profile={actor}
-										key={actor.id}
-										onEditClick={() => handleOnEditClick(actor)}
-									/>
-								);
-						})}
-				</div>
+				{resultNotFound ? (
+					<h2 className="font-semibold text-3xl text-secondary dark:text-white text-center py-5 opacity-40">
+						Result Not Found
+					</h2>
+				) : (
+					<div className="grid grid-cols-4 gap-5">
+						{results.length
+							? results.map((actor) => {
+									return (
+										<ActorProfile
+											profile={actor}
+											key={actor.id}
+											onEditClick={() => handleOnEditClick(actor)}
+										/>
+									);
+							})
+							: actors.map((actor) => {
+									return (
+										<ActorProfile
+											profile={actor}
+											key={actor.id}
+											onEditClick={() => handleOnEditClick(actor)}
+										/>
+									);
+							})}
+					</div>
+				)}
 				{!results.length ? (
 					<NextAndPrevBtns
 						onNextClick={handleOnNextClick}
