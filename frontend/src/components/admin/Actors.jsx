@@ -7,6 +7,7 @@ import NextAndPrevBtns from '../NextAndPrevBtns';
 import UpdateActor from '../Modals/UpdateActor';
 import AppSearchForm from '../form/AppSearchForm';
 import { useSearch } from '../../hooks';
+import NotFoundText from '../NotFoundText';
 
 let currentPageNo = 0;
 const limit = 20;
@@ -86,39 +87,36 @@ const Actors = () => {
 				<div className="flex justify-end mb-5">
 					<AppSearchForm
 						onReset={handleSearchOnReset}
-						showResetIcon={results.length}
+						showResetIcon={results.length || resultNotFound}
 						placeholder="Search Actors..."
 						onSubmit={handleOnSubmit}
 					/>
 				</div>
-				{resultNotFound ? (
-					<h2 className="font-semibold text-3xl text-secondary dark:text-white text-center py-5 opacity-40">
-						Result Not Found
-					</h2>
-				) : (
-					<div className="grid grid-cols-4 gap-5">
-						{results.length
-							? results.map((actor) => {
-									return (
-										<ActorProfile
-											profile={actor}
-											key={actor.id}
-											onEditClick={() => handleOnEditClick(actor)}
-										/>
-									);
-							})
-							: actors.map((actor) => {
-									return (
-										<ActorProfile
-											profile={actor}
-											key={actor.id}
-											onEditClick={() => handleOnEditClick(actor)}
-										/>
-									);
-							})}
-					</div>
-				)}
-				{!results.length ? (
+
+				<NotFoundText text="Result Not Found!" visible={resultNotFound} />
+				<div className="grid grid-cols-4 gap-5">
+					{results.length || resultNotFound
+						? results.map((actor) => {
+								return (
+									<ActorProfile
+										profile={actor}
+										key={actor.id}
+										onEditClick={() => handleOnEditClick(actor)}
+									/>
+								);
+						})
+						: actors.map((actor) => {
+								return (
+									<ActorProfile
+										profile={actor}
+										key={actor.id}
+										onEditClick={() => handleOnEditClick(actor)}
+									/>
+								);
+						})}
+				</div>
+
+				{!results.length && !resultNotFound ? (
 					<NextAndPrevBtns
 						onNextClick={handleOnNextClick}
 						onPrevClick={handleOnPrevClick}
