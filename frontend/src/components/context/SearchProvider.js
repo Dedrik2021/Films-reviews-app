@@ -41,7 +41,7 @@ const SearchProvider = ({ children }) => {
 		setSearching(true);
 		if (!query.trim()) {
             updaterFunc && updaterFunc([])
-            resetSearch()
+            return resetSearch()
 		}
 		debounceFunc(method, query, updaterFunc);
 	};
