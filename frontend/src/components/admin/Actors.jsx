@@ -8,6 +8,7 @@ import UpdateActor from '../Modals/UpdateActor';
 import AppSearchForm from '../form/AppSearchForm';
 import { useSearch } from '../../hooks';
 import NotFoundText from '../NotFoundText';
+import ConfirmModal from '../Modals/ConfirmModal';
 
 let currentPageNo = 0;
 const limit = 20;
@@ -17,6 +18,7 @@ const Actors = () => {
 	const [results, setResults] = useState([]);
 	const [reachedToEnd, setReachedToEnd] = useState(false);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
+	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [selectedProfile, setSelectedProfile] = useState(null);
 
 	const { updateNotification } = useNotification();
@@ -81,6 +83,11 @@ const Actors = () => {
 		setResults([]);
 	};
 
+	const handleOnDeleteClick = (profile) => {
+		console.log(profile);
+		setShowConfirmModal(true)
+	}
+
 	return (
 		<>
 			<div className="p-5">
@@ -102,6 +109,7 @@ const Actors = () => {
 										profile={actor}
 										key={actor.id}
 										onEditClick={() => handleOnEditClick(actor)}
+										onDeleteClick={() => handleOnDeleteClick(actor)}
 									/>
 								);
 						})
@@ -111,6 +119,7 @@ const Actors = () => {
 										profile={actor}
 										key={actor.id}
 										onEditClick={() => handleOnEditClick(actor)}
+										onDeleteClick={() => handleOnDeleteClick(actor)}
 									/>
 								);
 						})}
@@ -124,6 +133,7 @@ const Actors = () => {
 					/>
 				) : null}
 			</div>
+			<ConfirmModal visible={showConfirmModal} title="Are you sore?" subtitle="This action will remove this profile permanently!" onCancel={() => setShowConfirmModal(false)} />
 			<UpdateActor
 				visible={showUpdateModal}
 				onClose={hideUpdateModal}
@@ -134,7 +144,7 @@ const Actors = () => {
 	);
 };
 
-const ActorProfile = ({ profile, onEditClick }) => {
+const ActorProfile = ({ profile, onEditClick, onDeleteClick }) => {
 	const [showOptions, setShowOptions] = useState(false);
 	const acceptNameLength = 15;
 
@@ -173,7 +183,7 @@ const ActorProfile = ({ profile, onEditClick }) => {
 						{about.substring(0, 50)}
 					</p>
 				</div>
-				<Options onEditClick={onEditClick} visible={showOptions} />
+				<Options onEditClick={onEditClick} visible={showOptions} onDeleteClick={onDeleteClick} />
 			</div>
 		</div>
 	);
