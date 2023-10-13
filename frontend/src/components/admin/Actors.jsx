@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { BsTrash, BsPencilSquare } from 'react-icons/bs';
 
-import { getActors, searchActor } from '../../api/actor';
+import { getActors, searchActor, deleteActor } from '../../api/actor';
 import { useNotification } from '../../hooks';
 import NextAndPrevBtns from '../NextAndPrevBtns';
 import UpdateActor from '../Modals/UpdateActor';
@@ -19,6 +19,7 @@ const Actors = () => {
 	const [reachedToEnd, setReachedToEnd] = useState(false);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
+	const [busy, setBusy] = useState(false);
 	const [selectedProfile, setSelectedProfile] = useState(null);
 
 	const { updateNotification } = useNotification();
@@ -84,9 +85,25 @@ const Actors = () => {
 	};
 
 	const handleOnDeleteClick = (profile) => {
-		console.log(profile);
-		setShowConfirmModal(true)
-	}
+		setSelectedProfile(profile);
+		setShowConfirmModal(true);
+	};
+
+	const hideConfirmModal = () => {
+		setShowConfirmModal(false)
+	};
+
+	const handleOnDeleteConfirm = async () => {
+		setBusy(true)
+		const {error, message} = await deleteActor(selectedProfile.id)
+		setBusy(false)
+
+		if (error) return updateNotification('error', error)
+		updateNotification('success', message)
+
+		hideConfirmModal()
+		fetchActors(currentPageNo)
+	};
 
 	return (
 		<>
@@ -112,7 +129,7 @@ const Actors = () => {
 										onDeleteClick={() => handleOnDeleteClick(actor)}
 									/>
 								);
-						})
+						  })
 						: actors.map((actor) => {
 								return (
 									<ActorProfile
@@ -122,10 +139,10 @@ const Actors = () => {
 										onDeleteClick={() => handleOnDeleteClick(actor)}
 									/>
 								);
-						})}
+						  })}
 				</div>
 
-				{!results.length && !resultNotFound ? (
+				{!results.length > 12 && !resultNotFound ? (
 					<NextAndPrevBtns
 						onNextClick={handleOnNextClick}
 						onPrevClick={handleOnPrevClick}
@@ -133,7 +150,14 @@ const Actors = () => {
 					/>
 				) : null}
 			</div>
-			<ConfirmModal visible={showConfirmModal} title="Are you sore?" subtitle="This action will remove this profile permanently!" onCancel={() => setShowConfirmModal(false)} />
+			<ConfirmModal
+				visible={showConfirmModal}
+				title="Are you sore?"
+				subtitle="This action will remove this profile permanently!"
+				busy={busy}
+				onConfirm={handleOnDeleteConfirm}
+				onCancel={hideConfirmModal}
+			/>
 			<UpdateActor
 				visible={showUpdateModal}
 				onClose={hideUpdateModal}
@@ -183,7 +207,11 @@ const ActorProfile = ({ profile, onEditClick, onDeleteClick }) => {
 						{about.substring(0, 50)}
 					</p>
 				</div>
-				<Options onEditClick={onEditClick} visible={showOptions} onDeleteClick={onDeleteClick} />
+				<Options
+					onEditClick={onEditClick}
+					visible={showOptions}
+					onDeleteClick={onDeleteClick}
+				/>
 			</div>
 		</div>
 	);

@@ -32,13 +32,26 @@ const updateActor = async (id, formData) => {
 	}
 };
 
+const deleteActor = async (id) => {
+	const token = getToken();
+	try {
+		const { data } = await client.delete(`/actor/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			},
+		});
+		return data;
+	} catch (error) {
+		return catchError(error);
+	}
+};
+
 const searchActor = async (query) => {
 	const token = getToken();
 	try {
 		const { data } = await client(`/actor/search?name=${query}`, {
 			headers: {
-				Authorization: `Bearer ${token}`,
-				'Content-Type': 'multipart/form-data',
+				Authorization: `Bearer ${token}`
 			},
 		});
 		return data;
@@ -62,4 +75,5 @@ const getActors = async (pageNo, limit) => {
 	}
 };
 
-export { createActor, searchActor, getActors, updateActor };
+
+export { createActor, searchActor, getActors, updateActor, deleteActor };
