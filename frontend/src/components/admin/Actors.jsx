@@ -94,15 +94,15 @@ const Actors = () => {
 	};
 
 	const handleOnDeleteConfirm = async () => {
-		setBusy(true)
-		const {error, message} = await deleteActor(selectedProfile.id)
-		setBusy(false)
+		// setBusy(true)
+		// const {error, message} = await deleteActor(selectedProfile.id)
+		// setBusy(false)
 
-		if (error) return updateNotification('error', error)
-		updateNotification('success', message)
+		// if (error) return updateNotification('error', error)
+		// updateNotification('success', message)
 
-		hideConfirmModal()
-		fetchActors(currentPageNo)
+		// hideConfirmModal()
+		// fetchActors(currentPageNo)
 	};
 
 	return (

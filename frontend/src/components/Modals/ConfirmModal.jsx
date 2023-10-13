@@ -2,7 +2,7 @@ import { ImSpinner3 } from 'react-icons/im';
 import ModalContainer from './ModalContainer';
 
 const ConfirmModal = ({ visible, busy, onConfirm, onCancel, subtitle, title }) => {
-	const commonClass = 'px-3 py-1 text-white rounded';
+	const commonClass = 'px-3 py-1 text-white rounded w-full';
 
 	return (
 		<ModalContainer visible={visible} ignoreContainer>
@@ -12,7 +12,7 @@ const ConfirmModal = ({ visible, busy, onConfirm, onCancel, subtitle, title }) =
 					{subtitle}
 				</p>
 
-				<div className="flex items-center space-x-3 mt-3">
+				<div className="flex items-center justify-center space-x-6 mt-3">
 					{busy ? (
 						<p className='flex items-center space-x-2 dark:text-white text-primary'>
                             <ImSpinner3 className='animate-spin' />
