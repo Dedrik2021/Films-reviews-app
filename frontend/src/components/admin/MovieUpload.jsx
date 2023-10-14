@@ -51,7 +51,7 @@ const MovieUpload = ({ visible, onClose }) => {
 		setBusy(false)
 		console.log(res);
 
-		onclose()
+		onClose()
 	};
 
 	return (
