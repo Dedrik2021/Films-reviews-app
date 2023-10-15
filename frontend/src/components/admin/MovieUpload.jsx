@@ -46,7 +46,7 @@ const MovieUpload = ({ visible, onClose }) => {
 		if (!videoInfo.url || !videoInfo.public_id)
 			return updateNotification('error', 'Trailer is missing!');
 		setBusy(true)
-		data.append('trailer', JSON.stringify(videoInfo));
+		await data.append('trailer', JSON.stringify(videoInfo));
 		const res = await uploadMovie(data);
 		setBusy(false)
 		console.log(res);

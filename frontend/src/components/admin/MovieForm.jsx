@@ -35,7 +35,7 @@ const defaultMuvieInfo = {
 	status: '',
 };
 
-const MovieForm = ({onSubmit, busy}) => {
+const MovieForm = ({ onSubmit, busy }) => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
 	const [showCastModal, setShowCastModal] = useState(false);
@@ -50,36 +50,36 @@ const MovieForm = ({onSubmit, busy}) => {
 		const { error } = validateMovie(movieInfo);
 		if (error) return updateNotification('error', error);
 
-		const {tags, genres, writers, cast, director, poster} = movieInfo
-		const formData = new FormData()
+		const { tags, genres, writers, cast, director, poster } = movieInfo;
+		const formData = new FormData();
 
 		const finalMovieInfo = {
-			...movieInfo
-		}
+			...movieInfo,
+		};
 
-		finalMovieInfo.tags = JSON.stringify(tags)
-		finalMovieInfo.genres = JSON.stringify(genres)
+		finalMovieInfo.tags = JSON.stringify(tags);
+		finalMovieInfo.genres = JSON.stringify(genres);
 
 		const finalCast = cast.map((c) => ({
 			actor: c.profile.id,
 			roleAs: c.roleAs,
-			leadActor: c.leadActor
-		}))
-		finalMovieInfo.cast = JSON.stringify(finalCast)
+			leadActor: c.leadActor,
+		}));
+		finalMovieInfo.cast = JSON.stringify(finalCast);
 
 		if (writers.length) {
-			const finalWriters = writers.map(w => w.id)
-			finalMovieInfo.writers = JSON.stringify(finalWriters)
+			const finalWriters = writers.map((w) => w.id);
+			finalMovieInfo.writers = JSON.stringify(finalWriters);
 		}
 
 		if (director.id) {
-			finalMovieInfo.director = director.id
+			finalMovieInfo.director = director.id;
 		}
 
-		if (poster) finalMovieInfo.poster = poster
+		if (poster) finalMovieInfo.poster = poster;
 
 		for (const key in finalMovieInfo) {
-			formData.append(key, finalMovieInfo[key])
+			formData.append(key, finalMovieInfo[key]);
 		}
 
 		onSubmit(formData);
@@ -169,99 +169,97 @@ const MovieForm = ({onSubmit, busy}) => {
 	const { title, storyLine, writers, cast, tags, genres, type, language, status } = movieInfo;
 
 	return (
-		<>
-			<div className="flex space-x-3">
-				<div className="w-[70%] space-y-5">
-					<div>
-						<Label htmlFor="title">Title</Label>
-						<input
-							id="title"
-							type="text"
-							value={title}
-							onChange={handleChange}
-							name="title"
-							className={`${commonInputClasses} border-b-2 font-semibold text-xl p-1`}
-							placeholder="Title"
-						/>
-					</div>
-					<div>
-						<Label htmlFor="storyLine">Story Line</Label>
-						<textarea
-							name="storyLine"
-							value={storyLine}
-							onChange={handleChange}
-							id="storyLine"
-							className={`${commonInputClasses} resize-none h-24 border-b-2`}
-							placeholder="Movie story line"
-						></textarea>
-					</div>
-					<Label htmlFor="tags">Tags</Label>
-					<TagsInput value={tags} name="tags" onChange={updateTags} />
-					<DirectorSelector onSelect={updateDirector} />
-
-					<div>
-						<div className="flex justify-between">
-							<LabelWithBadge badge={writers.length} htmlFor="writers">
-								Writers
-							</LabelWithBadge>
-							<ViewAllButton visible={writers.length} onClick={displayWritersModal}>
-								View all
-							</ViewAllButton>
-						</div>
-						<WritersSelector onSelect={updateWriters} />
-					</div>
-					<div>
-						<div className="flex justify-between mb-2">
-							<LabelWithBadge badge={cast.length}>Add Cast & Crew</LabelWithBadge>
-							<ViewAllButton visible={cast.length} onClick={displayCastModal}>
-								View all
-							</ViewAllButton>
-						</div>
-						<hr />
-						<CastForm onSubmit={updateCast} />
-					</div>
+		<form className="flex space-x-3"  onSubmit={handleSubmit} >
+			<div className="w-[70%] space-y-5">
+				<div>
+					<Label htmlFor="title">Title</Label>
 					<input
-						type="date"
-						className={`${commonInputClasses} border-2 rounded p-1 w-auto`}
-						name="releseDate"
+						id="title"
+						type="text"
+						value={title}
 						onChange={handleChange}
+						name="title"
+						className={`${commonInputClasses} border-b-2 font-semibold text-xl p-1`}
+						placeholder="Title"
 					/>
+				</div>
+				<div>
+					<Label htmlFor="storyLine">Story Line</Label>
+					<textarea
+						name="storyLine"
+						value={storyLine}
+						onChange={handleChange}
+						id="storyLine"
+						className={`${commonInputClasses} resize-none h-24 border-b-2`}
+						placeholder="Movie story line"
+					></textarea>
+				</div>
+				<Label htmlFor="tags">Tags</Label>
+				<TagsInput value={tags} name="tags" onChange={updateTags} />
+				<DirectorSelector onSelect={updateDirector} />
 
-					<SubmitBtn busy={busy} onClick={handleSubmit} type="button">
-						Upload
-					</SubmitBtn>
+				<div>
+					<div className="flex justify-between">
+						<LabelWithBadge badge={writers.length} htmlFor="writers">
+							Writers
+						</LabelWithBadge>
+						<ViewAllButton visible={writers.length} onClick={displayWritersModal}>
+							View all
+						</ViewAllButton>
+					</div>
+					<WritersSelector onSelect={updateWriters} />
 				</div>
-				<div className="w-[30%] space-y-5">
-					<PosterSelector
-						name="poster"
-						label="Select Poster"
-						selectedPoster={selectedPosterForUI}
-						onChange={handleChange}
-						accept="image/jpeg, image/jpg, image/png"
-					/>
-					<GenresSelector badge={genres.length} onClick={displayGenresModal} />
-					<Selected
-						label="Type"
-						options={typeOptions}
-						onChange={handleChange}
-						name="type"
-						value={type}
-					/>
-					<Selected
-						label="Language"
-						options={languageOptions}
-						onChange={handleChange}
-						name="language"
-						value={language}
-					/>
-					<Selected
-						label="Status"
-						options={statusOptions}
-						onChange={handleChange}
-						name="status"
-						value={status}
-					/>
+				<div>
+					<div className="flex justify-between mb-2">
+						<LabelWithBadge badge={cast.length}>Add Cast & Crew</LabelWithBadge>
+						<ViewAllButton visible={cast.length} onClick={displayCastModal}>
+							View all
+						</ViewAllButton>
+					</div>
+					<hr />
+					<CastForm onSubmit={updateCast} />
 				</div>
+				<input
+					type="date"
+					className={`${commonInputClasses} border-2 rounded p-1 w-auto`}
+					name="releseDate"
+					onChange={handleChange}
+				/>
+
+				<SubmitBtn busy={busy} type="submit" >
+					Upload
+				</SubmitBtn>
+			</div>
+			<div className="w-[30%] space-y-5">
+				<PosterSelector
+					name="poster"
+					label="Select Poster"
+					selectedPoster={selectedPosterForUI}
+					onChange={handleChange}
+					accept="image/jpeg, image/jpg, image/png"
+				/>
+				<GenresSelector badge={genres.length} onClick={displayGenresModal} />
+				<Selected
+					label="Type"
+					options={typeOptions}
+					onChange={handleChange}
+					name="type"
+					value={type}
+				/>
+				<Selected
+					label="Language"
+					options={languageOptions}
+					onChange={handleChange}
+					name="language"
+					value={language}
+				/>
+				<Selected
+					label="Status"
+					options={statusOptions}
+					onChange={handleChange}
+					name="status"
+					value={status}
+				/>
 			</div>
 			<WritersModal
 				onClose={hideWritersModal}
@@ -281,7 +279,7 @@ const MovieForm = ({onSubmit, busy}) => {
 				onSubmit={updateGenres}
 				previousSelection={genres}
 			/>
-		</>
+		</form>
 	);
 };
 
