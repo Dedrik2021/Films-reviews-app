@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import MovieListItem from '../MovieListItem';
-import { getMovies } from '../../api/movie';
+import { getMovieForUpdate, getMovies } from '../../api/movie';
 import { useNotification } from '../../hooks';
 import NextAndPrevBtns from '../NextAndPrevBtns';
 import UpdateMovie from '../Modals/UpdateMovie';
@@ -13,6 +13,7 @@ const Movies = () => {
 	const [movies, setMovies] = useState([]);
 	const [rachedToEnd, setRachedToEnd] = useState(false);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const [selectedMovie, setSelectedMovie] = useState(null)
 
 	const { updateNotification } = useNotification();
 
@@ -46,8 +47,11 @@ const Movies = () => {
 		fetchMovies(currentPageNo);
 	};
 
-	const handleOnEditClick = (movie) => {
-		console.log(movie);
+	const handleOnEditClick = async ({id}) => {
+	    const {movie, error} = await getMovieForUpdate(id);
+        if (error) return updateNotification('error', error)
+
+        setSelectedMovie(movie)
         setShowUpdateModal(true)
 	};
 
@@ -72,7 +76,7 @@ const Movies = () => {
 					/>
 				) : null}
 			</div>
-			<UpdateMovie visible={showUpdateModal} />
+			<UpdateMovie visible={showUpdateModal} initialState={selectedMovie} />
 		</>
 	);
 };

@@ -35,6 +35,20 @@ const uploadMovie = async (formData) => {
 	}
 };
 
+const getMovieForUpdate = async (id) => {
+	const token = getToken()
+	try {
+		const { data } = await client(`/movie/for-update/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		return data;
+	} catch (error) {
+		return catchError(error)
+	}
+};
+
 const getMovies = async (pageNo, limit) => {
 	const token = getToken()
 	try {
@@ -50,4 +64,4 @@ const getMovies = async (pageNo, limit) => {
 	}
 };
 
-export { uploadTrailer, uploadMovie, getMovies };
+export { uploadTrailer, uploadMovie, getMovies, getMovieForUpdate };
