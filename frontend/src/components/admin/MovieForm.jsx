@@ -168,15 +168,20 @@ const MovieForm = ({ onSubmit, busy, initialState }) => {
 
 	useEffect(() => {
 		if (initialState) {
-			setMovieInfo({...initialState, poster: null})
-			setSelectedPosterForUI(initialState.poster)
+			setMovieInfo({
+				...initialState,
+				releseDate: initialState.releseDate.split('T')[0],
+				poster: null,
+			});
+			setSelectedPosterForUI(initialState.poster);
 		}
-	}, [initialState])
+	}, [initialState]);
 
-	const { title, storyLine, writers, cast, tags, genres, type, language, status, releseDate } = movieInfo;
+	const { title, storyLine, writers, cast, tags, genres, type, language, status, releseDate } =
+		movieInfo;
 
 	return (
-		<form className="flex space-x-3"  onSubmit={handleSubmit} >
+		<form className="flex space-x-3" onSubmit={handleSubmit}>
 			<div className="w-[70%] space-y-5">
 				<div>
 					<Label htmlFor="title">Title</Label>
@@ -234,7 +239,7 @@ const MovieForm = ({ onSubmit, busy, initialState }) => {
 					value={releseDate}
 				/>
 
-				<SubmitBtn busy={busy} type="submit" >
+				<SubmitBtn busy={busy} type="submit">
 					Upload
 				</SubmitBtn>
 			</div>
