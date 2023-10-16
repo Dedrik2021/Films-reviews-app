@@ -1,6 +1,6 @@
 import { isValidObjectId } from 'mongoose';
 
-import { sendError } from '../utils/helper.mjs';
+import { formatActor, sendError } from '../utils/helper.mjs';
 import cloudinary from '../cloud/index.mjs';
 import Movie from '../models/movie.mjs';
 
@@ -289,7 +289,28 @@ const getMovieForUpdate = async (req, res) => {
 	if (!isValidObjectId(movieId)) return sendError(res, "Id is invalid!")
 	const movie = await Movie.findById(movieId).populate('director writers cast.actor')
 
-	res.status(201).json({movie})
+	res.status(201).json({movie : {
+		id: movie._id,
+		title: movie.title,
+		storyLine: movie.storyLine,
+		poster: movie.poster?.url,
+		releseDate: movie.releseDate,
+		status: movie.status,
+		type: movie.type,
+		language: movie.language,
+		genres: movie.genres,
+		tags: movie.tags,
+		director: formatActor(movie.director),
+		writers: movie.writers.map(w => formatActor(w)),
+		cast: movie.cast.map(c => {
+			return {
+				id: c.id,
+				profile: formatActor(c.actor),
+				roleAs: c.roleAs,
+				leadActor: c.leadActor
+			}
+		})
+	}})
 }
 
 export {
