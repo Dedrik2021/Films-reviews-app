@@ -49,6 +49,21 @@ const getMovieForUpdate = async (id) => {
 	}
 };
 
+const updateMovie = async (id, formData) => {
+	const token = getToken()
+	try {
+		const { data } = await client.patch(`/movie/update/${id}`, formData, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'multipart/form-data',
+			}
+		});
+		return data;
+	} catch (error) {
+		return catchError(error)
+	}
+};
+
 const getMovies = async (pageNo, limit) => {
 	const token = getToken()
 	try {
@@ -64,4 +79,4 @@ const getMovies = async (pageNo, limit) => {
 	}
 };
 
-export { uploadTrailer, uploadMovie, getMovies, getMovieForUpdate };
+export { uploadTrailer, uploadMovie, getMovies, getMovieForUpdate, updateMovie };

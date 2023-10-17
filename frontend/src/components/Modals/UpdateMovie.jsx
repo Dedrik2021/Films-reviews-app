@@ -4,7 +4,7 @@ import MovieForm from "../admin/MovieForm";
 const UpdateMovie = ({visible, initialState}) => {
     return ( 
         <ModalContainer visible={visible} >
-            <MovieForm initialState={initialState} />
+            <MovieForm initialState={initialState} btnTitle="Update" />
         </ModalContainer>
     );
 }

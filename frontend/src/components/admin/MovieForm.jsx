@@ -35,7 +35,7 @@ const defaultMuvieInfo = {
 	status: '',
 };
 
-const MovieForm = ({ onSubmit, busy, initialState }) => {
+const MovieForm = ({ onSubmit, busy, btnTitle, initialState }) => {
 	const [movieInfo, setMovieInfo] = useState({ ...defaultMuvieInfo });
 	const [showWritersModal, setShowWritersModal] = useState(false);
 	const [showCastModal, setShowCastModal] = useState(false);
@@ -181,7 +181,7 @@ const MovieForm = ({ onSubmit, busy, initialState }) => {
 		movieInfo;
 
 	return (
-		<form className="flex space-x-3" onSubmit={handleSubmit}>
+		<div className="flex space-x-3" >
 			<div className="w-[70%] space-y-5">
 				<div>
 					<Label htmlFor="title">Title</Label>
@@ -239,8 +239,8 @@ const MovieForm = ({ onSubmit, busy, initialState }) => {
 					value={releseDate}
 				/>
 
-				<SubmitBtn busy={busy} type="submit">
-					Upload
+				<SubmitBtn busy={busy} type="button" onClick={handleSubmit}>
+					{btnTitle}
 				</SubmitBtn>
 			</div>
 			<div className="w-[30%] space-y-5">
@@ -292,7 +292,7 @@ const MovieForm = ({ onSubmit, busy, initialState }) => {
 				onSubmit={updateGenres}
 				previousSelection={genres}
 			/>
-		</form>
+		</div>
 	);
 };
 
