@@ -42,9 +42,7 @@ const validateMovie = [
 	check('releseDate').isDate().withMessage('Relese date is missing!'),
 	check('language').trim().not().isEmpty().withMessage('Language is missing!'),
 	check('type').trim().not().isEmpty().withMessage('Movie type is missing!'),
-	check('status')
-		.isIn('public, private')
-		.withMessage('Movie status must be public or private!'),
+	check('status').isIn('public, private').withMessage('Movie status must be public or private!'),
 	check('genres')
 		.isArray()
 		.withMessage('Genres mus be an array of string!')
@@ -76,27 +74,30 @@ const validateMovie = [
 				return true;
 			}
 		}),
-	check('trailer')
-		.isObject()
-		.withMessage('Trailer must be an object with url and public_id').custom(({url, public_id}) => {
-			try {
-				const result = new URL(url)
-				if (!result.protocol.includes('http')) throw Error("Trailer url is invalid!")
 
-				const arr = url.split('/')
-				const publicId = arr[arr.length - 1].split('.')[0]
-				if (public_id !== publicId) throw Error("Trailer public_id is invalid!")
-
-				return true
-			} catch(error) {
-				throw Error("Trailer url is invalid!")
-			}
-		}),
-	check('poster').custom((_, { req }) => {
-		if (!req.file) throw Error('Poster file is missing!');
-		return true;
-	}),
+	// check('poster').custom((_, { req }) => {
+	// 	if (!req.file) throw Error('Poster file is missing!');
+	// 	return true;
+	// }),
 ];
+
+const validateTrailer = check('trailer')
+	.isObject()
+	.withMessage('Trailer must be an object with url and public_id')
+	.custom(({ url, public_id }) => {
+		try {
+			const result = new URL(url);
+			if (!result.protocol.includes('http')) throw Error('Trailer url is invalid!');
+
+			const arr = url.split('/');
+			const publicId = arr[arr.length - 1].split('.')[0];
+			if (public_id !== publicId) throw Error('Trailer public_id is invalid!');
+
+			return true;
+		} catch (error) {
+			throw Error('Trailer url is invalid!');
+		}
+	});
 
 const validate = (req, res, next) => {
 	const error = validationResult(req).array();
@@ -115,4 +116,5 @@ export {
 	signInValidator,
 	validatorActorInfo,
 	validateMovie,
+	validateTrailer
 };

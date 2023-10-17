@@ -5,13 +5,13 @@ import {
 	uploadTrailer,
 	createMovie,
 	updateMovieWithoutPoster,
-	updateMovieWithPoster,
+	updateMovie,
 	removeMovie,
 	getMovies,
 	getMovieForUpdate
 } from '../controllers/movie.mjs';
 import { uploadImage, uploadVideo } from '../middlewares/multer.mjs';
-import { validate, validateMovie } from '../middlewares/validator.mjs';
+import { validate, validateMovie, validateTrailer } from '../middlewares/validator.mjs';
 import { parseData } from '../utils/helper.mjs';
 
 const router = Router();
@@ -24,27 +24,29 @@ router.post(
 	uploadImage.single('poster'),
 	parseData,
 	validateMovie,
+	validateTrailer,
 	validate,
 	createMovie,
 );
+// router.patch(
+// 	'/update-movie-without-poster/:movieId',
+// 	isAuth,
+// 	isAdmin,
+// 	// parseData,
+// 	validateMovie,
+// 	validate,
+// 	updateMovieWithoutPoster,
+// );
 router.patch(
-	'/update-movie-without-poster/:movieId',
-	isAuth,
-	isAdmin,
-	// parseData,
-	validateMovie,
-	validate,
-	updateMovieWithoutPoster,
-);
-router.patch(
-	'/update-movie-with-poster/:movieId',
+	'/update/:movieId',
 	isAuth,
 	isAdmin,
 	uploadImage.single('poster'),
 	parseData,
 	validateMovie,
+	validateTrailer,
 	validate,
-	updateMovieWithPoster,
+	updateMovie,
 );
 router.delete('/:movieId', isAuth, isAdmin, removeMovie);
 router.get('/movies', isAuth, isAdmin, getMovies);
