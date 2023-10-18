@@ -235,7 +235,16 @@ const updateMovie = async (req, res) => {
 
 	await movie.save();
 
-	res.status(201).json({ message: 'Movie is updated', movie });
+	res.status(201).json({
+		message: 'Movie is updated',
+		movie: {
+			id: movie._id,
+			title: movie.title,
+			poster: movie.poster?.url,
+			genres: movie.genres,
+			status: movie.status,
+		},
+	});
 };
 
 const removeMovie = async (req, res) => {

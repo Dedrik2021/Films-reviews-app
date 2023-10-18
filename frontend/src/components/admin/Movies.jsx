@@ -13,7 +13,7 @@ const Movies = () => {
 	const [movies, setMovies] = useState([]);
 	const [rachedToEnd, setRachedToEnd] = useState(false);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
-    const [selectedMovie, setSelectedMovie] = useState(null)
+	const [selectedMovie, setSelectedMovie] = useState(null);
 
 	const { updateNotification } = useNotification();
 
@@ -47,13 +47,26 @@ const Movies = () => {
 		fetchMovies(currentPageNo);
 	};
 
-	const handleOnEditClick = async ({id}) => {
-	    const {movie, error} = await getMovieForUpdate(id);
-        if (error) return updateNotification('error', error)
+	const handleOnEditClick = async ({ id }) => {
+		const { movie, error } = await getMovieForUpdate(id);
+		if (error) return updateNotification('error', error);
 
-        setSelectedMovie(movie)
-        setShowUpdateModal(true)
+		setSelectedMovie(movie);
+		setShowUpdateModal(true);
 	};
+
+	const hideUpdateForm = () => {
+		setShowUpdateModal(false)
+	}
+
+	const handleOnUpdate = (movie) => {
+		const updatedMovies = movies.map(m => {
+			if (m.id === movie.id) return movie 
+			return m
+		})
+		setMovies([...updatedMovies])
+	}
+
 
 	return (
 		<>
@@ -76,7 +89,12 @@ const Movies = () => {
 					/>
 				) : null}
 			</div>
-			<UpdateMovie visible={showUpdateModal} initialState={selectedMovie} />
+			<UpdateMovie
+				visible={showUpdateModal}
+				initialState={selectedMovie}
+				onSuccess={handleOnUpdate}
+				onClose={hideUpdateForm}
+			/>
 		</>
 	);
 };
