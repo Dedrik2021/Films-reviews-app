@@ -5,6 +5,7 @@ import { getMovieForUpdate, getMovies } from '../../api/movie';
 import { useNotification } from '../../hooks';
 import NextAndPrevBtns from '../NextAndPrevBtns';
 import UpdateMovie from '../Modals/UpdateMovie';
+import ConfirmModal from '../Modals/ConfirmModal';
 
 const limit = 10;
 let currentPageNo = 0;
@@ -13,6 +14,7 @@ const Movies = () => {
 	const [movies, setMovies] = useState([]);
 	const [rachedToEnd, setRachedToEnd] = useState(false);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
+	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [selectedMovie, setSelectedMovie] = useState(null);
 
 	const { updateNotification } = useNotification();
@@ -56,17 +58,29 @@ const Movies = () => {
 	};
 
 	const hideUpdateForm = () => {
-		setShowUpdateModal(false)
-	}
+		setShowUpdateModal(false);
+	};
+
+	const hideConfirmModal = () => {
+		setShowConfirmModal(false);
+	};
 
 	const handleOnUpdate = (movie) => {
-		const updatedMovies = movies.map(m => {
-			if (m.id === movie.id) return movie 
-			return m
-		})
-		setMovies([...updatedMovies])
-	}
+		const updatedMovies = movies.map((m) => {
+			if (m.id === movie.id) return movie;
+			return m;
+		});
+		setMovies([...updatedMovies]);
+	};
 
+	const handleOnDeleteClick = (movie) => {
+		setSelectedMovie(movie);
+		setShowConfirmModal(true)
+	};
+
+	const handleOnDeleteConfirm = () => {
+		
+	};
 
 	return (
 		<>
@@ -77,6 +91,7 @@ const Movies = () => {
 							key={movie.id}
 							movie={movie}
 							onEditClick={() => handleOnEditClick(movie)}
+							onDeleteClick={() => handleOnDeleteClick(movie)}
 						/>
 					);
 				})}
@@ -89,6 +104,13 @@ const Movies = () => {
 					/>
 				) : null}
 			</div>
+			<ConfirmModal
+				visible={showConfirmModal}
+				onConfirm={handleOnDeleteConfirm}
+				onCancel={hideConfirmModal}
+				title="Are you sure?"
+				subtitle="This action will be remove movie permanently!"
+			/>
 			<UpdateMovie
 				visible={showUpdateModal}
 				initialState={selectedMovie}
