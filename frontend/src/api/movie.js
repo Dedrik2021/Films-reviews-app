@@ -79,4 +79,18 @@ const getMovies = async (pageNo, limit) => {
 	}
 };
 
-export { uploadTrailer, uploadMovie, getMovies, getMovieForUpdate, updateMovie };
+const deleteMovie = async (id) => {
+	const token = getToken()
+	try {
+		const { data } = await client.delete(`/movie/${id}`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		});
+		return data;
+	} catch (error) {
+		return catchError(error)
+	}
+};
+
+export { uploadTrailer, uploadMovie, getMovies, getMovieForUpdate, updateMovie, deleteMovie };

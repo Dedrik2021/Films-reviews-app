@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import MovieListItem from '../MovieListItem';
-import { getMovieForUpdate, getMovies } from '../../api/movie';
+import { getMovieForUpdate, getMovies, deleteMovie } from '../../api/movie';
 import { useNotification } from '../../hooks';
 import NextAndPrevBtns from '../NextAndPrevBtns';
 import UpdateMovie from '../Modals/UpdateMovie';
@@ -16,6 +16,7 @@ const Movies = () => {
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [selectedMovie, setSelectedMovie] = useState(null);
+	const [busy, setBusy] = useState(false)
 
 	const { updateNotification } = useNotification();
 
@@ -78,8 +79,16 @@ const Movies = () => {
 		setShowConfirmModal(true)
 	};
 
-	const handleOnDeleteConfirm = () => {
-		
+	const handleOnDeleteConfirm = async () => {
+		setBusy(true)
+		const {error, message} = await deleteMovie(selectedMovie.id)
+		setBusy(false)
+
+		if (error) return updateNotification('error', error)
+
+		updateNotification('success', message)
+		hideConfirmModal()
+		fetchMovies(currentPageNo)
 	};
 
 	return (
@@ -110,6 +119,7 @@ const Movies = () => {
 				onCancel={hideConfirmModal}
 				title="Are you sure?"
 				subtitle="This action will be remove movie permanently!"
+				busy={busy}
 			/>
 			<UpdateMovie
 				visible={showUpdateModal}
