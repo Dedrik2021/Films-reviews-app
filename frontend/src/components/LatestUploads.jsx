@@ -61,6 +61,15 @@ const LatestUploads = () => {
 		setSelectedMovie(movie)
 	}
 
+	const handleOnUpdate = (movie) => {
+		const updatedMovie = movies.map(m => {
+			if (m.id === movie) return movie
+			return m
+		})
+
+		setMovies([...updatedMovie])
+	}
+
 	return movies.length ? (
 		<>
 			<div className="bg-white dark:shadow shadow dark:bg-secondary p-5 rounded col-span-2">
@@ -84,6 +93,7 @@ const LatestUploads = () => {
 			<UpdateMovie
 				visible={showUpdateModal}
 				initialState={selectedMovie}
+				onSuccess={handleOnUpdate}
 				onClose={hideUpdateModal}
 			/>
 		</>
