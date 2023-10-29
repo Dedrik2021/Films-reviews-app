@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import MovieListItem from './MovieListItem';
-import { deleteMovie, getMovies } from '../api/movie';
+import { deleteMovie, getMovieForUpdate, getMovies } from '../api/movie';
 import { useNotification } from '../hooks';
 import ConfirmModal from './Modals/ConfirmModal';
 import UpdateMovie from './Modals/UpdateMovie';
@@ -14,6 +14,7 @@ const LatestUploads = () => {
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [selectedMovie, setSelectedMovie] = useState(null);
 	const [busy, setBusy] = useState(false)
+	const [showUpdateModal, setShowUpdateModal] = useState(false);
 
 	const { updateNotification } = useNotification();
 
@@ -37,6 +38,10 @@ const LatestUploads = () => {
 		setShowConfirmModal(false)
 	}
 
+	const hideUpdateModal = () => {
+		setShowUpdateModal(false)
+	}
+
 	const handleOnDeleteConfirm = async () => {
 		setBusy(true)
 		const {error, message} = await deleteMovie(selectedMovie.id)
@@ -49,6 +54,13 @@ const LatestUploads = () => {
 		hideConfirmModal()
 	}
 
+	const handleOnEditClick = async ({id}) => {
+		setShowUpdateModal(true)
+		const {error, movie} = await getMovieForUpdate(id)
+		if (error) return updateNotification('error', error)
+		setSelectedMovie(movie)
+	}
+
 	return movies.length ? (
 		<>
 			<div className="bg-white dark:shadow shadow dark:bg-secondary p-5 rounded col-span-2">
@@ -57,7 +69,7 @@ const LatestUploads = () => {
 				</h1>
 				<div className="space-y-3">
 					{movies.map((movie) => {
-						return <MovieListItem movie={movie} key={movie.id} onDeleteClick={() => handleOnDeleteClick(movie)} />;
+						return <MovieListItem movie={movie} key={movie.id} onDeleteClick={() => handleOnDeleteClick(movie)} onEditClick={() => handleOnEditClick(movie)} />;
 					})}
 				</div>
 			</div>
@@ -67,13 +79,12 @@ const LatestUploads = () => {
 				onCancel={hideConfirmModal}
 				title="Are you sure?"
 				subtitle="This action will be remove movie permanently!"
-				// busy={busy}
+				busy={busy}
 			/>
 			<UpdateMovie
-				// visible={showUpdateModal}
-				// initialState={selectedMovie}
-				// onSuccess={handleOnUpdate}
-				// onClose={hideUpdateForm}
+				visible={showUpdateModal}
+				initialState={selectedMovie}
+				onClose={hideUpdateModal}
 			/>
 		</>
 	) : null;
