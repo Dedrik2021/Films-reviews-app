@@ -8,7 +8,8 @@ import {
 	updateMovie,
 	removeMovie,
 	getMovies,
-	getMovieForUpdate
+	getMovieForUpdate,
+	searchMovies
 } from '../controllers/movie.mjs';
 import { uploadImage, uploadVideo } from '../middlewares/multer.mjs';
 import { validate, validateMovie, validateTrailer } from '../middlewares/validator.mjs';
@@ -51,5 +52,6 @@ router.patch(
 router.delete('/:movieId', isAuth, isAdmin, removeMovie);
 router.get('/movies', isAuth, isAdmin, getMovies);
 router.get('/for-update/:movieId', isAuth, isAdmin, getMovieForUpdate);
+router.get('/search', isAuth, isAdmin, searchMovies);
 
 export default router;

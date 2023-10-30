@@ -325,6 +325,22 @@ const getMovieForUpdate = async (req, res) => {
 	});
 };
 
+const searchMovies = async (req, res) => {
+	const {title} = req.query
+	const movies = await Movie.find({title: {$regex: title, $options: "i"}})
+	res.status(201).json({
+		results: movies.map((m) => {
+			return {
+				id: m.id,
+				title: m.title,
+				poster: m.poster?.url,
+				genres: m.genres,
+				status: m.status
+			}
+		})
+	})
+}
+
 export {
 	uploadTrailer,
 	createMovie,
@@ -333,4 +349,5 @@ export {
 	removeMovie,
 	getMovies,
 	getMovieForUpdate,
+	searchMovies
 };
