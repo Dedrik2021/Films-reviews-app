@@ -9,6 +9,7 @@ import Navbar from '../components/admin/Navbar';
 import Header from '../components/admin/Header';
 import MovieUpload from '../components/admin/MovieUpload';
 import ActorUpload from '../components/Modals/ActorUpload';
+import SearchMovies from '../components/admin/SearchMovies';
 
 const AdminNavigator = () => {
 	const [showMovieUploadModal, setShowMovieUploadModal] = useState(false)
@@ -43,6 +44,7 @@ const AdminNavigator = () => {
 						<Route path="/" element={<Dashboard />} />
 						<Route path="/movies" element={<Movies />} />
 						<Route path="/actors" element={<Actors />} />
+						<Route path="/search" element={<SearchMovies />} />
 
 						<Route path="*" element={<NotFound />} />
 					</Routes>
