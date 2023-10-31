@@ -327,6 +327,9 @@ const getMovieForUpdate = async (req, res) => {
 
 const searchMovies = async (req, res) => {
 	const {title} = req.query
+
+	if (!title.trim()) return sendError(res, "Invalid request!")
+
 	const movies = await Movie.find({title: {$regex: title, $options: "i"}})
 	res.status(201).json({
 		results: movies.map((m) => {
