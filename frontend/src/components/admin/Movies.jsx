@@ -1,54 +1,29 @@
 import { useState, useEffect } from 'react';
 
 import MovieListItem from '../MovieListItem';
-import { getMovieForUpdate, getMovies, deleteMovie } from '../../api/movie';
+import { getMovieForUpdate, deleteMovie } from '../../api/movie';
 import { useNotification } from '../../hooks';
 import NextAndPrevBtns from '../NextAndPrevBtns';
 import UpdateMovie from '../Modals/UpdateMovie';
 import ConfirmModal from '../Modals/ConfirmModal';
+import { useMovies } from '../../hooks';
 
 const limit = 10;
 let currentPageNo = 0;
 
 const Movies = () => {
 	const [movies, setMovies] = useState([]);
-	const [rachedToEnd, setRachedToEnd] = useState(false);
 	const [showUpdateModal, setShowUpdateModal] = useState(false);
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [selectedMovie, setSelectedMovie] = useState(null);
-	const [busy, setBusy] = useState(false)
+	const [busy, setBusy] = useState(false);
 
 	const { updateNotification } = useNotification();
-
-	const fetchMovies = async (pageNo) => {
-		const { error, movies } = await getMovies(pageNo, limit);
-		if (error) updateNotification('error', error);
-
-		if (!movies.length) {
-			currentPageNo = pageNo - 1;
-			return setRachedToEnd(true);
-		}
-
-		setMovies([...movies]);
-	};
+	const { fetchMovies, movies: newMovies, fetchOnNextPage, fetchOnPrevPage } = useMovies();
 
 	useEffect(() => {
 		fetchMovies();
 	}, []);
-
-	const handleOnNextClick = () => {
-		if (rachedToEnd) return;
-		currentPageNo += 1;
-		fetchMovies(currentPageNo);
-	};
-
-	const handleOnPrevClick = () => {
-		if (currentPageNo <= 0) return;
-		if (rachedToEnd) setRachedToEnd(false);
-
-		currentPageNo -= 1;
-		fetchMovies(currentPageNo);
-	};
 
 	const handleOnEditClick = async ({ id }) => {
 		const { movie, error } = await getMovieForUpdate(id);
@@ -76,25 +51,25 @@ const Movies = () => {
 
 	const handleOnDeleteClick = (movie) => {
 		setSelectedMovie(movie);
-		setShowConfirmModal(true)
+		setShowConfirmModal(true);
 	};
 
 	const handleOnDeleteConfirm = async () => {
-		setBusy(true)
-		const {error, message} = await deleteMovie(selectedMovie.id)
-		setBusy(false)
+		setBusy(true);
+		const { error, message } = await deleteMovie(selectedMovie.id);
+		setBusy(false);
 
-		if (error) return updateNotification('error', error)
+		if (error) return updateNotification('error', error);
 
-		updateNotification('success', message)
-		hideConfirmModal()
-		fetchMovies(currentPageNo)
+		updateNotification('success', message);
+		hideConfirmModal();
+		fetchMovies(currentPageNo);
 	};
 
 	return (
 		<>
 			<div className="space-y-3 p-5">
-				{movies.map((movie) => {
+				{newMovies.map((movie) => {
 					return (
 						<MovieListItem
 							key={movie.id}
@@ -105,11 +80,11 @@ const Movies = () => {
 					);
 				})}
 
-				{movies.length > 10 ? (
+				{newMovies.length > 10 ? (
 					<NextAndPrevBtns
 						className="mt-5"
-						onNextClick={handleOnNextClick}
-						onPrevClick={handleOnPrevClick}
+						onNextClick={fetchOnNextPage}
+						onPrevClick={fetchOnPrevPage}
 					/>
 				) : null}
 			</div>

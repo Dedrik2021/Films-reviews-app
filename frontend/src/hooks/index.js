@@ -4,6 +4,7 @@ import { ThemeContext } from '../components/context/ThemeProvider';
 import { NotificationContext } from '../components/context/NotificationProvider';
 import { AuthContext } from '../components/context/AuthProvider';
 import { SearchContext } from '../components/context/SearchProvider';
+import { MovieContext } from '../components/context/MoviesProvider';
 
 const useTheme = () => {
 	return useContext(ThemeContext);
@@ -18,7 +19,11 @@ const useAuth = () => {
 };
 
 const useSearch = () => {
-	return useContext(SearchContext)
-}
+	return useContext(SearchContext);
+};
 
-export { useTheme, useNotification, useAuth, useSearch };
+const useMovies = () => {
+	return useContext(MovieContext);
+};
+
+export { useTheme, useNotification, useAuth, useSearch, useMovies };
