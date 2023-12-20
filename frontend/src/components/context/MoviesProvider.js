@@ -1,19 +1,20 @@
-import { createContext, useState } from "react";
+import { createContext, useState } from 'react';
 
-import { useNotification } from "../../hooks";
-import { getMovies } from "../../api/movie";
+import { useNotification } from '../../hooks';
+import { getMovies } from '../../api/movie';
 
-export const MovieContext = createContext()
+export const MovieContext = createContext();
 
 const limit = 10;
 let currentPageNo = 0;
 
-const MoviesProvider = ({children}) => {
-    const [movies, setMovies] = useState([]);
+const MoviesProvider = ({ children }) => {
+	const [movies, setMovies] = useState([]);
+	const [latestUploads, setLatestUploads] = useState([]);
 	const [reachedToEnd, setReachedToEnd] = useState(false);
-    const {updateNotification} = useNotification()
+	const { updateNotification } = useNotification();
 
-    const fetchMovies = async (pageNo) => {
+	const fetchLatestUploads = async (pageNo) => {
 		const { error, movies } = await getMovies(pageNo, limit);
 		if (error) updateNotification('error', error);
 
@@ -22,10 +23,17 @@ const MoviesProvider = ({children}) => {
 			return setReachedToEnd(true);
 		}
 
+		setLatestUploads([...movies]);
+	};
+
+	const fetchMovies = async (qty = 5) => {
+		const { error, movies } = await getMovies(0, qty);
+		if (error) updateNotification('error', error);
+
 		setMovies([...movies]);
 	};
 
-    const fetchOnNextPage = () => {
+	const fetchOnNextPage = () => {
 		if (reachedToEnd) return;
 		currentPageNo += 1;
 		fetchMovies(currentPageNo);
@@ -39,8 +47,20 @@ const MoviesProvider = ({children}) => {
 		fetchMovies(currentPageNo);
 	};
 
+	return (
+		<MovieContext.Provider
+			value={{
+				movies,
+				fetchMovies,
+				fetchOnNextPage,
+				fetchOnPrevPage,
+				latestUploads,
+				fetchLatestUploads,
+			}}
+		>
+			{children}
+		</MovieContext.Provider>
+	);
+};
 
-    return <MovieContext.Provider value={{movies, fetchMovies, fetchOnNextPage, fetchOnPrevPage}} >{children}</MovieContext.Provider>
-}
-
-export default MoviesProvider
+export default MoviesProvider;
