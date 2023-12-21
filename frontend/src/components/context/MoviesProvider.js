@@ -14,7 +14,7 @@ const MoviesProvider = ({ children }) => {
 	const [reachedToEnd, setReachedToEnd] = useState(false);
 	const { updateNotification } = useNotification();
 
-	const fetchLatestUploads = async (pageNo) => {
+	const fetchLatestUploads = async (pageNo = currentPageNo) => {
 		const { error, movies } = await getMovies(pageNo, limit);
 		if (error) updateNotification('error', error);
 

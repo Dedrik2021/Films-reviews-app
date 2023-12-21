@@ -25,46 +25,50 @@ const Movies = () => {
 		fetchMovies();
 	}, []);
 
-	const handleOnEditClick = async ({ id }) => {
-		const { movie, error } = await getMovieForUpdate(id);
-		if (error) return updateNotification('error', error);
+	// const handleOnEditClick = async ({ id }) => {
+	// 	const { movie, error } = await getMovieForUpdate(id);
+	// 	if (error) return updateNotification('error', error);
 
-		setSelectedMovie(movie);
-		setShowUpdateModal(true);
-	};
+	// 	setSelectedMovie(movie);
+	// 	setShowUpdateModal(true);
+	// };
 
-	const hideUpdateForm = () => {
-		setShowUpdateModal(false);
-	};
+	// const hideUpdateForm = () => {
+	// 	setShowUpdateModal(false);
+	// };
 
-	const hideConfirmModal = () => {
-		setShowConfirmModal(false);
-	};
+	// const hideConfirmModal = () => {
+	// 	setShowConfirmModal(false);
+	// };
 
-	const handleOnUpdate = (movie) => {
-		const updatedMovies = movies.map((m) => {
-			if (m.id === movie.id) return movie;
-			return m;
-		});
-		setMovies([...updatedMovies]);
-	};
+	// const handleOnUpdate = (movie) => {
+	// 	const updatedMovies = movies.map((m) => {
+	// 		if (m.id === movie.id) return movie;
+	// 		return m;
+	// 	});
+	// 	setMovies([...updatedMovies]);
+	// };
 
-	const handleOnDeleteClick = (movie) => {
-		setSelectedMovie(movie);
-		setShowConfirmModal(true);
-	};
+	// const handleOnDeleteClick = (movie) => {
+	// 	setSelectedMovie(movie);
+	// 	setShowConfirmModal(true);
+	// };
 
-	const handleOnDeleteConfirm = async () => {
-		setBusy(true);
-		const { error, message } = await deleteMovie(selectedMovie.id);
-		setBusy(false);
+	// const handleOnDeleteConfirm = async () => {
+	// 	setBusy(true);
+	// 	const { error, message } = await deleteMovie(selectedMovie.id);
+	// 	setBusy(false);
 
-		if (error) return updateNotification('error', error);
+	// 	if (error) return updateNotification('error', error);
 
-		updateNotification('success', message);
-		hideConfirmModal();
-		fetchMovies(currentPageNo);
-	};
+	// 	updateNotification('success', message);
+	// 	hideConfirmModal();
+	// 	fetchMovies(currentPageNo);
+	// };
+
+	const handleAfterDelete = () => {
+		fetchMovies()
+	}
 
 	return (
 		<>
@@ -74,8 +78,9 @@ const Movies = () => {
 						<MovieListItem
 							key={movie.id}
 							movie={movie}
-							onEditClick={() => handleOnEditClick(movie)}
-							onDeleteClick={() => handleOnDeleteClick(movie)}
+							afterDelete={handleAfterDelete}
+							// onEditClick={() => handleOnEditClick(movie)}
+							// onDeleteClick={() => handleOnDeleteClick(movie)}
 						/>
 					);
 				})}
@@ -88,7 +93,7 @@ const Movies = () => {
 					/>
 				) : null}
 			</div>
-			<ConfirmModal
+			{/* <ConfirmModal
 				visible={showConfirmModal}
 				onConfirm={handleOnDeleteConfirm}
 				onCancel={hideConfirmModal}
@@ -101,7 +106,7 @@ const Movies = () => {
 				initialState={selectedMovie}
 				onSuccess={handleOnUpdate}
 				onClose={hideUpdateForm}
-			/>
+			/> */}
 		</>
 	);
 };
