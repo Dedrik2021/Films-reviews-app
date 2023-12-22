@@ -66,7 +66,7 @@ const LatestUploads = () => {
 	// 	setMovies([...updatedMovie]);
 	// };
 
-	const handleAfterDelete = () => fetchLatestUploads()
+	const handleUiUpdate = () => fetchLatestUploads()
 
 	return movies.length ? (
 		<>
@@ -80,7 +80,8 @@ const LatestUploads = () => {
 							<MovieListItem
 								movie={movie}
 								key={movie.id}
-								afterDelete={handleAfterDelete}
+								afterDelete={handleUiUpdate}
+								afterUpdate={handleUiUpdate}
 								// onDeleteClick={() => handleOnDeleteClick(movie)}
 								// onEditClick={() => handleOnEditClick(movie)}
 							/>

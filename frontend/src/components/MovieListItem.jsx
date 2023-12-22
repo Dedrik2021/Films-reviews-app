@@ -4,10 +4,14 @@ import { useState } from 'react';
 import ConfirmModal from './Modals/ConfirmModal';
 import { deleteMovie } from '../api/movie';
 import { useNotification } from '../hooks';
+import UpdateMovie from './Modals/UpdateMovie';
 
-const MovieListItem = ({ movie, afterDelete }) => {
+const MovieListItem = ({ movie, afterDelete, afterUpdate }) => {
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
 	const [busy, setBusy] = useState(false);
+	const [showUpdateModal, setShowUpdateModal] = useState(false)
+	const [selectedMovieId, setSelectedMovieId] = useState(null)
+
 	const { updateNotification } = useNotification();
 
 	const hideConfirmModal = () => {
@@ -28,9 +32,24 @@ const MovieListItem = ({ movie, afterDelete }) => {
 		hideConfirmModal();
 	};
 
+	const handleEditClick = () => {
+		setShowUpdateModal(true)
+		setSelectedMovieId(movie.id)
+	};
+
+	const handleOnUpdate = () => {
+		afterUpdate(movie)
+		setShowUpdateModal(false)
+		setSelectedMovieId(null)
+	}
+
 	return (
 		<>
-			<MovieCard movie={movie} onDeleteClick={displayConfirmModal} />
+			<MovieCard
+				movie={movie}
+				onDeleteClick={displayConfirmModal}
+				onEditClick={handleEditClick}
+			/>
 			<div className="p-0">
 				<ConfirmModal
 					visible={showConfirmModal}
@@ -39,6 +58,11 @@ const MovieListItem = ({ movie, afterDelete }) => {
 					title="Are you sure?"
 					subtitle="This action will be remove movie permanently!"
 					busy={busy}
+				/>
+				<UpdateMovie
+				movieId={selectedMovieId}
+					visible={showUpdateModal}
+					onSuccess={handleOnUpdate}
 				/>
 			</div>
 		</>

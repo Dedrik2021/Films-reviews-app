@@ -41,7 +41,7 @@ const Movies = () => {
 	// 	setShowConfirmModal(false);
 	// };
 
-	// const handleOnUpdate = (movie) => {
+	// const handleAfterUpdate = (movie) => {
 	// 	const updatedMovies = movies.map((m) => {
 	// 		if (m.id === movie.id) return movie;
 	// 		return m;
@@ -66,7 +66,7 @@ const Movies = () => {
 	// 	fetchMovies(currentPageNo);
 	// };
 
-	const handleAfterDelete = () => {
+	const handleUiUpdate = () => {
 		fetchMovies()
 	}
 
@@ -78,7 +78,8 @@ const Movies = () => {
 						<MovieListItem
 							key={movie.id}
 							movie={movie}
-							afterDelete={handleAfterDelete}
+							afterDelete={handleUiUpdate}
+							afterUpdate={handleUiUpdate}
 							// onEditClick={() => handleOnEditClick(movie)}
 							// onDeleteClick={() => handleOnDeleteClick(movie)}
 						/>
