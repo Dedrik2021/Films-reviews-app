@@ -5,7 +5,7 @@ import MovieForm from '../admin/MovieForm';
 import { updateMovie, getMovieForUpdate } from '../../api/movie';
 import { useNotification } from '../../hooks';
 
-const UpdateMovie = ({ visible, onSuccess, onClose, movieId }) => {
+const UpdateMovie = ({ visible, onSuccess, movieId }) => {
 	const [busy, setBusy] = useState(false);
 	const [ready, setReady] = useState(false);
 	const [selectedMovie, setSelectedMovie] = useState(null);
@@ -21,7 +21,6 @@ const UpdateMovie = ({ visible, onSuccess, onClose, movieId }) => {
 		updateNotification('success', message);
 
 		onSuccess(movie);
-		onClose();
 	};
 
 	const fetchMovieToUpdate = async () => {

@@ -27,9 +27,9 @@ const MovieListItem = ({ movie, afterDelete, afterUpdate }) => {
 
 		if (error) return updateNotification('error', error);
 
+		hideConfirmModal();
 		updateNotification('success', message);
 		afterDelete(movie);
-		hideConfirmModal();
 	};
 
 	const handleEditClick = () => {
