@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-import {genres} from '../utils/genres.mjs'
+import { genres } from '../utils/genres.mjs';
 
 const movieShema = mongoose.Schema(
 	{
@@ -57,7 +57,7 @@ const movieShema = mongoose.Schema(
 			type: Object,
 			url: { type: String, required: true },
 			public_id: { type: String, required: true },
-            responsive: [URL],
+			responsive: [URL],
 			required: true,
 		},
 		trailer: {
@@ -68,7 +68,7 @@ const movieShema = mongoose.Schema(
 		},
 		reviews: [
 			{
-				type: mongoose.Types.ObjectId,
+				type: mongoose.Schema.Types.ObjectId,
 				ref: 'Review',
 			},
 		],
