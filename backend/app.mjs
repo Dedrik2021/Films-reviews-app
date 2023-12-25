@@ -7,6 +7,7 @@ import './db/index.mjs';
 import userRouter from './routes/user.mjs';
 import actorRouter from './routes/actor.mjs'
 import movieRouter from './routes/movie.mjs'
+import reviewRouter from './routes/review.mjs'
 
 import { errorHandler } from './middlewares/error.mjs';
 import { handleNotFound } from './utils/helper.mjs';
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use('/api/user', userRouter);
 app.use('/api/actor', actorRouter)
 app.use('/api/movie', movieRouter)
+app.use('/api/review', reviewRouter)
 
 app.use('/*', handleNotFound)
 

@@ -99,6 +99,11 @@ const validateTrailer = check('trailer')
 		}
 	});
 
+const validateRatings = check('rating', 'Rating must be a number between 0 and 10.').isFloat({
+	min: 0,
+	max: 10,
+});
+
 const validate = (req, res, next) => {
 	const error = validationResult(req).array();
 
@@ -116,5 +121,6 @@ export {
 	signInValidator,
 	validatorActorInfo,
 	validateMovie,
-	validateTrailer
+	validateTrailer,
+	validateRatings
 };
