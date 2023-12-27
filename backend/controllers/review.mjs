@@ -32,7 +32,26 @@ const addReview = async (req, res, next) => {
     if (isAlreadyReview) return sendError(req, "Invalid request, review is already their!")
 
 
+    const newReview = new Review({
+        owner: userId,
+        parentMovie: movie._id,
+        content,
+        rating
+    })
 
+    movie.reviews.push(newReview._id)
+
+    try {
+        await movie.save()
+    } catch(err) {
+        return next(sendError(res, 'Movie not has been sended.'))
+    }
+
+    try {
+        await newReview.save()
+    } catch(err) {
+        return next(sendError(res, 'Review not has been saved.'))
+    }
 }
 
 export {addReview}
