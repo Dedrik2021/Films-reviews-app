@@ -84,4 +84,41 @@ const updateReview = async (req, res, next) => {
     res.json({message: "Your review has been updated!"})
 }
 
-export {addReview, updateReview}
+const removeReview = async (req, res, next) => {
+    const reviewId = req.params
+    const userId = req.user._id
+    let review, movie
+    if (!isValidObjectId(reviewId)) return sendError(res, 'Invalid review ID!')
+
+    try {
+        review = await Review.findOne({owner: userId, _id: reviewId})
+    } catch(err) {
+        return next(sendError(res, "Invalid request!"))
+    }
+
+    if (!review) return sendError(res, "Review not found!", 404)
+
+    try {
+        movie = await Movie.findById(review.parentMovie).select("reviews")
+    } catch(err) {
+        return next(sendError(res, "Invalid request!"))
+    }
+
+    movie.reviews = movie.reviews.filter(rId => rId !== reviewId)
+
+    try {
+        await Review.findByIdAndDelete(reviewId)
+    } catch(err) {
+        return next(sendError(res, "Review has not been removed!"))
+    }
+
+    try {
+        await movie.save()
+    } catch(err) {
+        return next(sendError(res, "Movie has not been saved!"))
+    }
+
+    res.json({message: "Review removed successfully!"})
+}
+
+export {addReview, updateReview, removeReview}
