@@ -104,7 +104,7 @@ const removeReview = async (req, res, next) => {
         return next(sendError(res, "Invalid request!"))
     }
 
-    movie.reviews = movie.reviews.filter(rId => rId !== reviewId)
+    movie.reviews = movie.reviews.filter(rId => rId.toString() !== reviewId)
 
     try {
         await Review.findByIdAndDelete(reviewId)
