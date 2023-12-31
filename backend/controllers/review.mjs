@@ -121,4 +121,25 @@ const removeReview = async (req, res, next) => {
     res.json({message: "Review removed successfully!"})
 }
 
-export {addReview, updateReview, removeReview}
+const getReviewsByMovie = async (req, res, next) => {
+    const {movieId} = req.params
+    let movie
+
+    if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie ID!')
+
+    try {
+        movie = await Movie.findById(movieId).populate({
+            path: 'reviews',
+            populate: {
+                path: 'owner',
+                select: 'name'
+            }
+        }).select('reviews')
+    } catch(err) {
+        return next(sendError(res, 'Something went wrong!'))
+    }
+
+    res.json(movie.reviews)
+}
+
+export {addReview, updateReview, removeReview, getReviewsByMovie}
