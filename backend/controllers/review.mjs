@@ -139,7 +139,22 @@ const getReviewsByMovie = async (req, res, next) => {
         return next(sendError(res, 'Something went wrong!'))
     }
 
-    res.json(movie.reviews)
+    const reviews = movie.reviews.map(r => {
+        const {owner, content, rating, _id: reviewId} = r
+        const {name, _id: ownerId} = owner
+        
+        return {
+            id: reviewId,
+            owner: {
+                id: ownerId,
+                name
+            },
+            content,
+            rating
+        }
+    })
+
+    res.json({reviews})
 }
 
 export {addReview, updateReview, removeReview, getReviewsByMovie}
