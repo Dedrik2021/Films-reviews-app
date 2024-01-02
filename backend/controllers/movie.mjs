@@ -344,6 +344,29 @@ const searchMovies = async (req, res) => {
 	})
 }
 
+const getLatestUploads = async (req, res, next) => {
+	let results
+	const {limit = 5} = req.params
+
+	try {
+		results = await Movie.find({status: 'public'}).sort('-createdAt').limit(parseInt(limit))
+	} catch(err) {
+		return next(sendError(res, 'Movie not found!', 404))
+	}
+
+	const movies = results.map((m) => {
+		return {
+			id: m._id,
+			title: m.title,
+			storyLine: m.storyLine,
+			poster: m.poster?.url,
+			trailer: m.trailer?.url
+		}
+	})
+
+	res.json({movies})
+}
+
 export {
 	uploadTrailer,
 	createMovie,
@@ -352,5 +375,6 @@ export {
 	removeMovie,
 	getMovies,
 	getMovieForUpdate,
-	searchMovies
+	searchMovies,
+	getLatestUploads
 };
