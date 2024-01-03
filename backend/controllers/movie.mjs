@@ -367,6 +367,22 @@ const getLatestUploads = async (req, res, next) => {
 	res.json({movies})
 }
 
+const getSingleMovie = async (req, res, next) => {
+	const {movieId} = req.params
+
+	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie id!')
+
+	let movie
+
+	try {
+		movie = await Movie.findById(movieId).populate('director writers cast.actor')
+	} catch(err) {
+		return next(sendError(res, 'Something went wrong, single movie has not been found!'))
+	}
+
+	res.json({movie})
+}
+
 export {
 	uploadTrailer,
 	createMovie,
@@ -376,5 +392,6 @@ export {
 	getMovies,
 	getMovieForUpdate,
 	searchMovies,
-	getLatestUploads
+	getLatestUploads,
+	getSingleMovie
 };
