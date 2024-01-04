@@ -326,11 +326,11 @@ const getMovieForUpdate = async (req, res) => {
 };
 
 const searchMovies = async (req, res) => {
-	const {title} = req.query
+	const { title } = req.query;
 
-	if (!title.trim()) return sendError(res, "Invalid request!")
+	if (!title.trim()) return sendError(res, 'Invalid request!');
 
-	const movies = await Movie.find({title: {$regex: title, $options: "i"}})
+	const movies = await Movie.find({ title: { $regex: title, $options: 'i' } });
 	res.status(201).json({
 		results: movies.map((m) => {
 			return {
@@ -338,20 +338,20 @@ const searchMovies = async (req, res) => {
 				title: m.title,
 				poster: m.poster?.url,
 				genres: m.genres,
-				status: m.status
-			}
-		})
-	})
-}
+				status: m.status,
+			};
+		}),
+	});
+};
 
 const getLatestUploads = async (req, res, next) => {
-	let results
-	const {limit = 5} = req.params
+	let results;
+	const { limit = 5 } = req.params;
 
 	try {
-		results = await Movie.find({status: 'public'}).sort('-createdAt').limit(parseInt(limit))
-	} catch(err) {
-		return next(sendError(res, 'Movie not found!', 404))
+		results = await Movie.find({ status: 'public' }).sort('-createdAt').limit(parseInt(limit));
+	} catch (err) {
+		return next(sendError(res, 'Movie not found!', 404));
 	}
 
 	const movies = results.map((m) => {
@@ -360,28 +360,75 @@ const getLatestUploads = async (req, res, next) => {
 			title: m.title,
 			storyLine: m.storyLine,
 			poster: m.poster?.url,
-			trailer: m.trailer?.url
-		}
-	})
+			trailer: m.trailer?.url,
+		};
+	});
 
-	res.json({movies})
-}
+	res.json({ movies });
+};
 
 const getSingleMovie = async (req, res, next) => {
-	const {movieId} = req.params
+	const { movieId } = req.params;
 
-	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie id!')
+	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie id!');
 
-	let movie
+	let movie;
 
 	try {
-		movie = await Movie.findById(movieId).populate('director writers cast.actor')
-	} catch(err) {
-		return next(sendError(res, 'Something went wrong, single movie has not been found!'))
+		movie = await Movie.findById(movieId).populate('director writers cast.actor');
+	} catch (err) {
+		return next(sendError(res, 'Something went wrong, single movie has not been found!'));
 	}
 
-	res.json({movie})
-}
+	const {
+		_id: id,
+		title,
+		storyLine,
+		cast,
+		writers,
+		director,
+		releseDate,
+		genres,
+		tags,
+		language,
+		poster,
+		trailer,
+		type,
+	} = movie;
+
+	res.json({
+		movie: {
+			id,
+			title,
+			storyLine,
+			releseDate,
+			genres,
+			tags,
+			language,
+			poster: poster?.url,
+			trailer: trailer?.url,
+			type,
+			cast: cast.map((c) => ({
+				id: c.id,
+				profile: {
+					id: c.actor._id,
+					name: c.actor.name,
+					avatar: c.actor?.avatar?.url,
+				},
+				leadActor: c.leadActor,
+				roleAs: c.roleAs,
+			})),
+			writers: writers.map((w) => ({
+				id: w._id,
+				name: w.name,
+			})),
+			director: {
+				id: director._id,
+				name: director.name
+			},
+		},
+	});
+};
 
 export {
 	uploadTrailer,
@@ -393,5 +440,5 @@ export {
 	getMovieForUpdate,
 	searchMovies,
 	getLatestUploads,
-	getSingleMovie
+	getSingleMovie,
 };
