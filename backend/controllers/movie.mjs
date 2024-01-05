@@ -1,8 +1,12 @@
-import { isValidObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 
 import { formatActor, sendError } from '../utils/helper.mjs';
 import cloudinary from '../cloud/index.mjs';
 import Movie from '../models/movie.mjs';
+import Review from '../models/review.mjs';
+import { averageRatingPipeline } from '../utils/helper.mjs';
+
+const {isValidObjectId} = mongoose
 
 const uploadTrailer = async (req, res) => {
 	const { file } = req;
@@ -370,14 +374,22 @@ const getLatestUploads = async (req, res, next) => {
 const getSingleMovie = async (req, res, next) => {
 	const { movieId } = req.params;
 
+	// mongoose.Types.ObjectId(movieId)
+
 	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie id!');
 
-	let movie;
+	let movie, reviews;
 
 	try {
 		movie = await Movie.findById(movieId).populate('director writers cast.actor');
 	} catch (err) {
 		return next(sendError(res, 'Something went wrong, single movie has not been found!'));
+	}
+
+	try {
+		reviews = await Review.aggregate(averageRatingPipeline(movie._id));
+	} catch(err) {
+		return next(sendError(res, "Something went wrong, averageRatingPipeline not work!"))
 	}
 
 	const {
@@ -424,7 +436,7 @@ const getSingleMovie = async (req, res, next) => {
 			})),
 			director: {
 				id: director._id,
-				name: director.name
+				name: director.name,
 			},
 		},
 	});

@@ -37,15 +37,52 @@ const handleNotFound = (req, res) => {
 };
 
 const parseData = (req, res, next) => {
-    const {trailer, cast, genres, tags, writers} = req.body
+	const { trailer, cast, genres, tags, writers } = req.body;
 
-    if (trailer) req.body.trailer = JSON.parse(trailer)
-    if (cast) req.body.cast = JSON.parse(cast)
-    if (genres) req.body.genres = JSON.parse(genres)
-    if (tags) req.body.tags = JSON.parse(tags)
-    if (writers) req.body.writers = JSON.parse(writers)
+	if (trailer) req.body.trailer = JSON.parse(trailer);
+	if (cast) req.body.cast = JSON.parse(cast);
+	if (genres) req.body.genres = JSON.parse(genres);
+	if (tags) req.body.tags = JSON.parse(tags);
+	if (writers) req.body.writers = JSON.parse(writers);
 
-    next()
+	next();
+};
+
+const averageRatingPipeline = (movieId) => {
+	return [
+		{
+			$lookup: {
+				from: 'Review',
+				localField: 'rating',
+				foreignField: '_id',
+				as: 'avgRat',
+			},
+		},
+		{
+			$match: {
+				parentMovieId: movieId,
+			},
+		},
+		{
+			$group: {
+				_id: null,
+				ratingAvg: {
+					$avg: '$rating',
+				},
+				reviewCount: {
+					$sum: 1,
+				},
+			},
+		},
+	];
 }
 
-export { sendError, generateRandomByte, handleNotFound, uploadImageToCloud, formatActor, parseData };
+export {
+	sendError,
+	generateRandomByte,
+	handleNotFound,
+	uploadImageToCloud,
+	formatActor,
+	parseData,
+	averageRatingPipeline,
+};
