@@ -378,7 +378,7 @@ const getSingleMovie = async (req, res, next) => {
 
 	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie id!');
 
-	let movie, reviews;
+	let movie, reviews = {}, aggregatedResponse;
 
 	try {
 		movie = await Movie.findById(movieId).populate('director writers cast.actor');
@@ -387,9 +387,15 @@ const getSingleMovie = async (req, res, next) => {
 	}
 
 	try {
-		reviews = await Review.aggregate(averageRatingPipeline(movie._id));
+		[aggregatedResponse] = await Review.aggregate(averageRatingPipeline(movie._id));
 	} catch(err) {
 		return next(sendError(res, "Something went wrong, averageRatingPipeline not work!"))
+	}
+
+	if (aggregatedResponse) {
+		const {ratingAvg, reviewCount} = aggregatedResponse
+		reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1)
+		reviews.reviewCount = reviewCount
 	}
 
 	const {
@@ -438,6 +444,7 @@ const getSingleMovie = async (req, res, next) => {
 				id: director._id,
 				name: director.name,
 			},
+			reviews: {...reviews}
 		},
 	});
 };
