@@ -449,10 +449,14 @@ const getSingleMovie = async (req, res, next) => {
 	});
 };
 
+const getRelatedMovies = async (req, res, next) => {
+
+}
+
 export {
 	uploadTrailer,
 	createMovie,
-	updateMovieWithoutPoster,
+	updateMovieWithoutPoster, 
 	updateMovie,
 	removeMovie,
 	getMovies,
@@ -460,4 +464,5 @@ export {
 	searchMovies,
 	getLatestUploads,
 	getSingleMovie,
+	getRelatedMovies
 };

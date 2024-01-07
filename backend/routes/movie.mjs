@@ -11,7 +11,8 @@ import {
 	getMovieForUpdate,
 	searchMovies,
 	getLatestUploads,
-	getSingleMovie
+	getSingleMovie,
+	getRelatedMovies
 } from '../controllers/movie.mjs';
 import { uploadImage, uploadVideo } from '../middlewares/multer.mjs';
 import { validate, validateMovie, validateTrailer } from '../middlewares/validator.mjs';
@@ -58,5 +59,6 @@ router.get('/search', isAuth, isAdmin, searchMovies);
 
 router.get('/latest-uploads', getLatestUploads)
 router.get('/single/:movieId', getSingleMovie)
+router.get('/related/:movieId', getRelatedMovies)
 
 export default router;
