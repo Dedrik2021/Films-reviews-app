@@ -4,9 +4,9 @@ import { formatActor, sendError } from '../utils/helper.mjs';
 import cloudinary from '../cloud/index.mjs';
 import Movie from '../models/movie.mjs';
 import Review from '../models/review.mjs';
-import { averageRatingPipeline } from '../utils/helper.mjs';
+import { averageRatingPipeline, relatedMovieAggregation } from '../utils/helper.mjs';
 
-const {isValidObjectId} = mongoose
+const { isValidObjectId } = mongoose;
 
 const uploadTrailer = async (req, res) => {
 	const { file } = req;
@@ -378,7 +378,9 @@ const getSingleMovie = async (req, res, next) => {
 
 	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie id!');
 
-	let movie, reviews = {}, aggregatedResponse;
+	let movie,
+		reviews = {},
+		aggregatedResponse;
 
 	try {
 		movie = await Movie.findById(movieId).populate('director writers cast.actor');
@@ -388,14 +390,14 @@ const getSingleMovie = async (req, res, next) => {
 
 	try {
 		[aggregatedResponse] = await Review.aggregate(averageRatingPipeline(movie._id));
-	} catch(err) {
-		return next(sendError(res, "Something went wrong, averageRatingPipeline not work!"))
+	} catch (err) {
+		return next(sendError(res, 'Something went wrong, averageRatingPipeline not work!'));
 	}
 
 	if (aggregatedResponse) {
-		const {ratingAvg, reviewCount} = aggregatedResponse
-		reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1)
-		reviews.reviewCount = reviewCount
+		const { ratingAvg, reviewCount } = aggregatedResponse;
+		reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+		reviews.reviewCount = reviewCount;
 	}
 
 	const {
@@ -444,19 +446,36 @@ const getSingleMovie = async (req, res, next) => {
 				id: director._id,
 				name: director.name,
 			},
-			reviews: {...reviews}
+			reviews: { ...reviews },
 		},
 	});
 };
 
 const getRelatedMovies = async (req, res, next) => {
+	const { movieId } = req.params;
 
-}
+	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie id!');
+	let movie, movies;
+
+	try {
+		movie = await Movie.findById(movieId);
+	} catch (err) {
+		return next(sendError(res, 'Movie not found!'));
+	}
+
+	try {
+		movies = await Movie.aggregate(relatedMovieAggregation(movie.tags, movie._id));
+	} catch (err) {
+		return next(sendError(res, 'Something went wrong, movies aggregate is not working!'));
+	}
+
+	res.json({ movie });
+};
 
 export {
 	uploadTrailer,
 	createMovie,
-	updateMovieWithoutPoster, 
+	updateMovieWithoutPoster,
 	updateMovie,
 	removeMovie,
 	getMovies,
@@ -464,5 +483,5 @@ export {
 	searchMovies,
 	getLatestUploads,
 	getSingleMovie,
-	getRelatedMovies
+	getRelatedMovies,
 };
