@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 
 import cloudinary from '../cloud/index.mjs';
+import Review from '../models/review.mjs';
 
 const sendError = (res, error, statusCode = 401) => {
 	res.status(statusCode).json({ error });
@@ -75,7 +76,7 @@ const averageRatingPipeline = (movieId) => {
 			},
 		},
 	];
-}
+};
 
 const relatedMovieAggregation = (tags, movieId) => {
 	return [
@@ -100,8 +101,27 @@ const relatedMovieAggregation = (tags, movieId) => {
 			},
 		},
 		{ $limit: 5 },
-	]
-}
+	];
+};
+
+const getAverageRatings = async (movieId) => {
+	let reviews = {},
+		aggregatedResponse;
+
+	try {
+		[aggregatedResponse] = await Review.aggregate(this.averageRatingPipeline(movieId));
+	} catch (err) {
+		return next(sendError(res, 'Something went wrong, averageRatingPipeline not work!'));
+	}
+
+	if (aggregatedResponse) {
+		const { ratingAvg, reviewCount } = aggregatedResponse;
+		reviews.ratingAvg = parseFloat(ratingAvg).toFixed(1);
+		reviews.reviewCount = reviewCount;
+	}
+
+	return reviews;
+};
 
 export {
 	sendError,
@@ -111,5 +131,6 @@ export {
 	formatActor,
 	parseData,
 	averageRatingPipeline,
-	relatedMovieAggregation
+	relatedMovieAggregation,
+	getAverageRatings,
 };
