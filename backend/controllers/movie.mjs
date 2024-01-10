@@ -4,7 +4,11 @@ import { formatActor, sendError } from '../utils/helper.mjs';
 import cloudinary from '../cloud/index.mjs';
 import Movie from '../models/movie.mjs';
 import Review from '../models/review.mjs';
-import { averageRatingPipeline, relatedMovieAggregation, getAverageRatings } from '../utils/helper.mjs';
+import {
+	averageRatingPipeline,
+	relatedMovieAggregation,
+	getAverageRatings,
+} from '../utils/helper.mjs';
 
 const { isValidObjectId } = mongoose;
 
@@ -378,7 +382,7 @@ const getSingleMovie = async (req, res, next) => {
 
 	if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie id!');
 
-	let movie
+	let movie;
 
 	try {
 		movie = await Movie.findById(movieId).populate('director writers cast.actor');
@@ -386,7 +390,7 @@ const getSingleMovie = async (req, res, next) => {
 		return next(sendError(res, 'Something went wrong, single movie has not been found!'));
 	}
 
-	const reviews = await getAverageRatings(movie._id)
+	const reviews = await getAverageRatings(movie._id);
 
 	const {
 		_id: id,
@@ -457,16 +461,18 @@ const getRelatedMovies = async (req, res, next) => {
 		return next(sendError(res, 'Something went wrong, movies aggregate is not working!'));
 	}
 
-	const relatedMovies = movies.map(async (m) => {
-		const reviews = await getAverageRatings(m._id)
+	const mapMovies = async (m) => {
+		const reviews = await getAverageRatings(m._id);
 
 		return {
 			id: m._id,
 			title: m.title,
 			poster: m.poster,
-			reviews: {... reviews}
-		}
-	})
+			reviews: { ...reviews },
+		};
+	};
+
+	const relatedMovies = await Promise.all(movies.map(mapMovies));
 
 	res.json({ relatedMovies });
 };
