@@ -477,6 +477,50 @@ const getRelatedMovies = async (req, res, next) => {
 	res.json({ relatedMovies });
 };
 
+const getTopRelatedMovies = async (req, res, next) => {
+	const { type = 'Film' } = req.query;
+	let movies;
+
+	try {
+		movies = await Movie.aggregate([
+			{
+				$lookup: {
+					from: 'Movie',
+					localField: 'reviews',
+					foreignField: '_id',
+					as: 'toRated',
+				},
+			},
+			{
+				$match: {
+					$reviews: { $exists: true },
+					status: { $eq: 'public' },
+					type: { $eq: type },
+				},
+			},
+			{
+				$project: {
+					title: 1,
+					poster: '$poster.url',
+					reviewCount: { $size: '$reviews' },
+				},
+			},
+			{
+				$sort: {
+					reviewCount: -1,
+				},
+			},
+			{
+				$limit: 5,
+			},
+		]);
+	} catch (err) {
+		return next(sendError(res, 'Something went wrong, movies has been not found!'));
+	}
+
+	res.json(movies)
+};
+
 export {
 	uploadTrailer,
 	createMovie,
@@ -489,4 +533,5 @@ export {
 	getLatestUploads,
 	getSingleMovie,
 	getRelatedMovies,
+	getTopRelatedMovies,
 };
