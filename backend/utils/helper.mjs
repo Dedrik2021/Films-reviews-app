@@ -123,6 +123,41 @@ const getAverageRatings = async (movieId) => {
 	return reviews;
 };
 
+const topRatedMoviesPipeline = async (type) => {
+	return [
+		{
+			$lookup: {
+				from: 'Movie',
+				localField: 'reviews',
+				foreignField: '_id',
+				as: 'toRated',
+			},
+		},
+		{
+			$match: {
+				$reviews: { $exists: true },
+				status: { $eq: 'public' },
+				type: { $eq: type },
+			},
+		},
+		{
+			$project: {
+				title: 1,
+				poster: '$poster.url',
+				reviewCount: { $size: '$reviews' },
+			},
+		},
+		{
+			$sort: {
+				reviewCount: -1,
+			},
+		},
+		{
+			$limit: 5,
+		},
+	]
+}
+
 export {
 	sendError,
 	generateRandomByte,
@@ -133,4 +168,5 @@ export {
 	averageRatingPipeline,
 	relatedMovieAggregation,
 	getAverageRatings,
+	topRatedMoviesPipeline
 };
