@@ -9,21 +9,35 @@ const TopRatedMovies = () => {
 	const { updateNotification } = useNotification();
 
 	const fetchMovies = async () => {
-        const {error, movies} = await getTopRatedMovies()
-        if (error) return updateNotification("error", error)
+		const { error, movies } = await getTopRatedMovies();
+		if (error) return updateNotification('error', error);
 
-        setMovies([...movies])
-    };
+		setMovies([...movies]);
+	};
 
-    useEffect(() => {
-        fetchMovies()
-    }, [])
+	useEffect(() => {
+		fetchMovies();
+	}, []);
+
+	const trimTitle = (text = '') => {
+		if (text.length <= 20) return text;
+		return text.substring(0, 20) + '..';
+	};
 
 	return (
 		<GridContainer>
-			{movies.map((_, i) => {
-					return <div className="p-5 bg-red-200" key={i}></div>;
-				})}
+			{movies.map((movie) => {
+				return (
+					<div key={movie.id}>
+						<img
+							className="aspect-video object-cover"
+							src={movie.poster}
+							alt={movie.title}
+						/>
+						<h1 title={movie.title}>{trimTitle(movie.title)}</h1>
+					</div>
+				);
+			})}
 		</GridContainer>
 	);
 };
