@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { AiFillStar } from 'react-icons/ai';
 
 import GridContainer from '../GridContainer';
 import { useNotification } from '../../hooks';
@@ -34,7 +35,22 @@ const TopRatedMovies = () => {
 							src={movie.poster}
 							alt={movie.title}
 						/>
-						<h1 title={movie.title}>{trimTitle(movie.title)}</h1>
+						<h1
+							className="text-lg dark:text-white text-secondary font-semibold"
+							title={movie.title}
+						>
+							{trimTitle(movie.title)}
+						</h1>
+						{movie.reviews?.ratingAvg ? (
+							<p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
+								<span>{movie.reviews?.ratingAvg}</span>
+								<AiFillStar />
+							</p>
+						) : (
+							<p className="text-highlight dark:text-highlight-dark flex items-center space-x-1">
+								No Reviews
+							</p>
+						)}
 					</div>
 				);
 			})}
