@@ -1,6 +1,6 @@
 const SingleMovie = () => {
     return ( 
-
+        <div>Single movie</div>
     );
 }
 
