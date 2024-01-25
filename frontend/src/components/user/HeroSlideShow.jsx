@@ -6,7 +6,8 @@ import { getLatestUploads } from '../../api/movie';
 
 const HeroSlideShow = () => {
 	const [slide, setSlide] = useState({});
-	const [movies, setMovies] = useState([]);
+	const [slides, setSlides] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0)
 
 	const { updateNotification } = useNotification();
 
@@ -14,7 +15,7 @@ const HeroSlideShow = () => {
         const {error, movies} = await getLatestUploads()
         if (error) return updateNotification("error", error)
 
-        setMovies([...movies])
+        setSlides([...movies])
         setSlide(movies[0])
     }
 
@@ -22,11 +23,17 @@ const HeroSlideShow = () => {
         fetchLatestUploads()
     },[])
 
+    const handleOnNxtClick = () => {
+        const nextSlideIndex = currentIndex + 1
+        setSlide(slides[nextSlideIndex])
+        setCurrentIndex(nextSlideIndex)
+    }
+
 	return (
 		<div className="w-full flex">
 			<div className="w-4/5 aspect-video relative">
-				<img src={slide.poster} alt="" />
-                <SlideShowController/>
+				<img className='aspect-vied object-cover' src={slide.poster} alt="" />
+                <SlideShowController onNextClick={handleOnNxtClick}/>
 			</div>
 			<div className="w-1/5 aspect-video bg-red-300"></div>
 		</div>
