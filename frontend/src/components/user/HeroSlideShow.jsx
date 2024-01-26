@@ -4,6 +4,8 @@ import {AiOutlineDoubleLeft, AiOutlineDoubleRight} from "react-icons/ai"
 import { useNotification } from '../../hooks';
 import { getLatestUploads } from '../../api/movie';
 
+let count = 0
+
 const HeroSlideShow = () => {
 	const [slide, setSlide] = useState({});
 	const [slides, setSlides] = useState([]);
@@ -24,9 +26,9 @@ const HeroSlideShow = () => {
     },[])
 
     const handleOnNxtClick = () => {
-        const nextSlideIndex = currentIndex + 1
-        setSlide(slides[nextSlideIndex])
-        setCurrentIndex(nextSlideIndex)
+        count = (count + 1) % slides.length
+        setSlide(slides[count])
+        setCurrentIndex(count)
     }
 
 	return (
