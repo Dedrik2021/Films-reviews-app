@@ -33,8 +33,8 @@ const HeroSlideShow = () => {
 
 	return (
 		<div className="w-full flex">
-			<div className="w-4/5 aspect-video relative">
-				<img className='aspect-vied object-cover' src={slide.poster} alt="" />
+			<div className="w-4/5 aspect-video relative overflow-hidden">
+				<img className='aspect-vied object-cover translate-x-[80%]' src={slide.poster} alt="" />
                 <SlideShowController onNextClick={handleOnNxtClick}/>
 			</div>
 			<div className="w-1/5 aspect-video bg-red-300"></div>
