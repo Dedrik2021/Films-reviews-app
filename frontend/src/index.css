@@ -69,6 +69,19 @@
   background-color: rgb(143, 190, 245);
 }
 
+.slide-in-from-right {
+  animation: slideInFromRight 0.5s ease-in;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%)
+  } 
+  to {
+    transform: translateX(0%)
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

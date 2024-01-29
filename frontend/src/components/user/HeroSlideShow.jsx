@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {AiOutlineDoubleLeft, AiOutlineDoubleRight} from "react-icons/ai"
 
 import { useNotification } from '../../hooks';
@@ -10,6 +10,7 @@ const HeroSlideShow = () => {
 	const [slide, setSlide] = useState({});
 	const [slides, setSlides] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0)
+    const slideRef = useRef()
 
 	const { updateNotification } = useNotification();
 
@@ -29,12 +30,14 @@ const HeroSlideShow = () => {
         count = (count + 1) % slides.length
         setSlide(slides[count])
         setCurrentIndex(count)
+
+        slideRef.current.classList.add('slide-in-from-right')
     }
 
 	return (
 		<div className="w-full flex">
 			<div className="w-4/5 aspect-video relative overflow-hidden">
-				<img className='aspect-vied object-cover translate-x-[80%]' src={slide.poster} alt="" />
+				<img ref={slideRef} className='aspect-vied object-cover' src={slide.poster} alt="" />
                 <SlideShowController onNextClick={handleOnNxtClick}/>
 			</div>
 			<div className="w-1/5 aspect-video bg-red-300"></div>
