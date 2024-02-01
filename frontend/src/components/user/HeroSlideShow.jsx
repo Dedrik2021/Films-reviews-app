@@ -9,8 +9,10 @@ let count = 0;
 const HeroSlideShow = () => {
 	const [slide, setSlide] = useState({});
 	const [slides, setSlides] = useState([]);
+	const [clonedSlide, setClonedSlide] = useState({});
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const slideRef = useRef();
+	const clonedSlideRef = useRef();
 
 	const { updateNotification } = useNotification();
 
@@ -27,15 +29,20 @@ const HeroSlideShow = () => {
 	}, []);
 
 	const handleOnNxtClick = () => {
+		setClonedSlide(slide[count])
 		count = (count + 1) % slides.length;
 		setSlide(slides[count]);
 		setCurrentIndex(count);
 
+		clonedSlideRef.current.classList.add('slide-out-to-left');
 		slideRef.current.classList.add('slide-in-from-right');
 	};
 
 	const handleAnimationEnd = () => {
 		slideRef.current.classList.remove('slide-in-from-right');
+		clonedSlideRef.current.classList.remove('slide-out-to-left');
+
+		setClonedSlide({})
 	};
 
 	return (
@@ -46,6 +53,13 @@ const HeroSlideShow = () => {
 					ref={slideRef}
 					className="aspect-vied object-cover"
 					src={slide.poster}
+					alt=""
+				/>
+				<img
+					// onAnimationEnd={handleAnimationEnd}
+					ref={clonedSlideRef}
+					className="aspect-vied object-cover absolute inset-0"
+					src={clonedSlide.poster}
 					alt=""
 				/>
 				<SlideShowController onNextClick={handleOnNxtClick} />

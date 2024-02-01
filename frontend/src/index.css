@@ -82,6 +82,19 @@
   }
 }
 
+.slide-out-to-left {
+  animation: slideOutToLeft 0.5s ease-in;
+}
+
+@keyframes slideOutToLeft {
+  from {
+    transform: translateX(0)
+  } 
+  to {
+    transform: translateX(-100%)
+  }
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
