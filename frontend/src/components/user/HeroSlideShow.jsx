@@ -58,6 +58,15 @@ const HeroSlideShow = () => {
 		setClonedSlide({});
 	};
 
+	const startSlideShow = () => {
+		setInterval(handleOnNxtClick, 3500)
+	}
+
+	useEffect(() => {
+		if (slides.length) startSlideShow()
+	}, [slides.length])
+
+
 	return (
 		<div className="w-full flex">
 			<div className="w-4/5 aspect-video relative overflow-hidden">
