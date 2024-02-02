@@ -7,10 +7,9 @@ import { getLatestUploads } from '../../api/movie';
 let count = 0;
 
 const HeroSlideShow = () => {
-	const [slide, setSlide] = useState({});
+	const [currentSlide, setCurrentSlide] = useState({});
 	const [slides, setSlides] = useState([]);
 	const [clonedSlide, setClonedSlide] = useState({});
-	const [currentIndex, setCurrentIndex] = useState(0);
 	const slideRef = useRef();
 	const clonedSlideRef = useRef();
 
@@ -21,7 +20,7 @@ const HeroSlideShow = () => {
 		if (error) return updateNotification('error', error);
 
 		setSlides([...movies]);
-		setSlide(movies[0]);
+		setCurrentSlide(movies[0]);
 	};
 
 	useEffect(() => {
@@ -29,20 +28,34 @@ const HeroSlideShow = () => {
 	}, []);
 
 	const handleOnNxtClick = () => {
-		setClonedSlide(slide[count])
+		setClonedSlide(slides[count]);
 		count = (count + 1) % slides.length;
-		setSlide(slides[count]);
-		setCurrentIndex(count);
+		setCurrentSlide(slides[count]);
 
 		clonedSlideRef.current.classList.add('slide-out-to-left');
 		slideRef.current.classList.add('slide-in-from-right');
 	};
 
-	const handleAnimationEnd = () => {
-		slideRef.current.classList.remove('slide-in-from-right');
-		clonedSlideRef.current.classList.remove('slide-out-to-left');
+	const handleOnPrevClick = () => {
+		setClonedSlide(slides[count]);
+		count = (count + slides.length - 1) % slides.length;
+		setCurrentSlide(slides[count]);
 
-		setClonedSlide({})
+		clonedSlideRef.current.classList.add('slide-out-to-right');
+		slideRef.current.classList.add('slide-in-from-left');
+	};
+
+	const handleAnimationEnd = () => {
+		const classes = [
+			'slide-out-to-left',
+			'slide-in-from-right',
+			'slide-out-to-right',
+			'slide-in-from-left',
+		];
+		slideRef.current.classList.remove(...classes);
+		clonedSlideRef.current.classList.remove(...classes);
+
+		setClonedSlide({});
 	};
 
 	return (
@@ -52,7 +65,7 @@ const HeroSlideShow = () => {
 					onAnimationEnd={handleAnimationEnd}
 					ref={slideRef}
 					className="aspect-vied object-cover"
-					src={slide.poster}
+					src={slides.poster}
 					alt=""
 				/>
 				<img
@@ -62,7 +75,10 @@ const HeroSlideShow = () => {
 					src={clonedSlide.poster}
 					alt=""
 				/>
-				<SlideShowController onNextClick={handleOnNxtClick} />
+				<SlideShowController
+					onNextClick={handleOnNxtClick}
+					onPrevClick={handleOnPrevClick}
+				/>
 			</div>
 			<div className="w-1/5 aspect-video bg-red-300"></div>
 		</div>
