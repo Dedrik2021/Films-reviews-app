@@ -4,7 +4,8 @@ import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 import { useNotification } from '../../hooks';
 import { getLatestUploads } from '../../api/movie';
 
-let count = 0;
+let count = 0,
+	intervalId;
 
 const HeroSlideShow = () => {
 	const [currentSlide, setCurrentSlide] = useState({});
@@ -22,10 +23,6 @@ const HeroSlideShow = () => {
 		setSlides([...movies]);
 		setCurrentSlide(movies[0]);
 	};
-
-	useEffect(() => {
-		fetchLatestUploads();
-	}, []);
 
 	const handleOnNxtClick = () => {
 		setClonedSlide(slides[count]);
@@ -59,13 +56,24 @@ const HeroSlideShow = () => {
 	};
 
 	const startSlideShow = () => {
-		setInterval(handleOnNxtClick, 3500)
-	}
+		intervalId = setInterval(handleOnNxtClick, 3500);
+	};
+
+	const pauseSlideShow = () => {
+		clearInterval(intervalId)
+	};
 
 	useEffect(() => {
-		if (slides.length) startSlideShow()
-	}, [slides.length])
+		if (slides.length) startSlideShow();
+	}, [slides.length]);
 
+	useEffect(() => {
+		fetchLatestUploads();
+
+		return () => {
+			pauseSlideShow()
+		}
+	}, []);
 
 	return (
 		<div className="w-full flex">
