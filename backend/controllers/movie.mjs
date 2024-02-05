@@ -22,7 +22,7 @@ const uploadTrailer = async (req, res) => {
 		resource_type: 'video',
 	});
 	res.status(201).json({ url, public_id });
-};
+};base
 
 const createMovie = async (req, res) => {
 	const { file, body } = req;
