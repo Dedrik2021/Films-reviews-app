@@ -26,6 +26,7 @@ const HeroSlideShow = () => {
 	};
 
 	const handleOnNxtClick = () => {
+		pauseSlideShow()
 		setClonedSlide(slides[count]);
 		count = (count + 1) % slides.length;
 		setCurrentSlide(slides[count]);
@@ -35,6 +36,7 @@ const HeroSlideShow = () => {
 	};
 
 	const handleOnPrevClick = () => {
+		pauseSlideShow()
 		setClonedSlide(slides[count]);
 		count = (count + slides.length - 1) % slides.length;
 		setCurrentSlide(slides[count]);
@@ -54,6 +56,7 @@ const HeroSlideShow = () => {
 		clonedSlideRef.current.classList.remove(...classes);
 
 		setClonedSlide({});
+		startSlideShow()
 	};
 
 	const startSlideShow = () => {
@@ -64,7 +67,6 @@ const HeroSlideShow = () => {
 		clearInterval(intervalId)
 	};
 
-	
 	const handleOnVisibilityChange = () => {
 		const visibility = document.visibilityState
 		if (visibility === 'hidden') {
@@ -72,6 +74,11 @@ const HeroSlideShow = () => {
 		}
 		if (visibility === 'visible') setVisible(true)
 	} 
+
+	useEffect(() => {
+		if (slides.length && visible) startSlideShow();
+		else pauseSlideShow()
+	}, [slides.length, visible]);
 
 	useEffect(() => {
 		fetchLatestUploads();
@@ -82,11 +89,6 @@ const HeroSlideShow = () => {
 			document.removeEventListener('visibilitychange', handleOnVisibilityChange)
 		}
 	}, []);
-
-	useEffect(() => {
-		if (slides.length && visible) startSlideShow();
-		else pauseSlideShow()
-	}, [slides.length, visible]);
 
 	return (
 		<div className="w-full flex">
