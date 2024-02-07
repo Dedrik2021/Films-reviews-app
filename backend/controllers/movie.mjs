@@ -67,7 +67,7 @@ const createMovie = async (req, res) => {
 		newMovie.writers = writers;
 	}
 
-	if (fiel) {
+	if (file) {
 		const {
 			secure_url: url,
 			public_id,

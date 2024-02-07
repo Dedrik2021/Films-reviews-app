@@ -11,7 +11,7 @@ const HeroSlideShow = () => {
 	const [currentSlide, setCurrentSlide] = useState({});
 	const [slides, setSlides] = useState([]);
 	const [clonedSlide, setClonedSlide] = useState({});
-	const [visible, setVisible] = useState(true)
+	const [visible, setVisible] = useState(true);
 	const slideRef = useRef();
 	const clonedSlideRef = useRef();
 
@@ -26,7 +26,7 @@ const HeroSlideShow = () => {
 	};
 
 	const handleOnNxtClick = () => {
-		pauseSlideShow()
+		pauseSlideShow();
 		setClonedSlide(slides[count]);
 		count = (count + 1) % slides.length;
 		setCurrentSlide(slides[count]);
@@ -36,7 +36,7 @@ const HeroSlideShow = () => {
 	};
 
 	const handleOnPrevClick = () => {
-		pauseSlideShow()
+		pauseSlideShow();
 		setClonedSlide(slides[count]);
 		count = (count + slides.length - 1) % slides.length;
 		setCurrentSlide(slides[count]);
@@ -56,7 +56,7 @@ const HeroSlideShow = () => {
 		clonedSlideRef.current.classList.remove(...classes);
 
 		setClonedSlide({});
-		startSlideShow()
+		startSlideShow();
 	};
 
 	const startSlideShow = () => {
@@ -64,49 +64,55 @@ const HeroSlideShow = () => {
 	};
 
 	const pauseSlideShow = () => {
-		clearInterval(intervalId)
+		clearInterval(intervalId);
 	};
 
 	const handleOnVisibilityChange = () => {
-		const visibility = document.visibilityState
+		const visibility = document.visibilityState;
 		if (visibility === 'hidden') {
-			setVisible(false)
+			setVisible(false);
 		}
-		if (visibility === 'visible') setVisible(true)
-	} 
+		if (visibility === 'visible') setVisible(true);
+	};
 
 	useEffect(() => {
 		if (slides.length && visible) startSlideShow();
-		else pauseSlideShow()
+		else pauseSlideShow();
 	}, [slides.length, visible]);
 
 	useEffect(() => {
 		fetchLatestUploads();
-		document.addEventListener('visibilitychange', handleOnVisibilityChange)
+		document.addEventListener('visibilitychange', handleOnVisibilityChange);
 
 		return () => {
-			pauseSlideShow()
-			document.removeEventListener('visibilitychange', handleOnVisibilityChange)
-		}
+			pauseSlideShow();
+			document.removeEventListener('visibilitychange', handleOnVisibilityChange);
+		};
 	}, []);
 
 	return (
 		<div className="w-full flex">
 			<div className="w-4/5 aspect-video relative overflow-hidden">
 				<img
-					onAnimationEnd={handleAnimationEnd}
-					ref={slideRef}
-					className="aspect-vied object-cover"
-					src={slides.poster}
-					alt=""
-				/>
-				<img
-					// onAnimationEnd={handleAnimationEnd}
 					ref={clonedSlideRef}
 					className="aspect-vied object-cover absolute inset-0"
 					src={clonedSlide.poster}
 					alt=""
 				/>
+
+				<div className="w-full cursor-pointer flex flex-col justify-end py-3 bg-gradient-to-t from-white dark:from-primary ">
+					<img
+						onAnimationEnd={handleAnimationEnd}
+						ref={slideRef}
+						className="aspect-vied object-cover"
+						src={slides.poster}
+						alt=""
+					/>
+					<div className='absolute inset-0'>
+						<h1 className='font-semibold text-4xl dark:text-highlight-dark text-highlight' >{currentSlide.title}</h1>
+					</div>
+				</div>
+
 				<SlideShowController
 					onNextClick={handleOnNxtClick}
 					onPrevClick={handleOnPrevClick}
