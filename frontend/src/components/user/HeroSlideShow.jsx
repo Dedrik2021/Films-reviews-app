@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, forwardRef } from 'react';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
 
 import { useNotification } from '../../hooks';
@@ -93,25 +93,14 @@ const HeroSlideShow = () => {
 	return (
 		<div className="w-full flex">
 			<div className="w-4/5 aspect-video relative overflow-hidden">
-				<img
+				<Slide ref={slideRef} title={currentSlide.title} src={currentSlide.poster} />
+				<Slide
 					ref={clonedSlideRef}
-					className="aspect-vied object-cover absolute inset-0"
+					onAnimationEnd={handleAnimationEnd}
+					className="absolute inset-0"
 					src={clonedSlide.poster}
-					alt=""
+					title={clonedSlide.title}
 				/>
-
-				<div className="w-full cursor-pointer flex flex-col justify-end py-3 bg-gradient-to-t from-white dark:from-primary ">
-					<img
-						onAnimationEnd={handleAnimationEnd}
-						ref={slideRef}
-						className="aspect-vied object-cover"
-						src={slides.poster}
-						alt=""
-					/>
-					<div className='absolute inset-0'>
-						<h1 className='font-semibold text-4xl dark:text-highlight-dark text-highlight' >{currentSlide.title}</h1>
-					</div>
-				</div>
 
 				<SlideShowController
 					onNextClick={handleOnNxtClick}
@@ -137,5 +126,24 @@ const SlideShowController = ({ onNextClick, onPrevClick }) => {
 		</div>
 	);
 };
+
+const Slide = forwardRef((props, ref) => {
+	const { title, src, className = '', ...rest } = props;
+
+	return (
+		<div ref={ref} className={className} {...rest}>
+			{src ? (
+				<img className="aspect-vied object-cover absolute inset-0" src={src} alt="" />
+			) : null}
+			{title ? (
+				<div className="absolute inset-0">
+					<h1 className="font-semibold text-4xl dark:text-highlight-dark text-highlight">
+						{title}
+					</h1>
+				</div>
+			) : null}
+		</div>
+	);
+});
 
 export default HeroSlideShow;
