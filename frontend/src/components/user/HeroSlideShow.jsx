@@ -10,6 +10,7 @@ let count = 0,
 const HeroSlideShow = () => {
 	const [currentSlide, setCurrentSlide] = useState({});
 	const [slides, setSlides] = useState([]);
+	const [upNext, setUpNext] = useState([]);
 	const [clonedSlide, setClonedSlide] = useState({});
 	const [visible, setVisible] = useState(true);
 	const slideRef = useRef();
@@ -33,6 +34,8 @@ const HeroSlideShow = () => {
 
 		clonedSlideRef.current.classList.add('slide-out-to-left');
 		slideRef.current.classList.add('slide-in-from-right');
+
+		updateUpNext(count);
 	};
 
 	const handleOnPrevClick = () => {
@@ -43,6 +46,8 @@ const HeroSlideShow = () => {
 
 		clonedSlideRef.current.classList.add('slide-out-to-right');
 		slideRef.current.classList.add('slide-in-from-left');
+
+		updateUpNext(count);
 	};
 
 	const handleAnimationEnd = () => {
@@ -67,6 +72,19 @@ const HeroSlideShow = () => {
 		clearInterval(intervalId);
 	};
 
+	const updateUpNext = (currentIndex) => {
+		if (!slides.length) return;
+
+		const upNextCount = currentIndex + 1;
+		const end = upNextCount + 3;
+
+		let newSlides = [...slides];
+		newSlides = newSlides.slice(upNextCount, end);
+
+		if (!newSlides.length) newSlides = [...slides].slice(0, 3);
+		setUpNext([...newSlides]);
+	};
+
 	const handleOnVisibilityChange = () => {
 		const visibility = document.visibilityState;
 		if (visibility === 'hidden') {
@@ -76,8 +94,10 @@ const HeroSlideShow = () => {
 	};
 
 	useEffect(() => {
-		if (slides.length && visible) startSlideShow();
-		else pauseSlideShow();
+		if (slides.length && visible) {
+			startSlideShow();
+			updateUpNext(count);
+		} else pauseSlideShow();
 	}, [slides.length, visible]);
 
 	useEffect(() => {
