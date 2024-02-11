@@ -127,7 +127,19 @@ const HeroSlideShow = () => {
 					onPrevClick={handleOnPrevClick}
 				/>
 			</div>
-			<div className="w-1/5 aspect-video bg-red-300"></div>
+			<div className="w-1/5 space-y-3 px-3">
+				<h1 className="font-semibold text-2xl text-primary dark:text-white">Up Next</h1>
+				{upNext.map(({ poster, id }) => {
+					return (
+						<img
+							key={id}
+							src={poster}
+							alt=""
+							className="aspect-video object-cover rounded"
+						/>
+					);
+				})}
+			</div>
 		</div>
 	);
 };
