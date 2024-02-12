@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, forwardRef } from 'react';
 import { AiOutlineDoubleLeft, AiOutlineDoubleRight } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 
 import { useNotification } from '../../hooks';
 import { getLatestUploads } from '../../api/movie';
@@ -113,13 +114,19 @@ const HeroSlideShow = () => {
 	return (
 		<div className="w-full flex">
 			<div className="w-4/5 aspect-video relative overflow-hidden">
-				<Slide ref={slideRef} title={currentSlide.title} src={currentSlide.poster} />
+				<Slide
+					ref={slideRef}
+					title={currentSlide.title}
+					src={currentSlide.poster}
+					id={currentSlide.id}
+				/>
 				<Slide
 					ref={clonedSlideRef}
 					onAnimationEnd={handleAnimationEnd}
 					className="absolute inset-0"
 					src={clonedSlide.poster}
 					title={clonedSlide.title}
+					id={currentSlide.id}
 				/>
 
 				<SlideShowController
@@ -160,10 +167,10 @@ const SlideShowController = ({ onNextClick, onPrevClick }) => {
 };
 
 const Slide = forwardRef((props, ref) => {
-	const { title, src, className = '', ...rest } = props;
+	const { title, id, src, className = '', ...rest } = props;
 
 	return (
-		<div ref={ref} className={className} {...rest}>
+		<Link to={`/movie/${id}`} ref={ref} className={className} {...rest}>
 			{src ? (
 				<img className="aspect-vied object-cover absolute inset-0" src={src} alt="" />
 			) : null}
@@ -174,7 +181,7 @@ const Slide = forwardRef((props, ref) => {
 					</h1>
 				</div>
 			) : null}
-		</div>
+		</Link>
 	);
 });
 
