@@ -129,6 +129,16 @@ const getLatestUploads = async () => {
 	}
 };
 
+const getSingleMovie = async (id) => {
+	
+	try {
+		const { data } = await client(`/movie/single/${id}`);
+		return data;
+	} catch (error) {
+		return catchError(error);
+	}
+};
+
 export {
 	uploadTrailer,
 	uploadMovie,
@@ -138,5 +148,6 @@ export {
 	deleteMovie,
 	searchMovieForAdmin,
 	getTopRatedMovies,
-	getLatestUploads
+	getLatestUploads,
+	getSingleMovie
 };
