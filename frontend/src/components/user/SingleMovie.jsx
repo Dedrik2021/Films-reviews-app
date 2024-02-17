@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useNotification } from '../../hooks';
 import { getSingleMovie } from '../../api/movie';
 import Container from '../Container';
+import RatingStar from '../RatingStar';
 
 const SingleMovie = () => {
 	const [ready, setReady] = useState(false);
@@ -32,21 +33,27 @@ const SingleMovie = () => {
 
 	const { id, trailer, poster, title, reviews = {} } = movie;
 
-	return <div className="dark:bg-primary bg-white">
-		<Container>
-			<video src={trailer} poster={poster} controls></video>
-			<div className="flex justify-between">
-				<h1 className='text-4xl text-highlight dark:text-highlight-dark font-semibold py-3 '>
-					{title}
-				</h1>
-				<div className=''>
-					<Link className='text-highlight dark:text-highlight-dark hover:underline' to={`/movie/reviews/${id}`}>
-						{reviews.reviewCount} Reviews
-					</Link>
+	return (
+		<div className="dark:bg-primary bg-white">
+			<Container>
+				<video src={trailer} poster={poster} controls></video>
+				<div className="flex justify-between">
+					<h1 className="text-4xl text-highlight dark:text-highlight-dark font-semibold py-3 ">
+						{title}
+					</h1>
+					<div className="flex flex-col items-end">
+						<RatingStar rating={reviews.ratingAvg} />
+						<Link
+							className="text-highlight dark:text-highlight-dark hover:underline"
+							to={`/movie/reviews/${id}`}
+						>
+							{reviews.reviewCount} Reviews
+						</Link>
+					</div>
 				</div>
-			</div>
-		</Container>
-	</div>;
+			</Container>
+		</div>
+	);
 };
 
 export default SingleMovie;
