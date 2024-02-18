@@ -24,6 +24,12 @@ const SingleMovie = () => {
 		if (movieId) fetchMovie();
 	}, [movieId]);
 
+	const convertReviewCount = (count) => {
+		if (count <= 999) return count 
+
+		return parseFloat(count / 1000).toFixed(2) + 'k'
+	}
+
 	if (!ready)
 		return (
 			<div className="h-screen flex justify-center items-center dark:bg-primary bg-white">
@@ -47,7 +53,7 @@ const SingleMovie = () => {
 							className="text-highlight dark:text-highlight-dark hover:underline"
 							to={`/movie/reviews/${id}`}
 						>
-							{reviews.reviewCount} Reviews
+							{convertReviewCount(reviews.reviewCount)} Reviews
 						</Link>
 					</div>
 				</div>
