@@ -55,6 +55,10 @@ const SingleMovie = () => {
 						>
 							{convertReviewCount(reviews.reviewCount)} Reviews
 						</Link>
+
+						<button type="button" className="text-highlight dark:text-highlight-dark hover:underline">
+							Rate The Movie
+						</button>
 					</div>
 				</div>
 			</Container>
