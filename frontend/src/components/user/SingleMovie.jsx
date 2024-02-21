@@ -20,6 +20,10 @@ const SingleMovie = () => {
 		setMovie(movie);
 	};
 
+	const convertDate = (date = '') => {
+		return date.split("T")[0]
+	}
+
 	useEffect(() => {
 		if (movieId) fetchMovie();
 	}, [movieId]);
@@ -46,10 +50,13 @@ const SingleMovie = () => {
 		director = {},
 		reviews = {},
 		writers = [],
+		casts = [],
+		language,
+		releseDate
 	} = movie;
 
 	return (
-		<div className="dark:bg-primary bg-white min-h-screen">
+		<div className="dark:bg-primary bg-white min-h-screen pb-10">
 			<Container>
 				<video src={trailer} poster={poster} controls></video>
 				<div className="flex justify-between">
@@ -89,15 +96,54 @@ const SingleMovie = () => {
 						<p className="text-light-subtle dark:text-dark-subtle font-semibold mr-2">
 							Writers:
 						</p>
-						<div className="space-x-2">
+						<div className="flex space-x-2">
 							{writers.map((w) => {
 								return (
-									<p className="text-highlight dark:text-highlight-dark hover:underline cursor-pointer">
+									<p
+										key={w.id}
+										className="text-highlight dark:text-highlight-dark hover:underline cursor-pointer"
+									>
 										{w.name}
 									</p>
 								);
 							})}
 						</div>
+					</div>
+
+					<div className="flex">
+						<p className="text-light-subtle dark:text-dark-subtle font-semibold mr-2">
+							Cast:
+						</p>
+						<div className="flex space-x-2">
+							{casts.map((c) => {
+								return c.leadActor ? (
+									<p
+										key={c.profile.id}
+										className="text-highlight dark:text-highlight-dark hover:underline cursor-pointer"
+									>
+										{c.profile.name}
+									</p>
+								) : null;
+							})}
+						</div>
+					</div>
+
+					<div className="flex space-x-2">
+						<p className="text-light-subtle dark:text-dark-subtle font-semibold">
+							Language:
+						</p>
+						<p className="text-highlight dark:text-highlight-dark hover:underline cursor-pointer">
+							{language}
+						</p>
+					</div>
+
+					<div className="flex space-x-2">
+						<p className="text-light-subtle dark:text-dark-subtle font-semibold">
+							Release Date:
+						</p>
+						<p className="text-highlight dark:text-highlight-dark hover:underline cursor-pointer">
+							{convertDate(releseDate)}
+						</p>
 					</div>
 				</div>
 			</Container>
