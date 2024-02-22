@@ -21,8 +21,8 @@ const SingleMovie = () => {
 	};
 
 	const convertDate = (date = '') => {
-		return date.split("T")[0]
-	}
+		return date.split('T')[0];
+	};
 
 	useEffect(() => {
 		if (movieId) fetchMovie();
@@ -52,7 +52,9 @@ const SingleMovie = () => {
 		writers = [],
 		casts = [],
 		language,
-		releseDate
+		releseDate,
+		genres = [],
+		type
 	} = movie;
 
 	return (
@@ -143,6 +145,30 @@ const SingleMovie = () => {
 						</p>
 						<p className="text-highlight dark:text-highlight-dark hover:underline cursor-pointer">
 							{convertDate(releseDate)}
+						</p>
+					</div>
+
+					<div className="flex">
+						<p className="text-light-subtle dark:text-dark-subtle font-semibold mr-2">
+							Genres:
+						</p>
+						<div className="flex space-x-2">
+							{genres.map((g) => {
+								return (
+									<p key={g} className="text-highlight dark:text-highlight-dark ">
+										{g}
+									</p>
+								);
+							})}
+						</div>
+					</div>
+
+					<div className="flex space-x-2">
+						<p className="text-light-subtle dark:text-dark-subtle font-semibold">
+							Type:
+						</p>
+						<p className="text-highlight dark:text-highlight-dark hover:underline cursor-pointer">
+							{type}
 						</p>
 					</div>
 				</div>
