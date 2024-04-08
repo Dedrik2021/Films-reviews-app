@@ -5,6 +5,7 @@ import { useNotification } from '../../hooks';
 import { getSingleMovie } from '../../api/movie';
 import Container from '../Container';
 import RatingStar from '../RatingStar';
+import RelatedMovies from '../RelatedMovies';
 
 const SingleMovie = () => {
 	const [ready, setReady] = useState(false);
@@ -192,13 +193,16 @@ const SingleMovie = () => {
 									<span className="text-light-subtle dark:text-dark-subtle text-sm">
 										as
 									</span>
-									<p className='text-light-subtle dark:text-dark-subtle'>
+									<p className="text-light-subtle dark:text-dark-subtle">
 										{c.roleAs}
 									</p>
 								</div>
 							);
 						})}
 					</div>
+				</div>
+				<div className="mt-3">
+					<RelatedMovies movieId={movieId} />
 				</div>
 			</Container>
 		</div>

@@ -139,6 +139,16 @@ const getSingleMovie = async (id) => {
 	}
 };
 
+const getRelatedMovies = async (id) => {
+	
+	try {
+		const { data } = await client(`/movie/related/${id}`);
+		return data;
+	} catch (error) {
+		return catchError(error);
+	}
+};
+
 export {
 	uploadTrailer,
 	uploadMovie,
@@ -149,5 +159,6 @@ export {
 	searchMovieForAdmin,
 	getTopRatedMovies,
 	getLatestUploads,
-	getSingleMovie
+	getSingleMovie,
+	getRelatedMovies
 };
