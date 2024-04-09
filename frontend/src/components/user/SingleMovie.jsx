@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
 import { useNotification } from '../../hooks';
 import { getSingleMovie } from '../../api/movie';
 import Container from '../Container';
 import RatingStar from '../RatingStar';
 import RelatedMovies from '../RelatedMovies';
+import { useAuth } from '../../hooks';
 
 const SingleMovie = () => {
 	const [ready, setReady] = useState(false);
 	const [movie, setMovie] = useState({});
 
+	const navigate = useNavigate()
+	const {isLoggedIn} = useAuth()
 	const { movieId } = useParams();
 	const { updateNotification } = useNotification();
 
@@ -34,6 +37,10 @@ const SingleMovie = () => {
 
 		return parseFloat(count / 1000).toFixed(2) + 'k';
 	};
+
+	const handleOnRateMovie = () => {
+		if (!isLoggedIn) return navigate('/auth/signin', {replace: true})
+	}
 
 	if (!ready)
 		return (
@@ -77,6 +84,7 @@ const SingleMovie = () => {
 
 						<button
 							type="button"
+							onClick={handleOnRateMovie}
 							className="text-highlight dark:text-highlight-dark hover:underline"
 						>
 							Rate The Movie
