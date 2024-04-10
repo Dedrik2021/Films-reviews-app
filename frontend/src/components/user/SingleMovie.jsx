@@ -7,6 +7,7 @@ import Container from '../Container';
 import RatingStar from '../RatingStar';
 import RelatedMovies from '../RelatedMovies';
 import { useAuth } from '../../hooks';
+import AddRatingModal from '../Modals/AddRatingModal';
 
 const SingleMovie = () => {
 	const [ready, setReady] = useState(false);
@@ -213,6 +214,8 @@ const SingleMovie = () => {
 					<RelatedMovies movieId={movieId} />
 				</div>
 			</Container>
+
+			<AddRatingModal/>
 		</div>
 	);
 };
