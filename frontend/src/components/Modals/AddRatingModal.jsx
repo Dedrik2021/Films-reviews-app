@@ -11,7 +11,8 @@ const AddRatingModal = () => {
     const [selectedRatings, setSelectedRatings] = useState([...ratings])
 
     const handleMouseEnter = (index) => {
-
+        const ratings = new Array(index + 1).fill(index)
+        setSelectedRatings([...ratings])
     }
 
 	return <ModalContainer visible ignoreContainer>
