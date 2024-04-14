@@ -7,12 +7,28 @@ import SubmitBtn from '../form/SubmitBtn'
 
 const ratings = new Array(10).fill("")
 
-const AddRatingModal = () => {
+const AddRatingModal = ({onSubmit}) => {
+    const [content, setContent] = useState("")
     const [selectedRatings, setSelectedRatings] = useState([...ratings])
 
     const handleMouseEnter = (index) => {
         const ratings = new Array(index + 1).fill(index)
         setSelectedRatings([...ratings])
+    }
+
+    const handleOnChange = ({target}) => {
+        setContent(target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!selectedRatings.length) return
+        const data = {
+            ratings: selectedRatings.length,
+            content
+        }
+
+        onSubmit(data)
     }
 
 	return <ModalContainer visible ignoreContainer>
@@ -32,9 +48,9 @@ const AddRatingModal = () => {
                     })}
                 </div>
             </div>
-            <textarea className='w-full h-24 border-2 p-2 dark:text-white text-primary rounded outline-none bg-transparent resize-none'></textarea>
+            <textarea value={content} onChange={handleOnChange} className='w-full h-24 border-2 p-2 dark:text-white text-primary rounded outline-none bg-transparent resize-none'></textarea>
 
-            <SubmitBtn value="Rate This Movie"/>
+            <SubmitBtn onClick={handleSubmit} value="Rate This Movie"/>
         </div>
     </ModalContainer>;
 };
