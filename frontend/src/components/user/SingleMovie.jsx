@@ -11,10 +11,12 @@ import AddRatingModal from '../Modals/AddRatingModal';
 
 const SingleMovie = () => {
 	const [ready, setReady] = useState(false);
+	const [showRatingModal, setShowRatingModal] = useState(false);
 	const [movie, setMovie] = useState({});
 
 	const navigate = useNavigate()
-	const {isLoggedIn} = useAuth()
+	const {authInfo} = useAuth()
+	const {isLoggedIn} = authInfo
 	const { movieId } = useParams();
 	const { updateNotification } = useNotification();
 
@@ -41,6 +43,11 @@ const SingleMovie = () => {
 
 	const handleOnRateMovie = () => {
 		if (!isLoggedIn) return navigate('/auth/signin', {replace: true})
+		setShowRatingModal(true)
+	}
+
+	const hideRatingModal = () => {
+		showRatingModal(false)
 	}
 
 	if (!ready)
@@ -215,7 +222,7 @@ const SingleMovie = () => {
 				</div>
 			</Container>
 
-			<AddRatingModal/>
+			<AddRatingModal visible={showRatingModal} onClose={hideRatingModal}/>
 		</div>
 	);
 };

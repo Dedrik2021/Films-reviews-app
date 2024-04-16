@@ -1,13 +1,13 @@
 import ModalContainer from './ModalContainer';
 import RatingForm from '../form/RatingForm';
 
-const AddRatingModal = () => {
+const AddRatingModal = ({visible, onClose}) => {
     const handleSubmit = (data) => {
 
     }
 
 	return (
-		<ModalContainer visible ignoreContainer>
+		<ModalContainer visible={visible} onClose={onClose} ignoreContainer>
 			<RatingForm onSubmit={handleSubmit} />
 		</ModalContainer>
 	);
