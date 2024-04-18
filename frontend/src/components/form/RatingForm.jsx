@@ -23,7 +23,7 @@ const RatingForm = ({busy, onSubmit}) => {
         e.preventDefault();
         if (!selectedRatings.length) return
         const data = {
-            ratings: selectedRatings.length,
+            rating: selectedRatings.length,
             content
         }
 
