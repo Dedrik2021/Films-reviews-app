@@ -50,6 +50,10 @@ const SingleMovie = () => {
 		showRatingModal(false)
 	}
 
+	const onRatingSuccess = (reviews) => {
+		setMovie({...movie, reviews: {...reviews}})
+	}	
+
 	if (!ready)
 		return (
 			<div className="h-screen flex justify-center items-center dark:bg-primary bg-white">
@@ -222,7 +226,7 @@ const SingleMovie = () => {
 				</div>
 			</Container>
 
-			<AddRatingModal visible={showRatingModal} onClose={hideRatingModal}/>
+			<AddRatingModal visible={showRatingModal} onClose={hideRatingModal} onSuccess={onRatingSuccess} />
 		</div>
 	);
 };
