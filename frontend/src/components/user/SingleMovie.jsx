@@ -8,6 +8,7 @@ import RatingStar from '../RatingStar';
 import RelatedMovies from '../RelatedMovies';
 import { useAuth } from '../../hooks';
 import AddRatingModal from '../Modals/AddRatingModal';
+import CustomButtonLink from '../CustomButtonLink';
 
 const SingleMovie = () => {
 	const [ready, setReady] = useState(false);
@@ -87,20 +88,8 @@ const SingleMovie = () => {
 					</h1>
 					<div className="flex flex-col items-end">
 						<RatingStar rating={reviews.ratingAvg} />
-						<Link
-							className="text-highlight dark:text-highlight-dark hover:underline"
-							to={`/movie/reviews/${id}`}
-						>
-							{convertReviewCount(reviews.reviewCount)} Reviews
-						</Link>
-
-						<button
-							type="button"
-							onClick={handleOnRateMovie}
-							className="text-highlight dark:text-highlight-dark hover:underline"
-						>
-							Rate The Movie
-						</button>
+						<CustomButtonLink label={`${convertReviewCount(reviews.reviewCount)} Reviews`} onClick={() => navigate(`/movie/reviews/${id}`)} />
+						<CustomButtonLink label="Rate The Movie" onClick={handleOnRateMovie} />
 					</div>
 				</div>
 
