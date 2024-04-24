@@ -175,8 +175,8 @@ const Slide = forwardRef((props, ref) => {
 				<img className="aspect-vied object-cover absolute inset-0" src={src} alt="" />
 			) : null}
 			{title ? (
-				<div className="absolute inset-0">
-					<h1 className="font-semibold text-4xl dark:text-highlight-dark text-highlight">
+				<div className="absolute inset-0 flex flex-col justify-end py-3 bg-gradient-to-t from-white via-transparent dark:from-primary dark:via-transparent">
+					<h1 className="font-semibold text-4xl  dark:text-highlight-dark text-highlight">
 						{title}
 					</h1>
 				</div>
