@@ -107,12 +107,12 @@ const searchMovieForAdmin = async (title) => {
 	}
 };
 
-const getTopRatedMovies = async (type) => {
+const getTopRatedMovies = async (type, signal) => {
 	
 	try {
 		let endpoint = '/movie/top-rated'
 		if (type) endpoint = `${endpoint}?type=${type}`
-		const { data } = await client(endpoint);
+		const { data } = await client(endpoint, {signal});
 		return data;
 	} catch (error) {
 		return catchError(error);
