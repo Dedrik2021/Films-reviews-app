@@ -295,6 +295,7 @@ const getMovies = async (req, res) => {
 		id: movie._id,
 		title: movie.title,
 		poster: movie.poster?.url,
+		responsivePosters: movie.poster.responsivePosters,
 		genres: movie.genres,
 		status: movie.status,
 	}));
@@ -369,6 +370,7 @@ const getLatestUploads = async (req, res, next) => {
 			title: m.title,
 			storyLine: m.storyLine,
 			poster: m.poster?.url,
+			responsivePosters: m.poster.responsive,
 			trailer: m.trailer?.url,
 		};
 	});
@@ -469,13 +471,14 @@ const getRelatedMovies = async (req, res, next) => {
 			id: m._id,
 			title: m.title,
 			poster: m.poster,
+			responsivePosters: m.responsivePosters,
 			reviews: { ...reviews },
 		};
 	};
 
 	const relatedMovies = await Promise.all(movies.map(mapMovies));
 
-	res.json({ relatedMovies });
+	res.json({movies: relatedMovies });
 };
 
 const getTopRelatedMovies = async (req, res, next) => {
@@ -495,6 +498,7 @@ const getTopRelatedMovies = async (req, res, next) => {
 			id: m._id,
 			title: m.title,
 			poster: m.poster,
+			responsivePosters: m.responsivePosters,
 			reviews: {...reviews}
 		}
 	}

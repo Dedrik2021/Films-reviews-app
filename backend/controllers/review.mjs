@@ -1,6 +1,6 @@
 import { isValidObjectId } from "mongoose"
 
-import { sendError } from "../utils/helper.mjs"
+import { getAverageRatings, sendError } from "../utils/helper.mjs"
 import Movie from '../models/movie.mjs'
 import Review from '../models/review.mjs'
 
@@ -53,7 +53,9 @@ const addReview = async (req, res, next) => {
         return next(sendError(res, 'Review not has been saved.'))
     }
 
-    res.json({message: "Your review has been added!"})
+    const reviews = await getAverageRatings(movie._id)
+
+    res.json({message: "Your review has been added!", reviews})
 }
 
 const updateReview = async (req, res, next) => {
