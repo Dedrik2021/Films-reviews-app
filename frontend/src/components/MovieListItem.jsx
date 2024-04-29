@@ -5,6 +5,7 @@ import ConfirmModal from './Modals/ConfirmModal';
 import { deleteMovie } from '../api/movie';
 import { useNotification } from '../hooks';
 import UpdateMovie from './Modals/UpdateMovie';
+import { getPoster } from '../utils/helper';
 
 const MovieListItem = ({ movie, afterDelete, afterUpdate }) => {
 	const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -70,7 +71,9 @@ const MovieListItem = ({ movie, afterDelete, afterUpdate }) => {
 };
 
 const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
-	const { poster, title, genres = [], status } = movie;
+	const { poster, responsivePosters, title, genres = [], status } = movie;
+
+
 
 	return (
 		<table className="w-full border-b">
@@ -78,7 +81,7 @@ const MovieCard = ({ movie, onDeleteClick, onEditClick, onOpenClick }) => {
 				<tr>
 					<td>
 						<div className="w-24 mr-5">
-							<img className="w-full aspect-video" src={poster} alt={title} />
+							<img className="w-full aspect-video" src={getPoster(responsivePosters) || poster} alt={title} />
 						</div>
 					</td>
 					<td className="w-full">
