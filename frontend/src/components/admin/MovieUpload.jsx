@@ -100,7 +100,7 @@ const UploadProgress = ({ width, message, visible }) => {
 	if (!visible) return null;
 
 	return (
-		<div className="dark:bg-secondary bg-white drop-shadow-lg rounded p-3">
+		<label className="dark:bg-secondary bg-white drop-shadow-lg rounded p-3">
 			<div className="h-3 dark:bg-dark-subtle bg-light-subtle relative overflow-hidden">
 				<div
 					style={{ width: `${width}%` }}
@@ -110,7 +110,7 @@ const UploadProgress = ({ width, message, visible }) => {
 			<p className="font-semibold dark:text-dark-subtle text-light-subtle animate-pulse mt-2">
 				{message}
 			</p>
-		</div>
+		</label>
 	);
 };
 
