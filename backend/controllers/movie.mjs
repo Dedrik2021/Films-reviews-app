@@ -97,10 +97,10 @@ const createMovie = async (req, res) => {
 
 		await newMovie.save();
 
-		res.status(201).json({
+		res.status(201).json({movie: {
 			id: newMovie._id,
 			title,
-		});
+		}});
 	}
 };
 

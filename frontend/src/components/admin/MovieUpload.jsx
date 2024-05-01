@@ -47,9 +47,11 @@ const MovieUpload = ({ visible, onClose }) => {
 			return updateNotification('error', 'Trailer is missing!');
 		setBusy(true)
 		await data.append('trailer', JSON.stringify(videoInfo));
-		const res = await uploadMovie(data);
+		const {error, movie} = await uploadMovie(data);
 		setBusy(false)
-		console.log(res);
+		if (error) return updateNotification('error', error)
+
+		updateNotification('success', "Movie uploads successfully.")
 
 		onClose()
 	};
