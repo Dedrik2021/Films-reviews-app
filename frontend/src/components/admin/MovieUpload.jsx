@@ -23,6 +23,13 @@ const MovieUpload = ({ visible, onClose }) => {
 		setVideoInfo({ url, public_id });
 	};
 
+	const resetState = () => {
+		setVideoSelected(false)
+		setVideoUploaded(false)
+		setUploadProgress(0)
+		setVideoInfo({})
+	}
+
 	const handleChange = (file) => {
 		const formData = new FormData();
 		formData.append('video', file);
@@ -52,7 +59,7 @@ const MovieUpload = ({ visible, onClose }) => {
 		if (error) return updateNotification('error', error)
 
 		updateNotification('success', "Movie uploads successfully.")
-
+		resetState()
 		onClose()
 	};
 
