@@ -9,11 +9,14 @@ import RelatedMovies from '../RelatedMovies';
 import { useAuth } from '../../hooks';
 import AddRatingModal from '../Modals/AddRatingModal';
 import CustomButtonLink from '../CustomButtonLink';
+import ProfileModal from '../Modals/ProfileModal';
 
 const SingleMovie = () => {
 	const [ready, setReady] = useState(false);
 	const [showRatingModal, setShowRatingModal] = useState(false);
 	const [movie, setMovie] = useState({});
+	const [showProfileModal, setShowProfileModal] = useState(false)
+	const [selectedProfile, setSelectedProfile] = useState({})
 
 	const navigate = useNavigate();
 	const { authInfo } = useAuth();
@@ -54,6 +57,15 @@ const SingleMovie = () => {
 	const onRatingSuccess = (reviews) => {
 		setMovie({ ...movie, reviews: { ...reviews } });
 	};
+
+	const handleProfileClick = (profile) => {
+		setSelectedProfile(profile)
+		setShowProfileModal(true)
+	}
+
+	const hideProfileModal = () => {
+		setShowProfileModal(false)
+	}
 
 	if (!ready)
 		return (
@@ -105,7 +117,7 @@ const SingleMovie = () => {
 
 					<ListWithLabel label="Writers:">
 						{writers.map((w) => (
-							<CustomButtonLink key={w.id} label={w.name} />
+							<CustomButtonLink key={w.id} label={w.name} onClick={handleProfileClick(director)} />
 						))}
 					</ListWithLabel>
 
@@ -140,6 +152,12 @@ const SingleMovie = () => {
 				</div>
 
 			</Container>
+
+			<ProfileModal
+				visible={showProfileModal}
+				onClose={hideProfileModal}
+				profileId={selectedProfile.id}
+			/>
 
 			<AddRatingModal
 				visible={showRatingModal}
