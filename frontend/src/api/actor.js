@@ -75,5 +75,14 @@ const getActors = async (pageNo, limit) => {
 	}
 };
 
+const getActorProfile = async (id) => {
+	try {
+		const { data } = await client(`/actor/single/${id}`);
+		return data;
+	} catch (error) {
+		return catchError(error);
+	}
+};
 
-export { createActor, searchActor, getActors, updateActor, deleteActor };
+
+export { createActor, searchActor, getActors, updateActor, deleteActor, getActorProfile };
