@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
+import { BsTrash, BsPencilSquare } from 'react-icons/bs';
 
 import Container from '../Container';
 import CustomButtonLink from '../CustomButtonLink';
@@ -58,7 +59,17 @@ const MovieReviews = () => {
 					) : null}
 				</div>
 				{profileOwnersReview ? (
-					<ReviewCard review={profileOwnersReview} />
+					<div>
+						<ReviewCard review={profileOwnersReview} />
+						<div className="flex space-x-3 dark:text-white text-primary text-xl p-3 ">
+							<button type="button">
+								<BsTrash />
+							</button>
+							<button type="button">
+								<BsPencilSquare />
+							</button>
+						</div>
+					</div>
 				) : (
 					<div className="space-y-3 mt-3">
 						{reviews.map((review) => {
