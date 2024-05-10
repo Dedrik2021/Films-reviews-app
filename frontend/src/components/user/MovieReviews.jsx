@@ -7,6 +7,7 @@ import CustomButtonLink from '../CustomButtonLink';
 import { getReviewByMovie } from '../../api/review';
 import { useAuth, useNotification } from '../../hooks';
 import RatingStar from '../RatingStar';
+import ConfirmModal from '../Modals/ConfirmModal';
 
 const getNameInitial = (name = '') => {
 	return name[0].toUpperCase();
@@ -14,6 +15,7 @@ const getNameInitial = (name = '') => {
 
 const MovieReviews = () => {
 	const [reviews, setReviews] = useState([]);
+    const [showConfirmModal, setShowConfirmModal] = useState(false)
 	const [profileOwnersReview, setProfileOwnersReview] = useState(null);
 	const { movieId } = useParams();
 	const { updateNotification } = useNotification();
@@ -41,6 +43,14 @@ const MovieReviews = () => {
 		setProfileOwnersReview(matched);
 	};
 
+    const displayConfirmModal = () => {
+        setShowConfirmModal(true)
+    }
+
+    const hideConfirmModal = () => {
+        setShowConfirmModal(false)
+    }
+
 	return (
 		<div className="dark:bg-primary bg-white min-h-screen pb-10">
 			<Container className="xl:px-0 px-2 py-8">
@@ -62,7 +72,7 @@ const MovieReviews = () => {
 					<div>
 						<ReviewCard review={profileOwnersReview} />
 						<div className="flex space-x-3 dark:text-white text-primary text-xl p-3 ">
-							<button type="button">
+							<button onClick={displayConfirmModal} type="button">
 								<BsTrash />
 							</button>
 							<button type="button">
@@ -78,6 +88,13 @@ const MovieReviews = () => {
 					</div>
 				)}
 			</Container>
+
+            <ConfirmModal
+                visible={showConfirmModal}
+                onCancel={hideConfirmModal}
+                title="Are You Sure?"
+                subtitle="This action will remove this review permanently."
+            />
 		</div>
 	);
 };
