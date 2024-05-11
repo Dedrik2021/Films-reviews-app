@@ -4,7 +4,7 @@ import { BsTrash, BsPencilSquare } from 'react-icons/bs';
 
 import Container from '../Container';
 import CustomButtonLink from '../CustomButtonLink';
-import { getReviewByMovie } from '../../api/review';
+import { deleteReview, getReviewByMovie } from '../../api/review';
 import { useAuth, useNotification } from '../../hooks';
 import RatingStar from '../RatingStar';
 import ConfirmModal from '../Modals/ConfirmModal';
@@ -16,6 +16,7 @@ const getNameInitial = (name = '') => {
 const MovieReviews = () => {
 	const [reviews, setReviews] = useState([]);
     const [showConfirmModal, setShowConfirmModal] = useState(false)
+    const [busy, setBusy] = useState(false)
 	const [profileOwnersReview, setProfileOwnersReview] = useState(null);
 	const { movieId } = useParams();
 	const { updateNotification } = useNotification();
@@ -49,6 +50,19 @@ const MovieReviews = () => {
 
     const hideConfirmModal = () => {
         setShowConfirmModal(false)
+    }
+
+    const handleDeleteConfirm = async () => {
+        setBusy(true)
+        const {error, message} = await deleteReview(profileOwnersReview.id)
+        setBusy(false)
+        if (error) return updateNotification("error", error)
+        updateNotification("success", message)
+        
+        const updateReviews = reviews.filter((r) => r.id !== profileOwnersReview.id)
+        setReviews([...updateReviews])
+        setProfileOwnersReview(null)
+        hideConfirmModal()
     }
 
 	return (
@@ -94,6 +108,8 @@ const MovieReviews = () => {
                 onCancel={hideConfirmModal}
                 title="Are You Sure?"
                 subtitle="This action will remove this review permanently."
+                onConfirm={handleDeleteConfirm}
+                busy={busy}
             />
 		</div>
 	);
