@@ -8,6 +8,7 @@ import { deleteReview, getReviewByMovie } from '../../api/review';
 import { useAuth, useNotification } from '../../hooks';
 import RatingStar from '../RatingStar';
 import ConfirmModal from '../Modals/ConfirmModal';
+import NotFoundText from '../NotFoundText';
 
 const getNameInitial = (name = '') => {
 	return name[0].toUpperCase();
@@ -82,6 +83,9 @@ const MovieReviews = () => {
 						/>
 					) : null}
 				</div>
+
+                <NotFoundText text="No Reviews!" visible={!reviews.length} />
+
 				{profileOwnersReview ? (
 					<div>
 						<ReviewCard review={profileOwnersReview} />
