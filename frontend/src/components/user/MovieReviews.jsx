@@ -18,6 +18,7 @@ const MovieReviews = () => {
 	const [reviews, setReviews] = useState([]);
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [busy, setBusy] = useState(false)
+    const [movieTitle, setMovieTitle] = useState('')
 	const [profileOwnersReview, setProfileOwnersReview] = useState(null);
 	const { movieId } = useParams();
 	const { updateNotification } = useNotification();
@@ -26,10 +27,11 @@ const MovieReviews = () => {
 	const profileId = authInfo.profile?.id;
 
 	const fetchReviews = async () => {
-		const { reviews, error } = getReviewByMovie(movieId);
-		if (error) return updateNotification('error', error);
+		const { movie, error } = getReviewByMovie(movieId);
+		if ( error) return updateNotification('error', error);
 
-		setReviews([...reviews]);
+		setReviews([...movie.reviews]);
+        setMovieTitle(movie.title)
 	};
 
 	useEffect(() => {
@@ -74,7 +76,7 @@ const MovieReviews = () => {
 						<span className="text-light-subtle dark:text-dark-subtle font-normal">
 							Reviews for:
 						</span>{' '}
-						This is the title
+						{movieTitle}
 					</h1>
 					{profileId ? (
 						<CustomButtonLink

@@ -136,7 +136,7 @@ const getReviewsByMovie = async (req, res, next) => {
                 path: 'owner',
                 select: 'name'
             }
-        }).select('reviews')
+        }).select('reviews title')
     } catch(err) {
         return next(sendError(res, 'Something went wrong!'))
     }
@@ -156,7 +156,7 @@ const getReviewsByMovie = async (req, res, next) => {
         }
     })
 
-    res.json({reviews})
+    res.json({movie: {title: movie.title, reviews}})
 }
 
 export {addReview, updateReview, removeReview, getReviewsByMovie}
