@@ -9,12 +9,15 @@ import { useAuth, useNotification } from '../../hooks';
 import RatingStar from '../RatingStar';
 import ConfirmModal from '../Modals/ConfirmModal';
 import NotFoundText from '../NotFoundText';
+import EditRatingModal from '../Modals/EditRatingModal';
 
 const getNameInitial = (name = '') => {
 	return name[0].toUpperCase();
 };
 
 const MovieReviews = () => {
+    const [selectedReview, setSelectedReview] = useState(null)
+    const [showEditModal, setShowEditModal] = useState(false)
 	const [reviews, setReviews] = useState([]);
     const [showConfirmModal, setShowConfirmModal] = useState(false)
     const [busy, setBusy] = useState(false)
@@ -68,6 +71,17 @@ const MovieReviews = () => {
         hideConfirmModal()
     }
 
+    const handleOnEditClick = () => {
+        const {id, content, rating} = profileOwnersReview
+        setSelectedReview({
+            id,
+            content,
+            rating
+        })
+
+        setShowEditModal(true)
+    }
+
 	return (
 		<div className="dark:bg-primary bg-white min-h-screen pb-10">
 			<Container className="xl:px-0 px-2 py-8">
@@ -95,7 +109,7 @@ const MovieReviews = () => {
 							<button onClick={displayConfirmModal} type="button">
 								<BsTrash />
 							</button>
-							<button type="button">
+							<button onClick={handleOnEditClick} type="button">
 								<BsPencilSquare />
 							</button>
 						</div>
@@ -116,6 +130,11 @@ const MovieReviews = () => {
                 subtitle="This action will remove this review permanently."
                 onConfirm={handleDeleteConfirm}
                 busy={busy}
+            />
+
+            <EditRatingModal
+                visible={showEditModal}
+                initialState={selectedReview}
             />
 		</div>
 	);
