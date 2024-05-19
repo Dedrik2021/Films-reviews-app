@@ -82,6 +82,28 @@ const MovieReviews = () => {
         setShowEditModal(true)
     }
 
+	const handleOnReviewUpdate = (review) => {
+		const updatedReview = {
+			...profileOwnersReview,
+			rating: review.rating,
+			content: review.content
+		}
+
+		setProfileOwnersReview({...updatedReview})
+
+		const newReviews = reviews.map((r) => {
+			if (r.id === updatedReview.id) return updatedReview
+			return r
+		})
+
+		setReviews([...newReviews])
+	}
+
+	const hideEditModal = () => {
+		setShowEditModal(false)
+		setSelectedReview(null)
+	}
+
 	return (
 		<div className="dark:bg-primary bg-white min-h-screen pb-10">
 			<Container className="xl:px-0 px-2 py-8">
@@ -135,6 +157,8 @@ const MovieReviews = () => {
             <EditRatingModal
                 visible={showEditModal}
                 initialState={selectedReview}
+				onSuccess={handleOnReviewUpdate}
+				onClose={hideEditModal}
             />
 		</div>
 	);
