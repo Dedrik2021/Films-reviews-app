@@ -8,6 +8,7 @@ import userRouter from './routes/user.mjs';
 import actorRouter from './routes/actor.mjs'
 import movieRouter from './routes/movie.mjs'
 import reviewRouter from './routes/review.mjs'
+import adminRouter from './routes/admin.mjs'
 
 import { errorHandler } from './middlewares/error.mjs';
 import { handleNotFound } from './utils/helper.mjs';
@@ -23,6 +24,7 @@ app.use('/api/user', userRouter);
 app.use('/api/actor', actorRouter)
 app.use('/api/movie', movieRouter)
 app.use('/api/review', reviewRouter)
+app.use('/api/admin', adminRouter)
 
 app.use('/*', handleNotFound)
 
