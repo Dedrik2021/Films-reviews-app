@@ -7,6 +7,6 @@ export const getAppInfo = async (req, res) => {
     const reviewCount = await Review.countDocuments()
     const userCount = await User.countDocuments()
 
-    res.json({movieCount, reviewCount, userCount})
+    res.json({appInfo: {movieCount, reviewCount, userCount}})
 }
 
