@@ -27,9 +27,9 @@ const Dashboard = () => {
 
 	return (
 		<div className="grid grid-cols-3 gap-5 p-5">
-			<AppInfoBox title="Total Uploads" subTitle={appInfo.movieCount} />
-			<AppInfoBox title="Total Reviews" subTitle={appInfo.reviewCount} />
-			<AppInfoBox title="Total Users" subTitle={appInfo.userCount} />
+			<AppInfoBox title="Total Uploads" subTitle={appInfo.movieCount.toLocaleString()} />
+			<AppInfoBox title="Total Reviews" subTitle={appInfo.reviewCount.toLocaleString()} />
+			<AppInfoBox title="Total Users" subTitle={appInfo.userCount.toLocaleString()} />
 
 			<LatestUploads/>
 		</div>
