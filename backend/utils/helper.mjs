@@ -125,6 +125,13 @@ const getAverageRatings = async (movieId) => {
 };
 
 const topRatedMoviesPipeline = async (type) => {
+	const matchOptions = {
+		reviews: {$exists: true},
+		status: {$eq: "public"}
+	}
+
+	if (type) matchOptions.type = {$eq: type}
+
 	return [
 		{
 			$lookup: {
@@ -135,11 +142,7 @@ const topRatedMoviesPipeline = async (type) => {
 			},
 		},
 		{
-			$match: {
-				$reviews: { $exists: true },
-				status: { $eq: 'public' },
-				type: { $eq: type },
-			},
+			$match: matchOptions,
 		},
 		{
 			$project: {
