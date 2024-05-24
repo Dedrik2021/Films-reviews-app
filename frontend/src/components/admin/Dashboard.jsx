@@ -4,6 +4,7 @@ import AppInfoBox from '../AppInfoBox';
 import LatestUploads from '../LatestUploads';
 import { getAppInfo } from '../../api/admin';
 import { useNotification } from '../../hooks';
+import MostRatedMovies from '../MostRatedMovies';
 
 const Dashboard = () => {
 	const [appInfo, setAppInfo] = useState({
@@ -32,6 +33,7 @@ const Dashboard = () => {
 			<AppInfoBox title="Total Users" subTitle={appInfo.userCount.toLocaleString()} />
 
 			<LatestUploads/>
+			<MostRatedMovies/>
 		</div>
 	);
 };
