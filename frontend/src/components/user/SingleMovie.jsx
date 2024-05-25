@@ -10,6 +10,7 @@ import { useAuth } from '../../hooks';
 import AddRatingModal from '../Modals/AddRatingModal';
 import CustomButtonLink from '../CustomButtonLink';
 import ProfileModal from '../Modals/ProfileModal';
+import { convertReviewCount } from '../../utils/helper';
 
 const SingleMovie = () => {
 	const [ready, setReady] = useState(false);
@@ -38,12 +39,6 @@ const SingleMovie = () => {
 	useEffect(() => {
 		if (movieId) fetchMovie();
 	}, [movieId]);
-
-	const convertReviewCount = (count = 0) => {
-		if (count <= 999) return count;
-
-		return parseFloat(count / 1000).toFixed(2) + 'k';
-	};
 
 	const handleOnRateMovie = () => {
 		if (!isLoggedIn) return navigate('/auth/signin', { replace: true });

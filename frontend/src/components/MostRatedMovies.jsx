@@ -1,29 +1,50 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 
-import { getMostRatedMovies } from "../api/movie";
-import { useNotification } from "../hooks";
+import { getMostRatedMovies } from '../api/movie';
+import { useNotification } from '../hooks';
+import RatingStar from './RatingStar';
+import { convertReviewCount } from '../utils/helper';
 
 const MostRatedMovies = () => {
-    const [movies, setMovies] = useState([]);
+	const [movies, setMovies] = useState([]);
 
-    const { updateNotification } = useNotification();
+	const { updateNotification } = useNotification();
 
-    const fetchMostRatedMovies = async () => {
-        const { error, movies } = await getMostRatedMovies();
-        if (error) return updateNotification("error", error);
+	const fetchMostRatedMovies = async () => {
+		const { error, movies } = await getMostRatedMovies();
+		if (error) return updateNotification('error', error);
 
-        setMovies([...movies]);
-    }
+		setMovies([...movies]);
+	};
 
-    useEffect(() => {
-        fetchMostRatedMovies();
-    }, []);
+	useEffect(() => {
+		fetchMostRatedMovies();
+	}, []);
 
-	return <div className="bg-white shadow dark:shadow dark:bg-secondary p-5 rounded">
-        {movies.map((movie) => {
-            return <p>{movie.title}</p>
-        })}
-    </div>;
+	return (
+		<div className="bg-white shadow dark:shadow dark:bg-secondary p-5 rounded">
+			<h1 className="font-semibold text-2xl mb-2 text-primary dark:text-white">
+				Most Rated Movies
+			</h1>
+			<ul className="space-y-3">
+				{movies.map((movie) => {
+					return (
+						<li key={movie.id}>
+							<h1 className="dark:text-white text-secondary font-semibold">
+								{movie.title}
+							</h1>
+							<div className="flex space-x-2">
+                                <RatingStar rating={movie.reviews?.ratingAvg} />
+								<p className="text-light-subtle dark:text-dark-subtle">
+									{convertReviewCount(movie.reviews?.reviewCount)} Reviews
+								</p>
+							</div>
+						</li>
+					);
+				})}
+			</ul>
+		</div>
+	);
 };
 
 export default MostRatedMovies;
