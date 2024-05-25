@@ -10,7 +10,8 @@ const addReview = async (req, res, next) => {
     const userId = req.user._id
     let movie, isAlreadyReview
     
-    if (isValidObjectId(movieId)) return sendError(res, 'Invalid movie!')
+    if (!req.user.isVerified) return sendError(res, 'Please verify your email first!')
+    if (!isValidObjectId(movieId)) return sendError(res, 'Invalid movie!')
 
     try {
         movie = await Movie.findOne({_id: movieId, status: "public"})
